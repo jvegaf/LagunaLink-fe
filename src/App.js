@@ -22,4 +22,6 @@ function App() {
   );
 }
 
+// strongly typed
+
 export default App;
