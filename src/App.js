@@ -1,18 +1,19 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
+import 'bootstrap/dist/css/bootstrap.min.css';
+// import home from "./pages/home";
+import signIn from "./pages/signIn";
+import signUp from "./pages/signUp";
 
 function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
+        <Route exact path="/" component={signIn} />
+        <Route exact path="/signin" component={signIn} />
+        <Route exact path="/signup" component={signUp} />
       </Switch>
     </Router>
   );
 }
-
-// strongly typed
 
 export default App;
