@@ -1,12 +1,13 @@
-import React from 'react';
-import SignUp from '../../components/SignUp'
+import React from "react";
+import SignUp from "../../components/SignUp";
+import './signUp.css';
 
 export default function signUp() {
   return (
-    <div className="row justify-content-center">
-      <div className="col-md-6 align-self-center">
+    <div className="row">
+      <div className="col-12 center">
         <SignUp />
-      </div>
+      </div>  
     </div>
   );
 }

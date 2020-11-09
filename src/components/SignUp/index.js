@@ -2,19 +2,19 @@ import React from "react";
 
 export default function SignUp() {
   return (
-    <div className="col-md-6 m-auto">
+    <div className="col-md-3 m-auto">
       <div className="row justify-content-center">
         <h1>Registro</h1>
       </div>
       <form>
-        <div className="form-group my-5">
-          <select class="custom-select">
-            <option selected>Elige el tipo de cuenta</option>
+        <div className="form-group mt-5">
+          <select className="custom-select">
+            <option defaultValue>Elige el tipo de cuenta</option>
             <option value="1">Estudiante</option>
             <option value="2">Empresa</option>
           </select>
         </div>
-        <div className="form-group my-5">
+        <div className="form-group mt-5">
           <label htmlFor="email">Correo Electrónico</label>
           <input
             type="email"
@@ -45,7 +45,7 @@ export default function SignUp() {
             placeholder="Vuelve a introducir tu contraseña"
           />
         </div>
-        <div className="form-group">
+        <div className="form-group mb-5 mt-4">
           <div className="form-check">
             <input
               type="checkbox"
