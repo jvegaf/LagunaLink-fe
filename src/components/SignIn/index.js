@@ -41,10 +41,10 @@ export default function SignIn() {
         <div className="form-group">
           <Button variant="primary" block>Entrar</Button>
         </div>
-        <div className="form-group">
+        <div className="form-group mt-4">
           <p className="text-secondary text-center">¿ Olvidaste tu contraseña ?</p>
         </div>
-        <div className="row justify-content-center">
+        <div className="row justify-content-center mt-5">
           <Button variant="outline-primary">Registrarse</Button>
         </div>
       </form>
