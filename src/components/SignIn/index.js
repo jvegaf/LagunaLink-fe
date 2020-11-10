@@ -3,19 +3,29 @@ import { Button } from "react-bootstrap";
 import LLTitle from "../LLTitle";
 import LLinkLogo from "../LLinkLogo"
 
-export default function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: Callback method
+export const SignIn = () => {
+
+  const [data, setData] = useState({
+    email: "",
+    password: ""
+  });
+
+  const handleInputChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value,
+    });
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+  }
 
   return (
     <div className="row col-md-5 m-auto">
       <div className="row col-md-12 justify-content-center mb-2">
-        <LLinkLogo />
+        <LLinkLogo size="70px"/>
       </div>
       <div className="row mx-auto mb-4">
         <LLTitle />
@@ -26,22 +36,18 @@ export default function SignIn() {
             type="email"
             className="form-control"
             placeholder="Correo Electronico"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
+            onChange={handleInputChange}
           />
         </div>
         <div className="form-group">
           <input
+            type="password"
             className="form-control"
             placeholder="Contraseña"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
+            onChange={handleInputChange}
           />
         </div>
-        <div className="form-group">
-          <Button variant="primary" block>Entrar</Button>
-        </div>
-        <div className="form-group mt-4">
+        <div className="form-group mt-4 mb-5">
           <p className="text-secondary text-center">¿ Olvidaste tu contraseña ?</p>
         </div>
         <div className="row justify-content-center mt-5">

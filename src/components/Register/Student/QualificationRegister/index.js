@@ -1,6 +1,20 @@
-import React from "react";
+import React, {useState} from "react";
 
-export default function QualificationRegister() {
+export const QualificationRegister = () => {
+  
+  const [data, setData] = useState({
+    title: "",
+    start_date: "",
+    end_date: "",
+  });
+
+  const handleInputChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value,
+    });
+  };
+  
   return (
     <div className="col-3 m-auto">
       <div className="row justify-content-center">
@@ -18,6 +32,7 @@ export default function QualificationRegister() {
             className="form-control"
             id="title"
             placeholder="Titulo"
+            onChange={handleInputChange}
           />
         </div>
         <div className="row justify-content-between">
@@ -28,6 +43,7 @@ export default function QualificationRegister() {
               name="start_date"
               className="form-control"
               id="start_date"
+              onChange={handleInputChange}
             />
           </div>
           <div className="form-group col-6">
@@ -37,6 +53,7 @@ export default function QualificationRegister() {
               name="end_date"
               className="form-control"
               id="end_date"
+              onChange={handleInputChange}
             />
           </div>
         </div>

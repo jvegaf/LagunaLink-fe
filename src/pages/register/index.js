@@ -1,12 +1,12 @@
 import React from 'react';
 import '../__shared__/styles.css';
-import { JobExpRegister } from '../../components/JobExpRegister';
+import { CompanyRegister } from '../../components/Register/Company/CompanyRegister';
 
 export default function register() {
   return (
     <div className="row m-0 p-0">
       <div className="col-12 center">
-        <JobExpRegister />
+        <CompanyRegister />
       </div>
     </div>
   );

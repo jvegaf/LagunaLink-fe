@@ -1,6 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default function StudentRegister() {
+
+export const StudentRegister = () => {
+
+  const [data, setData] = useState({
+    name: "",
+    surname: "",
+    lastname: "",
+  });
+
+  const handleInputChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   return (
     <div className="col-3 m-auto">
       <div className="row justify-content-center">
@@ -18,6 +33,7 @@ export default function StudentRegister() {
             className="form-control"
             id="name"
             placeholder="Nombre"
+            onChange={handleInputChange}
           />
         </div>
         <div className="form-group">
@@ -28,6 +44,7 @@ export default function StudentRegister() {
             className="form-control"
             id="surname"
             placeholder="Apellido 1"
+            onChange={handleInputChange}
           />
         </div>
         <div className="form-group">
@@ -38,6 +55,7 @@ export default function StudentRegister() {
             className="form-control"
             id="lastname"
             placeholder="Apellido 2"
+            onChange={handleInputChange}
           />
         </div>
         <div className="form-group mt-5">
