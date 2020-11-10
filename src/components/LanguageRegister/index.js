@@ -81,6 +81,9 @@ export const LanguageRegister = () => {
           </button>
         </div>
       </form>
+      <div className="row mt-5 justify-content-center">
+        <button className="btn btn-outline-primary w-50">Agregar otro idioma</button>
+      </div>
     </div>
   );
 };
