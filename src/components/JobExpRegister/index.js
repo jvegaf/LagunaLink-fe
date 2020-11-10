@@ -1,6 +1,22 @@
-import React from "react";
+import React, {useState} from "react";
 
 export const JobExpRegister = () => {
+
+  const [data, setData] = useState({
+    company: '',
+    position: '',
+    responsibilities: '',
+    start_date: '',
+    end_date: ''
+  })
+
+  const handleInputChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   return (
     <div className="col-3 m-auto">
       <div className="row justify-content-center">
@@ -18,6 +34,7 @@ export const JobExpRegister = () => {
             className="form-control"
             id="company"
             placeholder="Empresa"
+            onChange={handleInputChange}
           />
         </div>
         <div className="form-group">
@@ -28,6 +45,7 @@ export const JobExpRegister = () => {
             className="form-control"
             id="position"
             placeholder="Puesto"
+            onChange={handleInputChange}
           />
         </div>
         <div class="form-group">
@@ -37,6 +55,7 @@ export const JobExpRegister = () => {
             id="responsibilities"
             name="responsibilities"
             rows="3"
+            onChange={handleInputChange}
           ></textarea>
         </div>
         <div className="row justify-content-between">
@@ -47,6 +66,7 @@ export const JobExpRegister = () => {
               name="start_date"
               className="form-control"
               id="start_date"
+              onChange={handleInputChange}
             />
           </div>
           <div className="form-group col-6">
@@ -56,6 +76,7 @@ export const JobExpRegister = () => {
               name="end_date"
               className="form-control"
               id="end_date"
+              onChange={handleInputChange}
             />
           </div>
         </div>
@@ -65,6 +86,9 @@ export const JobExpRegister = () => {
           </button>
         </div>
       </form>
+      <div className="row mt-5 justify-content-center">
+        <button className="btn btn-outline-primary">Agregar otra experiencia de trabajo</button>
+      </div>
     </div>
   );
 };
