@@ -1,11 +1,14 @@
 import React from "react";
 import { Header } from "../../components/Header";
+import { JobOpeningsGrid } from "../../components/JobOpening/JobOpeningsGrid";
+import '../__shared__/styles.css';
 
-export const main = () => {
+
+export const main = (props) => {
   return (
     <div>
-      <Header email="pepito@me.com" />
-      <h1>HOME</h1>
+      <Header email={props.email} />
+      <JobOpeningsGrid />
     </div>
   );
 };
