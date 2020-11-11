@@ -4,10 +4,10 @@ import { JobOpeningsGrid } from "../../components/JobOpening/JobOpeningsGrid";
 import '../__shared__/styles.css';
 
 
-export const main = () => {
+export const main = (props) => {
   return (
     <div>
-      <Header email="pepito@me.com" />
+      <Header email={props.email} />
       <JobOpeningsGrid />
     </div>
   );

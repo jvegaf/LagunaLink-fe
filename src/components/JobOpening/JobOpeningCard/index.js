@@ -1,7 +1,7 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 
-export const JobOpeningCard = (props) => {
+export const JobOpeningCard = ({jobOpening}) => {
   return (
     <Card style={{ width: "20rem", margin:"10px"}}>
       <Card.Img
@@ -11,10 +11,10 @@ export const JobOpeningCard = (props) => {
       />
       <Card.Body>
         <Card.Title as="h3" className="mb-4">
-          {props.item.title}
+          {jobOpening.title}
         </Card.Title>
         <Card.Text className="text-secondary text-wrap text-truncate" style={{ height: "7.5rem" }}>
-          {props.item.position}
+          {jobOpening.position}
         </Card.Text>
       </Card.Body>
       <Card.Footer className="text-center">
