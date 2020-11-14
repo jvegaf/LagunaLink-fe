@@ -1,8 +1,7 @@
 import api from "../API";
 
-
-export const SignUpService = ({ email, password, role }) => {
-  console.log(api.prototype);
+export function SignUpService({ email, password, role }) {
+  
   return api.post('/auth/signup', {
     email: email,
     password: password,
@@ -10,6 +9,7 @@ export const SignUpService = ({ email, password, role }) => {
   })
   .then(function (response) {
     console.log(response);
+    return response.status;
   })
   .catch(function (error) {
     console.log(error);

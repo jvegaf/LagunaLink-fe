@@ -7,8 +7,13 @@ export const SignUp = () => {
 
   const onSubmit = (data, e) => {
     console.log(data);
-    SignUpService({email: data.email, password: data.password, role: data.role})
-    // e.target.reset();
+    SignUpService({ email: data.email, password: data.password, role: data.role })
+      .then(status => {
+        if (status === 201) {
+          alert("Email de confirmacion enviado. Mira en tu buzon");
+          e.target.reset();
+        } 
+      })
   };
 
   return (
