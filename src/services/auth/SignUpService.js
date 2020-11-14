@@ -1,8 +1,9 @@
-import API from "../API";
+import api from "../API";
 
 
-export const SignUp = ({ email, password, role }) => {
-  return API.post('/auth/signup', {
+export const SignUpService = ({ email, password, role }) => {
+  console.log(api.prototype);
+  return api.post('/auth/signup', {
     email: email,
     password: password,
     role: role

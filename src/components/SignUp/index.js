@@ -1,12 +1,14 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import {SignUpService} from '../../services/auth/SignUpService';
 
 export const SignUp = () => {
   const { register, getValues, errors, handleSubmit } = useForm();
 
   const onSubmit = (data, e) => {
     console.log(data);
-    e.target.reset();
+    SignUpService({email: data.email, password: data.password, role: data.role})
+    // e.target.reset();
   };
 
   return (
