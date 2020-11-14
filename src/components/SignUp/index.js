@@ -16,9 +16,10 @@ export const SignUp = () => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group mt-5">
+          <label htmlFor="role">Tipo de Cuenta</label>
           <select name="role"
             ref={register({
-              required: "Debes elegir un tipo de cuenta",
+              required: { value: true , message: "Debes elegir un tipo de cuenta" },
               validate: value => value !== "DEFAULT_ROLE"
             })}
             className="custom-select">
@@ -26,9 +27,7 @@ export const SignUp = () => {
             <option value="ROLE_STUDENT">Estudiante</option>
             <option value="ROLE_COMPANY">Empresa</option>
           </select>
-          {errors.role && (
-            <p style={{ color: "red" }}>{errors.role.message}</p>
-          )}
+          {errors.role && (<span className="text-danger text-small d-block mb-2">{errors.role.message}</span>)}
         </div>
         <div className="form-group mt-5">
           <label htmlFor="email">Correo Electrónico</label>

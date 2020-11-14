@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import signIn from "./pages/signIn";
-import signUp from "./pages/signUp";
+import {signUp} from "./pages/signUp";
 import { main } from "./pages/main";
 import path from "path";
 import dotenv from "dotenv";
