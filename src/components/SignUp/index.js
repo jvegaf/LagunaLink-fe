@@ -19,15 +19,14 @@ export const SignUp = () => {
           <label htmlFor="role">Tipo de Cuenta</label>
           <select name="role"
             ref={register({
-              required: { value: true , message: "Debes elegir un tipo de cuenta" },
-              validate: value => value !== "DEFAULT_ROLE"
+              required: "Debes elegir entre Estudiante o Empresa" ,
             })}
             className="custom-select">
-            <option value="DEFAULT_ROLE">Elige el tipo de cuenta</option>
+            <option value="">Elige el tipo de cuenta</option>
             <option value="ROLE_STUDENT">Estudiante</option>
             <option value="ROLE_COMPANY">Empresa</option>
           </select>
-          {errors.role && (<span className="text-danger text-small d-block mb-2">{errors.role.message}</span>)}
+          {errors.role && (<p style={{ color: "red" }}>{errors.role.message}</p>)}
         </div>
         <div className="form-group mt-5">
           <label htmlFor="email">Correo Electrónico</label>
@@ -82,14 +81,19 @@ export const SignUp = () => {
           <div className="form-check">
             <input
               type="checkbox"
-              name="checkbox"
+              name="agreement"
               className="form-check-input"
-              id="remember"
+              ref={register({required: "Es necesaria la confirmacion"})}
             />
             <label className="form-check-label" htmlFor="remember">
               Acepto los terminos y condiciones
             </label>
           </div>
+          {errors.agreement && (
+            <p style={{ color: "red" }}>
+              {errors.agreement.message}
+            </p>
+          )}
         </div>
         <div className="form-group">
           <button type="submit" className="btn btn-primary w-100">
