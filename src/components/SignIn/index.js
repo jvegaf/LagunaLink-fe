@@ -1,59 +1,74 @@
-import React, { useState } from "react";
+import React from "react";
 import LLTitle from "../LLTitle";
-import LLinkLogo from "../LLinkLogo"
-import { Link } from "react-router-dom";
-
+import LLinkLogo from "../LLinkLogo";
+import { Link, useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { SignInService } from "../../services/auth/SignInService";
 
 export const SignIn = () => {
+  let history = useHistory();
+  const { register, errors, handleSubmit } = useForm();
 
-  const [data, setData] = useState({
-    email: "",
-    password: ""
-  });
-
-  const handleInputChange = (event) => {
-    setData({
-      ...data,
-      [event.target.name]: event.target.value,
-    });
+  const onSubmit = (data) => {
+    console.log(data);
+    SignInService({ email: data.email, password: data.password }).then(
+      (token) => {
+        window.sessionStorage.setItem("token", token);
+        window.sessionStorage.setItem("email", data.email);
+        history.push("/main");
+      }
+    );
   };
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-  }
 
   return (
     <div className="row col-md-5 m-auto">
       <div className="row col-md-12 justify-content-center mb-2">
-        <LLinkLogo size="70px"/>
+        <LLinkLogo size="70px" />
       </div>
       <div className="row mx-auto mb-4">
         <LLTitle />
       </div>
-      <form onSubmit={handleSubmit} className="col-md-12 mx-auto">
+      <form onSubmit={handleSubmit(onSubmit)} className="col-md-12 mx-auto">
         <div className="form-group">
           <input
             type="email"
+            name="email"
             className="form-control"
             placeholder="Correo Electronico"
-            onChange={handleInputChange}
+            ref={register({ required: "La dirección de correo es necesaria" })}
           />
+          {errors.email && (
+            <p style={{ color: "red" }}>{errors.email.message}</p>
+          )}
         </div>
         <div className="form-group">
           <input
             type="password"
+            name="password"
             className="form-control"
             placeholder="Contraseña"
-            onChange={handleInputChange}
+            ref={register({ required: "La contraseña es necesaria" })}
           />
+          {errors.password && (
+            <p style={{ color: "red" }}>{errors.password.message}</p>
+          )}
+        </div>
+        <div className="form-group">
+          <button type="submit" className="btn btn-primary w-100">
+            Entrar
+          </button>
         </div>
         <div className="form-group mt-4 mb-5">
-          <Link to="/reset" className="text-secondary text-center">¿ Olvidaste tu contraseña ?</Link>
+          <Link to="/reset" className="text-secondary text-center">
+            ¿ Olvidaste tu contraseña ?
+          </Link>
         </div>
         <div className="row justify-content-center mt-5">
-          <Link to="/signup" className="text-secondary">Registrarse</Link>
+          <Link to="/signup" className="text-secondary">
+            Registrarse
+          </Link>
         </div>
       </form>
     </div>
   );
-}
+};

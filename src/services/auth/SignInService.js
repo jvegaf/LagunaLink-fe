@@ -1,13 +1,15 @@
-import API from "../API";
+import api from "../API";
 
 
-export const SignIn = ({ email, password }) => {
-  return API.post('/auth/signin', {
+export function SignInService({ email, password }) {
+  
+  return api.post('/auth/signin', {
     email: email,
     password: password
   })
   .then(function (response) {
     console.log(response);
+    return response.data.access_token;
   })
   .catch(function (error) {
     console.log(error);

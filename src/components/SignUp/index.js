@@ -1,19 +1,25 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import {SignUpService} from '../../services/auth/SignUpService';
+import { useHistory } from "react-router-dom";
+import { SignUpService } from "../../services/auth/SignUpService";
 
 export const SignUp = () => {
+  let history = useHistory();
   const { register, getValues, errors, handleSubmit } = useForm();
 
   const onSubmit = (data, e) => {
     console.log(data);
-    SignUpService({ email: data.email, password: data.password, role: data.role })
-      .then(status => {
-        if (status === 201) {
-          alert("Email de confirmacion enviado. Mira en tu buzon");
-          e.target.reset();
-        } 
-      })
+    SignUpService({
+      email: data.email,
+      password: data.password,
+      role: data.role,
+    }).then((status) => {
+      if (status === 201) {
+        alert("Email de confirmacion enviado. Mira en tu buzon");
+        e.target.reset();
+        history.push("/login");
+      }
+    });
   };
 
   return (
@@ -24,16 +30,18 @@ export const SignUp = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group mt-5">
           <label htmlFor="role">Tipo de Cuenta</label>
-          <select name="role"
+          <select
+            name="role"
             ref={register({
-              required: "Debes elegir entre Estudiante o Empresa" ,
+              required: "Debes elegir entre Estudiante o Empresa",
             })}
-            className="custom-select">
+            className="custom-select"
+          >
             <option value="">Elige el tipo de cuenta</option>
             <option value="ROLE_STUDENT">Estudiante</option>
             <option value="ROLE_COMPANY">Empresa</option>
           </select>
-          {errors.role && (<p style={{ color: "red" }}>{errors.role.message}</p>)}
+          {errors.role && <p style={{ color: "red" }}>{errors.role.message}</p>}
         </div>
         <div className="form-group mt-5">
           <label htmlFor="email">Correo Electrónico</label>
@@ -90,16 +98,14 @@ export const SignUp = () => {
               type="checkbox"
               name="agreement"
               className="form-check-input"
-              ref={register({required: "Es necesaria la confirmacion"})}
+              ref={register({ required: "Es necesaria la confirmacion" })}
             />
             <label className="form-check-label" htmlFor="remember">
               Acepto los terminos y condiciones
             </label>
           </div>
           {errors.agreement && (
-            <p style={{ color: "red" }}>
-              {errors.agreement.message}
-            </p>
+            <p style={{ color: "red" }}>{errors.agreement.message}</p>
           )}
         </div>
         <div className="form-group">
