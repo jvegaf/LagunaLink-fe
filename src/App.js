@@ -9,6 +9,7 @@ import signIn from "./pages/signIn";
 import signUp from "./pages/signUp";
 import { main } from "./pages/main";
 import path from "path";
+import dotenv from "dotenv";
 
 import { UserContextProvider } from "./context/UserContext";
 

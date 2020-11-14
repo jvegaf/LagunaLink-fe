@@ -1,18 +1,34 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 
-export default function SignUp() {
+export const SignUp = () => {
+  const { register, getValues, errors, handleSubmit } = useForm();
+
+  const onSubmit = (data, e) => {
+    console.log(data);
+    e.target.reset();
+  };
+
   return (
     <div className="col-md-3 m-auto">
       <div className="row justify-content-center">
         <h1>Registro</h1>
       </div>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group mt-5">
-          <select className="custom-select">
-            <option defaultValue>Elige el tipo de cuenta</option>
-            <option value="1">Estudiante</option>
-            <option value="2">Empresa</option>
+          <select name="role"
+            ref={register({
+              required: "Debes elegir un tipo de cuenta",
+              validate: value => value !== "DEFAULT_ROLE"
+            })}
+            className="custom-select">
+            <option value="DEFAULT_ROLE">Elige el tipo de cuenta</option>
+            <option value="ROLE_STUDENT">Estudiante</option>
+            <option value="ROLE_COMPANY">Empresa</option>
           </select>
+          {errors.role && (
+            <p style={{ color: "red" }}>{errors.role.message}</p>
+          )}
         </div>
         <div className="form-group mt-5">
           <label htmlFor="email">Correo Electrónico</label>
@@ -20,10 +36,12 @@ export default function SignUp() {
             type="email"
             name="email"
             className="form-control"
-            id="email"
-            aria-describedby="emailHelp"
+            ref={register({ required: "La dirección de correo es necesaria" })}
             placeholder="Introduce tu dirección de correo electrónico"
           />
+          {errors.email && (
+            <p style={{ color: "red" }}>{errors.email.message}</p>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="password">Contraseña</label>
@@ -31,19 +49,35 @@ export default function SignUp() {
             type="password"
             name="password"
             className="form-control"
-            id="password"
-            placeholder="Introduce tu Contraseña"
+            ref={register({ required: "La contraseña es necesaria" })}
+            placeholder="Introduce tu contraseña"
           />
+          {errors.password && (
+            <p style={{ color: "red" }}>{errors.password.message}</p>
+          )}
         </div>
         <div className="form-group">
-          <label htmlFor="confirmpassword">Confirmación Contraseña</label>
+          <label htmlFor="passwordConfirmation">Confirmación Contraseña</label>
           <input
             type="password"
-            name="password2"
+            name="passwordConfirmation"
             className="form-control"
-            id="confirmpassword"
             placeholder="Vuelve a introducir tu contraseña"
+            ref={register({
+              required: "Por favor, vuelve a introducir tu contraseña ",
+              validate: {
+                matchesPreviousPassword: (value) => {
+                  const { password } = getValues();
+                  return password === value || "contraseñas no coinciden";
+                },
+              },
+            })}
           />
+          {errors.passwordConfirmation && (
+            <p style={{ color: "red" }}>
+              {errors.passwordConfirmation.message}
+            </p>
+          )}
         </div>
         <div className="form-group mb-5 mt-4">
           <div className="form-check">
@@ -66,4 +100,4 @@ export default function SignUp() {
       </form>
     </div>
   );
-}
+};

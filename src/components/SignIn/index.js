@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
 import LLTitle from "../LLTitle";
 import LLinkLogo from "../LLinkLogo"
+import { Link } from "react-router-dom";
 
 
 export const SignIn = () => {
@@ -48,10 +48,10 @@ export const SignIn = () => {
           />
         </div>
         <div className="form-group mt-4 mb-5">
-          <p className="text-secondary text-center">¿ Olvidaste tu contraseña ?</p>
+          <Link to="/reset" className="text-secondary text-center">¿ Olvidaste tu contraseña ?</Link>
         </div>
         <div className="row justify-content-center mt-5">
-          <Button variant="outline-primary">Registrarse</Button>
+          <Link to="/signup" className="text-secondary">Registrarse</Link>
         </div>
       </form>
     </div>
