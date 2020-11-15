@@ -7,7 +7,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import signIn from "./pages/signInPage";
 import {signUp} from "./pages/signUpPage";
-import { main } from "./pages/mainPage";
+import { MainPage } from "./pages/MainPage";
 import {register} from "./pages/registerPage";
 import path from "path";
 import dotenv from "dotenv";
@@ -39,7 +39,7 @@ function App() {
           <Route exact path="/signin" component={signIn} />
           <Route exact path="/signup" component={signUp} />
           <Route exact path="/register/:accountType" component={register} />
-          <Route exact path="/main" component={main} />
+          <Route exact path="/main" component={MainPage} />
         </Switch>
       </Router>
     </UserContextProvider>

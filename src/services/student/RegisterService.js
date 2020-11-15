@@ -1,8 +1,8 @@
 import api from "../API";
 
-export function RegisterService ({ accessToken, data }) {
+export function RegisterService ({ token, data }) {
   const config = {
-    headers: { Authorization: `Bearer ${accessToken}` },
+    headers: { Authorization: `Bearer ${token}` },
   };
 
   return api

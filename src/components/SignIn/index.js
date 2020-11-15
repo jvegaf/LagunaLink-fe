@@ -1,24 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
 import LLTitle from "../LLTitle";
 import LLinkLogo from "../LLinkLogo";
 import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { SignInService } from "../../services/auth/SignInService";
+import Context from "../../context/UserContext";
 
-export const SignIn = () => {
+export function SignIn() {
   let history = useHistory();
   const { register, errors, handleSubmit } = useForm();
+  const { setEmail, setToken } = useContext(Context);
 
   const onSubmit = (data) => {
     console.log(data);
     SignInService({ email: data.email, password: data.password }).then(
       (response) => {
         console.log(response);
-        window.sessionStorage.setItem("access_token", response.token);
-        window.sessionStorage.setItem("email", data.email);
-        if (response.status === 200) history.push("/main"); 
-        response.status === 230 ? history.push("/register/student") : history.push("/register/company")  
-      }
+        setToken(response.token);
+        setEmail(data.email);
+        if (response.status === 200) history.push("/main");
+        response.status === 230
+          ? history.push("/register/student")
+          : history.push("/register/company");
+      },
     );
   };
 
@@ -73,4 +77,4 @@ export const SignIn = () => {
       </form>
     </div>
   );
-};
+}

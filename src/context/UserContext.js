@@ -5,19 +5,24 @@ const Context = React.createContext({})
 
 export function UserContextProvider({children}) {
   const [token, setToken] = useState(
-    () => window.sessionStorage.getItem('token')
+    () => window.sessionStorage.getItem('access_token')
   )
 
   const [isSigned, setIsSigned] = useState(
-    // () => token === undefined ? false : true 
-    true
+    () => token === undefined ? false : true 
   );
+
+  const [email, setEmail] = useState(
+    () => window.sessionStorage.getItem('email')
+  )
 
   return <Context.Provider value={{
     token,
     setToken,
     isSigned,
-    setIsSigned
+    setIsSigned,
+    email,
+    setEmail
   }}>
     {children}
   </Context.Provider>
