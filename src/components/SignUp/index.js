@@ -17,7 +17,7 @@ export const SignUp = () => {
       if (status === 201) {
         alert("Email de confirmacion enviado. Mira en tu buzon");
         e.target.reset();
-        history.push("/singin");
+        history.push("/signin");
       }
 
       if (status === 430) {
