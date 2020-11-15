@@ -5,9 +5,10 @@ import {
   Switch,
 } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import signIn from "./pages/signIn";
-import {signUp} from "./pages/signUp";
-import { main } from "./pages/main";
+import signIn from "./pages/signInPage";
+import {signUp} from "./pages/signUpPage";
+import { main } from "./pages/mainPage";
+import {register} from "./pages/registerPage";
 import path from "path";
 import dotenv from "dotenv";
 
@@ -37,6 +38,7 @@ function App() {
           />
           <Route exact path="/signin" component={signIn} />
           <Route exact path="/signup" component={signUp} />
+          <Route exact path="/register/:accountType" component={register} />
           <Route exact path="/main" component={main} />
         </Switch>
       </Router>
