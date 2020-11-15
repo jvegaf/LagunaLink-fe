@@ -10,9 +10,10 @@ export const StudentRegister = () => {
   
   const onSubmit = (data) => {
     const accessToken = window.sessionStorage.getItem("access_token");
-    const status = RegisterService({ accessToken, data });
-    console.log(status);
-    if (status === 201) history.push('/main');
+    RegisterService({ accessToken, data }).then(status => {
+      if (status === 201) history.push('/main');
+    });
+>>>>>>> services
   };
 
   return (
