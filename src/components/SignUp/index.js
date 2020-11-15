@@ -17,8 +17,14 @@ export const SignUp = () => {
       if (status === 201) {
         alert("Email de confirmacion enviado. Mira en tu buzon");
         e.target.reset();
-        history.push("/login");
+        history.push("/singin");
       }
+
+      if (status === 430) {
+        alert("El Email ya estaba registrado. Ingresa en tu cuenta");
+        e.target.reset();
+      }
+      
     });
   };
 
