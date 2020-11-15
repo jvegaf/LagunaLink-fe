@@ -12,10 +12,11 @@ export const SignIn = () => {
   const onSubmit = (data) => {
     console.log(data);
     SignInService({ email: data.email, password: data.password }).then(
-      (token) => {
-        window.sessionStorage.setItem("token", token);
+      (response) => {
+        window.sessionStorage.setItem("token", response.token);
         window.sessionStorage.setItem("email", data.email);
-        history.push("/main");
+        if (response.status === 200) history.push("/main"); 
+        response.status === 230 ? history.push("/register/student") : history.push("/register/company")  
       }
     );
   };

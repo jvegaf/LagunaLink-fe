@@ -1,20 +1,12 @@
-import React, {useState} from 'react'
+import React from "react";
+import { useForm } from "react-hook-form";
 
 export const CompanyRegister = () => {
-  const [data, setData] = useState({
-    name: "",
-    description: "",
-    address: "",
-    postalCode: "",
-    region: "",
-    city: "",
-  });
+  const { register, errors, handleSubmit } = useForm();
 
-  const handleInputChange = (event) => {
-    setData({
-      ...data,
-      [event.target.name]: event.target.value,
-    });
+  const onSubmit = (data) => {
+    console.log(data);
+    // logica
   };
 
   return (
@@ -25,27 +17,25 @@ export const CompanyRegister = () => {
       <div className="row justify-content-center mt-3">
         <p>Completa el registro de tu cuenta</p>
       </div>
-      <form className="mt-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-5">
         <div className="form-group">
           <label htmlFor="name">Nombre</label>
           <input
             type="text"
             name="name"
             className="form-control"
-            id="name"
+            ref={register({ required: "Es necesario" })}
             placeholder="Nombre"
-            onChange={handleInputChange}
           />
         </div>
         <div className="form-group">
           <label for="description">Descripcion</label>
           <textarea
-              class="form-control"
-              id="description"
-              name="description"
-              rows="3"
-              onChange={handleInputChange}
-            ></textarea>
+            class="form-control"
+            ref={register({ required: "Es necesario" })}
+            name="description"
+            rows="3"
+          ></textarea>
         </div>
         <div className="form-group">
           <label htmlFor="address">Direccion</label>
@@ -53,50 +43,46 @@ export const CompanyRegister = () => {
             type="text"
             name="address"
             className="form-control"
-            id="address"
+            ref={register({ required: "Es necesario" })}
             placeholder="Direccion"
-            onChange={handleInputChange}
           />
         </div>
         <div className="row">
           <div className="col-4">
-          <div className="form-group">
-          <label htmlFor="postalCode">Codigo Postal</label>
-          <input
-            type="text"
-            name="postalCode"
-            className="form-control"
-            id="postalCode"
-            placeholder="Codigo Postal"
-            onChange={handleInputChange}
-          />
-        </div>
+            <div className="form-group">
+              <label htmlFor="postalCode">Codigo Postal</label>
+              <input
+                type="text"
+                name="postalCode"
+                className="form-control"
+                ref={register({ required: "Es necesario" })}
+                placeholder="Codigo Postal"
+              />
+            </div>
           </div>
           <div className="col-4">
-          <div className="form-group">
-          <label htmlFor="region">Provincia</label>
-          <input
-            type="text"
-            name="region"
-            className="form-control"
-            id="region"
-            placeholder="Provincia"
-            onChange={handleInputChange}
-          />
-        </div>
+            <div className="form-group">
+              <label htmlFor="region">Provincia</label>
+              <input
+                type="text"
+                name="region"
+                className="form-control"
+                ref={register({ required: "Es necesario" })}
+                placeholder="Provincia"
+              />
+            </div>
           </div>
           <div className="col-4">
-          <div className="form-group">
-          <label htmlFor="city">Poblacion</label>
-          <input
-            type="text"
-            name="city"
-            className="form-control"
-            id="city"
-            placeholder="Poblacion"
-            onChange={handleInputChange}
-          />
-        </div>
+            <div className="form-group">
+              <label htmlFor="city">Poblacion</label>
+              <input
+                type="text"
+                name="city"
+                className="form-control"
+                ref={register({ required: "Es necesario" })}
+                placeholder="Poblacion"
+              />
+            </div>
           </div>
         </div>
         <div className="form-group mt-5">
@@ -106,5 +92,5 @@ export const CompanyRegister = () => {
         </div>
       </form>
     </div>
-  )
-}
+  );
+};

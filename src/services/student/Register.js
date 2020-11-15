@@ -1,4 +1,4 @@
-import API from "../API";
+import api from "../API";
 
 
 export const Register = ({
@@ -6,9 +6,9 @@ export const Register = ({
   student
 }) => {
   
-  API.defaults.headers.common['Authorization'] = accessToken;
+  api.defaults.headers.common['Authorization'] = accessToken;
   
-  return API.post('/students', {student})
+  return api.post('/students', {student})
   .then(function (response) {
     console.log(response);
   })

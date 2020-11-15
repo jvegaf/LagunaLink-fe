@@ -9,7 +9,10 @@ export function SignInService({ email, password }) {
   })
   .then(function (response) {
     console.log(response);
-    return response.data.access_token;
+    return {
+      status: response.status,
+      token: response.data.access_token
+    };
   })
   .catch(function (error) {
     console.log(error);

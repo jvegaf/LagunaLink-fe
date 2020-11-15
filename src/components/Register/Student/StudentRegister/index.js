@@ -1,19 +1,12 @@
-import React, { useState } from "react";
-
+import React from "react";
+import { useForm } from "react-hook-form";
 
 export const StudentRegister = () => {
+  const { register, errors, handleSubmit } = useForm();
 
-  const [data, setData] = useState({
-    name: "",
-    surname: "",
-    lastname: "",
-  });
-
-  const handleInputChange = (event) => {
-    setData({
-      ...data,
-      [event.target.name]: event.target.value,
-    });
+  const onSubmit = (data) => {
+    console.log(data);
+    // logica
   };
 
   return (
@@ -24,17 +17,17 @@ export const StudentRegister = () => {
       <div className="row justify-content-center mt-3">
         <p>Completa el registro de tu cuenta</p>
       </div>
-      <form className="mt-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-5">
         <div className="form-group">
           <label htmlFor="name">Nombre</label>
           <input
             type="text"
             name="name"
             className="form-control"
-            id="name"
+            ref={register({ required: "Es necesario" })}
             placeholder="Nombre"
-            onChange={handleInputChange}
           />
+          {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="surname">Primer Apellido</label>
@@ -42,10 +35,12 @@ export const StudentRegister = () => {
             type="text"
             name="surname"
             className="form-control"
-            id="surname"
+            ref={register({ required: "Es necesario" })}
             placeholder="Apellido 1"
-            onChange={handleInputChange}
           />
+          {errors.surname && (
+            <p style={{ color: "red" }}>{errors.surname.message}</p>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="lastname">Segundo Apellido</label>
@@ -53,17 +48,19 @@ export const StudentRegister = () => {
             type="text"
             name="lastname"
             className="form-control"
-            id="lastname"
+            ref={register({ required: "Es necesario" })}
             placeholder="Apellido 2"
-            onChange={handleInputChange}
           />
+          {errors.lastname && (
+            <p style={{ color: "red" }}>{errors.lastname.message}</p>
+          )}
         </div>
         <div className="form-group mt-5">
           <button type="submit" className="btn btn-primary w-100">
-            Siguiente
+            Completar Registro
           </button>
         </div>
       </form>
     </div>
   );
-}
+};
