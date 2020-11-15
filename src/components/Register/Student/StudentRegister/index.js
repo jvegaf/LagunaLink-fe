@@ -1,12 +1,18 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import { RegisterService } from "../../../../services/student/RegisterService";
 
 export const StudentRegister = () => {
   const { register, errors, handleSubmit } = useForm();
 
+  const history = useHistory();
+  
   const onSubmit = (data) => {
-    console.log(data);
-    // logica
+    const accessToken = window.sessionStorage.getItem("access_token");
+    RegisterService({ accessToken, data }).then(status => {
+      if (status === 201) history.push('/main');
+    });
   };
 
   return (

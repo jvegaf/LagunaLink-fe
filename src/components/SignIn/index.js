@@ -13,7 +13,8 @@ export const SignIn = () => {
     console.log(data);
     SignInService({ email: data.email, password: data.password }).then(
       (response) => {
-        window.sessionStorage.setItem("token", response.token);
+        console.log(response);
+        window.sessionStorage.setItem("access_token", response.token);
         window.sessionStorage.setItem("email", data.email);
         if (response.status === 200) history.push("/main"); 
         response.status === 230 ? history.push("/register/student") : history.push("/register/company")  
