@@ -2,16 +2,17 @@ import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import Context from "../../../../context/UserContext";
-import { RegisterService } from "../../../../services/student/RegisterService";
+import { RegisterService } from "../../../../services/register/RegisterService";
 
 export const StudentRegister = () => {
   const token = useContext(Context).token;
+  const path = "/students";
   const { register, errors, handleSubmit } = useForm();
 
   const history = useHistory();
 
   const onSubmit = (data) => {
-    RegisterService({ token, data }).then((status) => {
+    RegisterService({ token, data, path }).then((status) => {
       if (status === 201) history.push("/main");
     });
   };

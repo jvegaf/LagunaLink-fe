@@ -1,12 +1,12 @@
 import api from "../API";
 
-export function RegisterService ({ token, data }) {
+export function RegisterService({ token, data, path }) {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
 
   return api
-    .post("/students", data, config)
+    .post(path, data, config)
     .then(function (response) {
       console.log(response);
       return response.status;
@@ -15,4 +15,4 @@ export function RegisterService ({ token, data }) {
       console.log(error);
       return error.response.status;
     });
-};
+}

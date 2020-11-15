@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import Context from "../../../../context/UserContext";
+import { RegisterService } from "../../../../services/register/RegisterService";
 
 export const CompanyRegister = () => {
+  const token = useContext(Context).token;
+  const path = "/companies";
   const { register, errors, handleSubmit } = useForm();
+  const history = useHistory();
 
   const onSubmit = (data) => {
-    console.log(data);
-    // logica
+    RegisterService({ token, data, path }).then((status) => {
+      if (status === 201) history.push("/main");
+    });
   };
-
   return (
     <div className="col-3 m-auto">
       <div className="row justify-content-center">
@@ -27,6 +33,7 @@ export const CompanyRegister = () => {
             ref={register({ required: "Es necesario" })}
             placeholder="Nombre"
           />
+          {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
         </div>
         <div className="form-group">
           <label for="description">Descripcion</label>
@@ -36,6 +43,7 @@ export const CompanyRegister = () => {
             name="description"
             rows="3"
           ></textarea>
+          {errors.description && <p style={{ color: "red" }}>{errors.description.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="address">Direccion</label>
@@ -46,6 +54,7 @@ export const CompanyRegister = () => {
             ref={register({ required: "Es necesario" })}
             placeholder="Direccion"
           />
+          {errors.address && <p style={{ color: "red" }}>{errors.address.message}</p>}
         </div>
         <div className="row">
           <div className="col-4">
@@ -59,6 +68,7 @@ export const CompanyRegister = () => {
                 placeholder="Codigo Postal"
               />
             </div>
+            {errors.postalCode && <p style={{ color: "red" }}>{errors.postalCode.message}</p>}
           </div>
           <div className="col-4">
             <div className="form-group">
@@ -70,6 +80,7 @@ export const CompanyRegister = () => {
                 ref={register({ required: "Es necesario" })}
                 placeholder="Provincia"
               />
+              {errors.region && <p style={{ color: "red" }}>{errors.region.message}</p>}
             </div>
           </div>
           <div className="col-4">
@@ -82,6 +93,7 @@ export const CompanyRegister = () => {
                 ref={register({ required: "Es necesario" })}
                 placeholder="Poblacion"
               />
+              {errors.city && <p style={{ color: "red" }}>{errors.city.message}</p>}
             </div>
           </div>
         </div>
