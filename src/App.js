@@ -8,7 +8,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import signIn from "./pages/signInPage";
 import {signUp} from "./pages/signUpPage";
 import { MainPage } from "./pages/MainPage";
-import {register} from "./pages/registerPage";
+import { register } from "./pages/registerPage";
+import { confirmedPage } from "./pages/confirmedPage";
 import path from "path";
 import dotenv from "dotenv";
 
@@ -40,6 +41,7 @@ function App() {
           <Route exact path="/signup" component={signUp} />
           <Route exact path="/register/:accountType" component={register} />
           <Route exact path="/main" component={MainPage} />
+          <Route exact path="/auth/confirmed" component={confirmedPage} />
         </Switch>
       </Router>
     </UserContextProvider>
