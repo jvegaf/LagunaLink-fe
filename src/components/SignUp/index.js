@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { SignUpService } from "../../services/auth/SignUpService";
+import { ModalView } from "../ModalView";
 
 export const SignUp = () => {
   let history = useHistory();
   const { register, getValues, errors, handleSubmit } = useForm();
-
+  const [modalShow, setModalShow] = useState({
+    show: false,
+    message: ""
+  });
   const onSubmit = (data, e) => {
     console.log(data);
     SignUpService({
@@ -15,14 +19,11 @@ export const SignUp = () => {
       role: data.role,
     }).then((status) => {
       if (status === 201) {
-        alert("Email de confirmacion enviado. Mira en tu buzon");
-        e.target.reset();
-        history.push("/signin");
+        setModalShow({ show: true, message: "Email de confirmacion enviado. Mira en tu buzon"});
       }
 
       if (status === 430) {
-        alert("El Email ya estaba registrado. Ingresa en tu cuenta");
-        e.target.reset();
+        setModalShow({ show: true, message: "El Email ya estaba registrado. Ingresa en tu cuenta"});
       }
       
     });
@@ -30,6 +31,8 @@ export const SignUp = () => {
 
   return (
     <div className="col-md-3 m-auto">
+      <ModalView show={modalShow.show} message={modalShow.message} onHide={() => 
+        history.push("/signin")}/>
       <div className="row justify-content-center">
         <h1>Registro</h1>
       </div>
