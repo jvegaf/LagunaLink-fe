@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap');
+
+body {
+  color: #47525E;
+  font-family: 'Lato', sans-serif;
+}
+
 .center {
   padding: 0;
   margin: 0;
@@ -5,4 +12,8 @@
   justify-content: center;
   align-items: center;
   height:100vh;  
+}
+
+.h400 {
+  height: 400px;
 }

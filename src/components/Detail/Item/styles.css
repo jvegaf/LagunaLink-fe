@@ -1,0 +1,17 @@
+.item-title {
+  color: #969FAA;
+  font-family: Lato;
+  font-size: 18px;
+  line-height: 23px;
+  width: 100%;
+  text-align: left;
+}
+
+.item-content {
+  color: #47525E;
+  font-family: Lato;
+  font-size: 20px;
+  line-height: 33px;
+  width: 100%;
+  text-align: left;
+}
