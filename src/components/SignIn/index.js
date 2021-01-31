@@ -3,36 +3,50 @@ import LLTitle from "../LLTitle";
 import LLinkLogo from "../LLinkLogo";
 import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { ModalView } from "../ModalView"
 import { SignInService } from "../../services/auth/SignInService";
 import Context from "../../context/UserContext";
 
 export function SignIn() {
   let history = useHistory();
   const { register, errors, handleSubmit } = useForm();
+  const [modalShow, setModalShow] = useState({
+    show: false,
+    message: ""
+  });
   const { setEmail, setToken } = useContext(Context);
-  const [ authError, setAuthError ] = useState(false);
+  const [authError, setAuthError] = useState(false);
 
   const onSubmit = (data) => {
     console.log(data);
-    SignInService({ email: data.email, password: data.password }).then(
-      (response) => {
-        console.log(response);
-        if (response === undefined) {
-          setAuthError(true);
+    SignInService({ email: data.email, password: data.password })
+      .then(
+        (response) => {
+          if (response === undefined) {
+            return;
+          }
+          console.log(response);
+          setToken(response.token);
+          setEmail(data.email);
+          if (response.status === 200) history.push("/main");
+          response.status === 230
+            ? history.push("/register/student")
+            : history.push("/register/company");
+        },
+      )
+      .catch(e => {
+        if (e.response.status === 450) {
+          setModalShow({ show: true, message: "Necesitas verificar tu cuenta antes de ingresar." });
           return;
         }
-        setToken(response.token);
-        setEmail(data.email);
-        if (response.status === 200) history.push("/main");
-        response.status === 230
-          ? history.push("/register/student")
-          : history.push("/register/company");
-      },
-    );
+        setAuthError(true);
+      });
   };
 
   return (
     <div className="row col-md-5 m-auto">
+      <ModalView show={modalShow.show} message={modalShow.message} onHide={() =>
+        setModalShow(false, "")} />
       <div className="row col-md-12 justify-content-center mb-2">
         <LLinkLogo size="70px" />
       </div>
