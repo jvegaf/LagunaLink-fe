@@ -1,52 +1,52 @@
-import React, { useContext, useState } from "react";
-import LLTitle from "../LLTitle";
-import LLinkLogo from "../LLinkLogo";
-import { Link, useHistory } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { ModalView } from "../ModalView"
-import { SignInService } from "../../services/auth/SignInService";
-import Context from "../../context/UserContext";
+import React, { useContext, useState } from 'react'
+import LLTitle from '../LLTitle'
+import LLinkLogo from '../LLinkLogo'
+import { Link, useHistory } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { ModalView } from '../ModalView'
+import { SignInService } from '../../services/auth/SignInService'
+import Context from '../../context/UserContext'
 
-export function SignIn() {
-  let history = useHistory();
-  const { register, errors, handleSubmit } = useForm();
+export function SignIn () {
+  const history = useHistory()
+  const { register, errors, handleSubmit } = useForm()
   const [modalShow, setModalShow] = useState({
     show: false,
-    message: ""
-  });
-  const { setEmail, setToken } = useContext(Context);
-  const [authError, setAuthError] = useState(false);
+    message: ''
+  })
+  const { setEmail, setToken } = useContext(Context)
+  const [authError, setAuthError] = useState(false)
 
   const onSubmit = (data) => {
-    console.log(data);
+    console.log(data)
     SignInService({ email: data.email, password: data.password })
       .then(
         (response) => {
           if (response === undefined) {
-            return;
+            return
           }
-          console.log(response);
-          setToken(response.token);
-          setEmail(data.email);
-          if (response.status === 200) history.push("/main");
+          console.log(response)
+          setToken(response.token)
+          setEmail(data.email)
+          if (response.status === 200) history.push('/main')
           response.status === 230
-            ? history.push("/register/student")
-            : history.push("/register/company");
-        },
+            ? history.push('/register/student')
+            : history.push('/register/company')
+        }
       )
       .catch(e => {
         if (e.response.status === 450) {
-          setModalShow({ show: true, message: "Necesitas verificar tu cuenta antes de ingresar." });
-          return;
+          setModalShow({ show: true, message: 'Necesitas verificar tu cuenta antes de ingresar.' })
+          return
         }
-        setAuthError(true);
-      });
-  };
+        setAuthError(true)
+      })
+  }
 
   return (
     <div className="row col-md-5 m-auto">
       <ModalView show={modalShow.show} message={modalShow.message} onHide={() =>
-        setModalShow(false, "")} />
+        setModalShow(false, '')} />
       <div className="row col-md-12 justify-content-center mb-2">
         <LLinkLogo size="70px" />
       </div>
@@ -54,7 +54,7 @@ export function SignIn() {
         <LLTitle />
       </div>
       <div className="row mx-auto mb-4">
-        {authError && <p style={{ color: "red" }}>Correo o Contraseña erroneos</p>}
+        {authError && <p style={{ color: 'red' }}>Correo o Contraseña erroneos</p>}
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="col-md-12 mx-auto">
         <div className="form-group">
@@ -63,10 +63,10 @@ export function SignIn() {
             name="email"
             className="form-control"
             placeholder="Correo Electronico"
-            ref={register({ required: "La dirección de correo es necesaria" })}
+            ref={register({ required: 'La dirección de correo es necesaria' })}
           />
           {errors.email && (
-            <p style={{ color: "red" }}>{errors.email.message}</p>
+            <p style={{ color: 'red' }}>{errors.email.message}</p>
           )}
         </div>
         <div className="form-group">
@@ -75,10 +75,10 @@ export function SignIn() {
             name="password"
             className="form-control"
             placeholder="Contraseña"
-            ref={register({ required: "La contraseña es necesaria" })}
+            ref={register({ required: 'La contraseña es necesaria' })}
           />
           {errors.password && (
-            <p style={{ color: "red" }}>{errors.password.message}</p>
+            <p style={{ color: 'red' }}>{errors.password.message}</p>
           )}
         </div>
         <div className="form-group">
@@ -98,5 +98,5 @@ export function SignIn() {
         </div>
       </form>
     </div>
-  );
+  )
 }

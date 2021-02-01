@@ -1,7 +1,6 @@
-import React, {useState} from "react";
+import React, { useState } from 'react'
 
 export const JobExpRegister = () => {
-
   const [data, setData] = useState({
     company: '',
     position: '',
@@ -13,9 +12,9 @@ export const JobExpRegister = () => {
   const handleInputChange = (event) => {
     setData({
       ...data,
-      [event.target.name]: event.target.value,
-    });
-  };
+      [event.target.name]: event.target.value
+    })
+  }
 
   return (
     <div className="col-3 m-auto">
@@ -48,10 +47,10 @@ export const JobExpRegister = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div class="form-group">
-          <label for="responsibilities">Responsabilidades</label>
+        <div className="form-group">
+          <label htmlFor="responsibilities">Responsabilidades</label>
           <textarea
-            class="form-control"
+            className="form-control"
             id="responsibilities"
             name="responsibilities"
             rows="3"
@@ -90,5 +89,5 @@ export const JobExpRegister = () => {
         <button className="btn btn-outline-primary">Agregar otra experiencia de trabajo</button>
       </div>
     </div>
-  );
-};
+  )
+}

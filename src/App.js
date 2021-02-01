@@ -1,26 +1,26 @@
+/* eslint-disable react/react-in-jsx-scope */
 import {
   BrowserRouter as Router,
   Redirect,
   Route,
-  Switch,
-} from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import signIn from "./pages/signInPage";
-import {signUp} from "./pages/signUpPage";
-import { MainPage } from "./pages/MainPage";
-import { register } from "./pages/registerPage";
-import { confirmedPage } from "./pages/confirmedPage";
-import path from "path";
-import dotenv from "dotenv";
+  Switch
+} from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import signIn from './pages/signInPage'
+import { signUp } from './pages/signUpPage'
+import { MainPage } from './pages/MainPage'
+import { register } from './pages/registerPage'
+import { confirmedPage } from './pages/confirmedPage'
+import path from 'path'
+import dotenv from 'dotenv'
 
-import { UserContextProvider } from "./context/UserContext";
+import { UserContextProvider } from './context/UserContext'
 
-function App() {
-
-  dotenv.config();
-  const defaultEnv = "local";
-  const envPath = path.resolve(process.cwd(), `.env.${defaultEnv}`);
-  dotenv.config({ path: envPath });
+function App () {
+  dotenv.config()
+  const defaultEnv = 'local'
+  const envPath = path.resolve(process.cwd(), `.env.${defaultEnv}`)
+  dotenv.config({ path: envPath })
 
   return (
     <UserContextProvider>
@@ -30,11 +30,13 @@ function App() {
             exact
             path="/"
             render={() =>
-              UserContextProvider.isSigned ? (
+              UserContextProvider.isSigned
+                ? (
                 <Redirect to="/main" />
-              ) : (
+                  )
+                : (
                 <Redirect to="/signin" />
-              )
+                  )
             }
           />
           <Route exact path="/signin" component={signIn} />
@@ -45,7 +47,7 @@ function App() {
         </Switch>
       </Router>
     </UserContextProvider>
-  );
+  )
 }
 
-export default App;
+export default App

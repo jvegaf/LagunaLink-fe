@@ -1,31 +1,39 @@
 import React, { useState } from 'react'
 
-
 const Context = React.createContext({})
 
-export function UserContextProvider({children}) {
+export function UserContextProvider ({ children }) {
   const [token, setToken] = useState(
     () => window.sessionStorage.getItem('access_token')
   )
 
   const [isSigned, setIsSigned] = useState(
-    () => token === undefined ? false : true 
-  );
+    () => (token !== undefined)
+  )
 
   const [email, setEmail] = useState(
     () => window.sessionStorage.getItem('email')
   )
 
-  return <Context.Provider value={{
-    token,
-    setToken,
-    isSigned,
-    setIsSigned,
-    email,
-    setEmail
-  }}>
-    {children}
-  </Context.Provider>
+  const [userId, setUserId] = useState(
+    () => window.sessionStorage.getItem('userId')
+  )
+
+  return (
+    <Context.Provider value={{
+      token,
+      setToken,
+      isSigned,
+      setIsSigned,
+      email,
+      setEmail,
+      userId,
+      setUserId
+    }}
+    >
+      {children}
+    </Context.Provider>
+  )
 }
 
 export default Context

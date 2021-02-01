@@ -1,15 +1,13 @@
-import API from "../API";
+import API from '../API'
 
+export const All = ({ accessToken }) => {
+  API.defaults.headers.common.Authorization = accessToken
 
-export const All = ({accessToken}) => {
-  
-  API.defaults.headers.common['Authorization'] = accessToken;
-  
   return API.get('/job_openings')
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+    .then(function (response) {
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
 }

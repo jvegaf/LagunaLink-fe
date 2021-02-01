@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "../__shared__/styles.css";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import '../__shared__/styles.css'
 
 export const confirmedPage = () => {
   return (
@@ -22,5 +22,5 @@ export const confirmedPage = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

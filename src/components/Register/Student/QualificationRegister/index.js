@@ -1,20 +1,19 @@
-import React, {useState} from "react";
+import React, { useState } from 'react'
 
 export const QualificationRegister = () => {
-  
   const [data, setData] = useState({
-    title: "",
-    start_date: "",
-    end_date: "",
-  });
+    title: '',
+    start_date: '',
+    end_date: ''
+  })
 
   const handleInputChange = (event) => {
     setData({
       ...data,
-      [event.target.name]: event.target.value,
-    });
-  };
-  
+      [event.target.name]: event.target.value
+    })
+  }
+
   return (
     <div className="col-3 m-auto">
       <div className="row justify-content-center">
@@ -64,5 +63,5 @@ export const QualificationRegister = () => {
         </div>
       </form>
     </div>
-  );
+  )
 }

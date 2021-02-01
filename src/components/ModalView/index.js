@@ -1,10 +1,8 @@
-import { Button, Modal } from 'react-bootstrap';
-import { FcInfo } from "react-icons/fc";
-import React from 'react';
+import { Button, Modal } from 'react-bootstrap'
+import { FcInfo } from 'react-icons/fc'
+import React from 'react'
 
-
-export const ModalView  = (props) => {
-  
+export const ModalView = (props) => {
   return (
     <Modal
       {...props}
@@ -15,7 +13,7 @@ export const ModalView  = (props) => {
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
         <FcInfo />
-          Info 
+          Info
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -25,5 +23,5 @@ export const ModalView  = (props) => {
         <Button onClick={props.onHide}>Cerrar</Button>
       </Modal.Footer>
     </Modal>
-  );
+  )
 }

@@ -1,21 +1,21 @@
-import React, { useContext } from "react";
-import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
-import Context from "../../../../context/UserContext";
-import { RegisterService } from "../../../../services/register/RegisterService";
+import React, { useContext } from 'react'
+import { useForm } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
+import Context from '../../../../context/UserContext'
+import { RegisterService } from '../../../../services/register/RegisterService'
 
 export const StudentRegister = () => {
-  const token = useContext(Context).token;
-  const path = "/students";
-  const { register, errors, handleSubmit } = useForm();
+  const token = useContext(Context).token
+  const path = '/students'
+  const { register, errors, handleSubmit } = useForm()
 
-  const history = useHistory();
+  const history = useHistory()
 
   const onSubmit = (data) => {
     RegisterService({ token, data, path }).then((status) => {
-      if (status === 201) history.push("/main");
-    });
-  };
+      if (status === 201) history.push('/main')
+    })
+  }
 
   return (
     <div className="col-3 m-auto">
@@ -32,10 +32,10 @@ export const StudentRegister = () => {
             type="text"
             name="name"
             className="form-control"
-            ref={register({ required: "Es necesario" })}
+            ref={register({ required: 'Es necesario' })}
             placeholder="Nombre"
           />
-          {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
+          {errors.name && <p style={{ color: 'red' }}>{errors.name.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="surname">Primer Apellido</label>
@@ -43,11 +43,11 @@ export const StudentRegister = () => {
             type="text"
             name="surname"
             className="form-control"
-            ref={register({ required: "Es necesario" })}
+            ref={register({ required: 'Es necesario' })}
             placeholder="Apellido 1"
           />
           {errors.surname && (
-            <p style={{ color: "red" }}>{errors.surname.message}</p>
+            <p style={{ color: 'red' }}>{errors.surname.message}</p>
           )}
         </div>
         <div className="form-group">
@@ -56,11 +56,11 @@ export const StudentRegister = () => {
             type="text"
             name="lastname"
             className="form-control"
-            ref={register({ required: "Es necesario" })}
+            ref={register({ required: 'Es necesario' })}
             placeholder="Apellido 2"
           />
           {errors.lastname && (
-            <p style={{ color: "red" }}>{errors.lastname.message}</p>
+            <p style={{ color: 'red' }}>{errors.lastname.message}</p>
           )}
         </div>
         <div className="form-group mt-5">
@@ -70,5 +70,5 @@ export const StudentRegister = () => {
         </div>
       </form>
     </div>
-  );
-};
+  )
+}

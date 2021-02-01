@@ -1,17 +1,17 @@
-import api from "../API";
+import api from '../API'
 
-export function SignUpService({ email, password, role }) {
+export function SignUpService ({ email, password, role }) {
   return api
-    .post("/auth/signup", {
+    .post('/auth/signup', {
       email: email,
       password: password,
-      role: role,
+      role: role
     })
     .then(function (response) {
-      console.log(response);
-      return response.status;
+      console.log(response)
+      return response.status
     })
     .catch(function (error) {
-      return error.response.status;
-    });
+      return error.response.status
+    })
 }

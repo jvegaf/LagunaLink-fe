@@ -1,7 +1,7 @@
 import React from 'react'
-import './styles.css';
+import './styles.css'
 
-export const DetailItem = ({item}) => {
+export const DetailItem = ({ item }) => {
   return (
     <div className="flex-column">
       <p className="item-title">{item.title}</p>

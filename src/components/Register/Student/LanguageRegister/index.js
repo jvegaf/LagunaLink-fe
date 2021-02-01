@@ -1,26 +1,26 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import StarRatings from 'react-star-ratings'
 
 export const LanguageRegister = () => {
   const [data, setData] = useState({
-    language: "",
+    language: '',
     speak_level: 0,
-    write_level: 0,
-  });
+    write_level: 0
+  })
 
   const handleInputChange = (event) => {
     setData({
       ...data,
-      [event.target.name]: event.target.value,
-    });
-  };
+      [event.target.name]: event.target.value
+    })
+  }
 
   const handleRatingChange = (rating, name) => {
     setData({
       ...data,
       [name]: rating
-    });
-  };
+    })
+  }
 
   return (
     <div className="col-3 m-auto p-0">
@@ -85,5 +85,5 @@ export const LanguageRegister = () => {
         <button className="btn btn-outline-primary w-50">Agregar otro idioma</button>
       </div>
     </div>
-  );
-};
+  )
+}
