@@ -4,8 +4,7 @@ import LLinkLogo from '../LLinkLogo'
 import { Link, useHistory } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { ModalView } from '../ModalView'
-import { SignInService } from '../../services/auth/SignInService'
-import Context from '../../context/UserContext'
+import { useUser } from './../../hooks/useUser'
 
 export function SignIn () {
   const history = useHistory()
@@ -14,34 +13,19 @@ export function SignIn () {
     show: false,
     message: ''
   })
-  const { setEmail, setToken } = useContext(Context)
+
+  const { isSigned, signIn, statusError, setStatusError } = useUser()
+
+  const [] = useUser
   const [authError, setAuthError] = useState(false)
 
   const onSubmit = (data) => {
-    console.log(data)
-    SignInService({ email: data.email, password: data.password })
-      .then(
-        (response) => {
-          if (response === undefined) {
-            return
-          }
-          console.log(response)
-          setToken(response.token)
-          setEmail(data.email)
-          if (response.status === 200) history.push('/main')
-          response.status === 230
-            ? history.push('/register/student')
-            : history.push('/register/company')
-        }
-      )
-      .catch(e => {
-        if (e.response.status === 450) {
-          setModalShow({ show: true, message: 'Necesitas verificar tu cuenta antes de ingresar.' })
-          return
-        }
-        setAuthError(true)
-      })
+    signIn(data.email, data.password)
   }
+
+  useEffect(() => {
+    if(isSigned) 
+  }, [input])
 
   return (
     <div className="row col-md-5 m-auto">

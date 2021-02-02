@@ -2,7 +2,9 @@ import React from 'react'
 import { Button, Navbar } from 'react-bootstrap'
 import LLinkLogo from '../LLinkLogo'
 
-export const Header = (props) => {
+export const Header = () => {
+  const { email } = useContext(Context)
+
   return (
     <div>
       <Navbar bg="dark" variant="dark">

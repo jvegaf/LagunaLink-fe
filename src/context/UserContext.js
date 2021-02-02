@@ -7,10 +7,6 @@ export function UserContextProvider ({ children }) {
     () => window.sessionStorage.getItem('access_token')
   )
 
-  const [isSigned, setIsSigned] = useState(
-    () => (token !== undefined)
-  )
-
   const [email, setEmail] = useState(
     () => window.sessionStorage.getItem('email')
   )
@@ -23,8 +19,6 @@ export function UserContextProvider ({ children }) {
     <Context.Provider value={{
       token,
       setToken,
-      isSigned,
-      setIsSigned,
       email,
       setEmail,
       userId,
