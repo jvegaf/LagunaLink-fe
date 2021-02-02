@@ -1,6 +1,6 @@
 import React from 'react'
-import { SignIn } from '../../components/SignIn'
 import './signIn.css'
+import { SignInComponent } from './../../components/SignIn/index'
 
 export default function signIn () {
   return (
@@ -9,7 +9,7 @@ export default function signIn () {
         <div className="handshake-bg"></div>
       </div>
       <div className="col-md-6 p-0 align-self-center">
-        <SignIn />
+        <SignInComponent />
       </div>
     </div>
   )

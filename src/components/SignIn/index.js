@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import LLTitle from '../LLTitle'
 import LLinkLogo from '../LLinkLogo'
 import { Link, useHistory } from 'react-router-dom'
@@ -15,11 +15,7 @@ export function SignInComponent () {
   })
   const [authError, setAuthError] = useState(false)
 
-  const { signIn, status, setStatus } = useUser()
-
-  const onSubmit = (data) => {
-    signIn(data.email, data.password)
-  }
+  const { signInReq, status, resetStatus } = useUser()
 
   useEffect(() => {
     switch (status) {
@@ -40,14 +36,19 @@ export function SignInComponent () {
         break
 
       default:
+        setModalShow(false, '')
         break
     }
   }, [history, status, setAuthError, setModalShow])
 
+  const onSubmit = (data) => {
+    signInReq({ email: data.email, password: data.password })
+  }
+
   return (
     <div className="row col-md-5 m-auto">
       <ModalView show={modalShow.show} message={modalShow.message} onHide={() =>
-        setModalShow(false, '') && setStatus(0) } />
+        resetStatus() } />
       <div className="row col-md-12 justify-content-center mb-2">
         <LLinkLogo size="70px" />
       </div>

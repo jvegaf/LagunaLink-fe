@@ -1,11 +1,11 @@
 import { useCallback, useContext } from 'react'
-import { Context } from '../context/UserContext'
+import Context from '../context/UserContext'
 import { SignInService } from '../services/auth/SignInService'
 
 export const useUser = () => {
-  const { token, setToken, setEmail, setUserId, setStatus } = useContext(Context)
+  const { token, setToken, email, setEmail, setUserId, status, setStatus } = useContext(Context)
 
-  const signIn = useCallback(
+  const signInReq = useCallback(
     ({ email, password }) => {
       SignInService({ email, password })
         .then(response => {
@@ -28,20 +28,28 @@ export const useUser = () => {
     [setToken, setEmail, setUserId, setStatus]
   )
 
-  const signOut = useCallback(() => {
+  const signOutReq = useCallback(() => {
     window.localStorage.removeItem('access_token')
     window.sessionStorage.removeItem('email')
     window.localStorage.removeItem('user_id')
-    setToken(null)
+    setToken(undefined)
     setEmail(null)
     setUserId(null)
-  }, [setToken, setEmail, setUserId])
+    setStatus(0)
+  }, [setToken, setEmail, setUserId, setStatus])
+
+  const resetStatus = useCallback(() => {
+    setStatus(0)
+  },
+  [setStatus]
+  )
 
   return {
     isSigned: Boolean(token),
-    signIn,
-    signOut,
+    email,
+    signInReq,
+    signOutReq,
     status,
-    setStatus
+    resetStatus
   }
 }

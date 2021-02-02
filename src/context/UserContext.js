@@ -17,6 +17,10 @@ export function UserContextProvider ({ children }) {
 
   const [status, setStatus] = useState(0)
 
+  const [isSigned] = useState(
+    () => (token !== undefined)
+  )
+
   return (
     <Context.Provider value={{
       token,
@@ -26,7 +30,8 @@ export function UserContextProvider ({ children }) {
       userId,
       setUserId,
       status,
-      setStatus
+      setStatus,
+      isSigned
     }}
     >
       {children}
