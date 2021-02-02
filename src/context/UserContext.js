@@ -4,7 +4,7 @@ const Context = React.createContext({})
 
 export function UserContextProvider ({ children }) {
   const [token, setToken] = useState(
-    () => window.sessionStorage.getItem('access_token')
+    () => window.localStorage.getItem('access_token')
   )
 
   const [email, setEmail] = useState(
@@ -12,8 +12,10 @@ export function UserContextProvider ({ children }) {
   )
 
   const [userId, setUserId] = useState(
-    () => window.sessionStorage.getItem('userId')
+    () => window.localStorage.getItem('user_id')
   )
+
+  const [status, setStatus] = useState(0)
 
   return (
     <Context.Provider value={{
@@ -22,7 +24,9 @@ export function UserContextProvider ({ children }) {
       email,
       setEmail,
       userId,
-      setUserId
+      setUserId,
+      status,
+      setStatus
     }}
     >
       {children}

@@ -1,44 +1,47 @@
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useContext } from 'react'
 import { Context } from '../context/UserContext'
 import { SignInService } from '../services/auth/SignInService'
 
 export const useUser = () => {
-  const { token, setToken, setEmail, setUserId } = useContext(Context)
-  const [statusError, setStatusError] = useState(null)
+  const { token, setToken, setEmail, setUserId, setStatus } = useContext(Context)
 
   const signIn = useCallback(
     ({ email, password }) => {
       SignInService({ email, password })
-        .then(
-          (response) => {
-            if (response === undefined) {
-              return
-            }
-            setToken(response.token)
-            setEmail(email)
-            setUserId(response.userId)
-            if (response.status === 200) history.push('/main')
-            response.status === 230
-              ? history.push('/register/student')
-              : history.push('/register/company')
+        .then(response => {
+          if (response === undefined) {
+            return
           }
+          window.localStorage.setItem('access_token', response.token)
+          setToken(response.token)
+          window.sessionStorage.setItem('email', email)
+          setEmail(email)
+          window.localStorage.setItem('user_id', response.userId)
+          setUserId(response.userId)
+          setStatus(response.status)
+        }
         )
         .catch(e => {
-          setStatusError(e.response.status)
+          setStatus(e.response.status)
         })
     },
-    [setToken, setEmail, setUserId, setStatusError]
+    [setToken, setEmail, setUserId, setStatus]
   )
 
   const signOut = useCallback(() => {
+    window.localStorage.removeItem('access_token')
+    window.sessionStorage.removeItem('email')
+    window.localStorage.removeItem('user_id')
     setToken(null)
-  }, [setToken])
+    setEmail(null)
+    setUserId(null)
+  }, [setToken, setEmail, setUserId])
 
   return {
     isSigned: Boolean(token),
     signIn,
     signOut,
-    statusError,
-    setStatusError
+    status,
+    setStatus
   }
 }

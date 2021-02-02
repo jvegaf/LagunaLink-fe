@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import LLTitle from '../LLTitle'
 import LLinkLogo from '../LLinkLogo'
 import { Link, useHistory } from 'react-router-dom'
@@ -6,31 +6,48 @@ import { useForm } from 'react-hook-form'
 import { ModalView } from '../ModalView'
 import { useUser } from './../../hooks/useUser'
 
-export function SignIn () {
+export function SignInComponent () {
   const history = useHistory()
   const { register, errors, handleSubmit } = useForm()
   const [modalShow, setModalShow] = useState({
     show: false,
     message: ''
   })
-
-  const { isSigned, signIn, statusError, setStatusError } = useUser()
-
-  const [] = useUser
   const [authError, setAuthError] = useState(false)
+
+  const { signIn, status, setStatus } = useUser()
 
   const onSubmit = (data) => {
     signIn(data.email, data.password)
   }
 
   useEffect(() => {
-    if(isSigned) 
-  }, [input])
+    switch (status) {
+      case 200:
+        history.push('/main')
+        break
+      case 230:
+        history.push('/register/student')
+        break
+      case 231:
+        history.push('/register/company')
+        break
+      case 400:
+        setAuthError(true)
+        break
+      case 450:
+        setModalShow({ show: true, message: 'Necesitas verificar tu cuenta antes de ingresar' })
+        break
+
+      default:
+        break
+    }
+  }, [history, status, setAuthError, setModalShow])
 
   return (
     <div className="row col-md-5 m-auto">
       <ModalView show={modalShow.show} message={modalShow.message} onHide={() =>
-        setModalShow(false, '')} />
+        setModalShow(false, '') && setStatus(0) } />
       <div className="row col-md-12 justify-content-center mb-2">
         <LLinkLogo size="70px" />
       </div>
