@@ -1,52 +1,54 @@
-import React, { useContext, useState } from 'react'
+import { useState, useEffect } from 'react'
 import LLTitle from '../LLTitle'
 import LLinkLogo from '../LLinkLogo'
 import { Link, useHistory } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { ModalView } from '../ModalView'
-import { SignInService } from '../../services/auth/SignInService'
-import Context from '../../context/UserContext'
+import { useUser } from './../../hooks/useUser'
 
-export function SignIn () {
+export function SignInComponent () {
   const history = useHistory()
   const { register, errors, handleSubmit } = useForm()
   const [modalShow, setModalShow] = useState({
     show: false,
     message: ''
   })
-  const { setEmail, setToken } = useContext(Context)
   const [authError, setAuthError] = useState(false)
 
-  const onSubmit = (data) => {
-    console.log(data)
-    SignInService({ email: data.email, password: data.password })
-      .then(
-        (response) => {
-          if (response === undefined) {
-            return
-          }
-          console.log(response)
-          setToken(response.token)
-          setEmail(data.email)
-          if (response.status === 200) history.push('/main')
-          response.status === 230
-            ? history.push('/register/student')
-            : history.push('/register/company')
-        }
-      )
-      .catch(e => {
-        if (e.response.status === 450) {
-          setModalShow({ show: true, message: 'Necesitas verificar tu cuenta antes de ingresar.' })
-          return
-        }
+  const { signInReq, status, resetStatus } = useUser()
+
+  useEffect(() => {
+    switch (status) {
+      case 200:
+        history.push('/main')
+        break
+      case 230:
+        history.push('/register/student')
+        break
+      case 231:
+        history.push('/register/company')
+        break
+      case 400:
         setAuthError(true)
-      })
+        break
+      case 450:
+        setModalShow({ show: true, message: 'Necesitas verificar tu cuenta antes de ingresar' })
+        break
+
+      default:
+        setModalShow(false, '')
+        break
+    }
+  }, [history, status, setAuthError, setModalShow])
+
+  const onSubmit = (data) => {
+    signInReq({ email: data.email, password: data.password })
   }
 
   return (
     <div className="row col-md-5 m-auto">
       <ModalView show={modalShow.show} message={modalShow.message} onHide={() =>
-        setModalShow(false, '')} />
+        resetStatus() } />
       <div className="row col-md-12 justify-content-center mb-2">
         <LLinkLogo size="70px" />
       </div>

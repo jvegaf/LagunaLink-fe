@@ -1,8 +1,19 @@
 import React from 'react'
 import { Button, Navbar } from 'react-bootstrap'
 import LLinkLogo from '../LLinkLogo'
+import { useUser } from './../../hooks/useUser'
+import { useHistory } from 'react-router-dom'
 
-export const Header = (props) => {
+export const Header = () => {
+  const { email, signOutReq } = useUser()
+  const history = useHistory()
+
+  const handleClick = e => {
+    e.preventDefault()
+    signOutReq()
+    history.push('/signin')
+  }
+
   return (
     <div>
       <Navbar bg="dark" variant="dark">
@@ -12,9 +23,9 @@ export const Header = (props) => {
         </Navbar.Brand>
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text className="mr-3">
-            <a href="#dashboard">{props.email}</a>
+            <a href="#dashboard">{email}</a>
           </Navbar.Text>
-          <Button variant="outline-danger" style={{ width: 100 }}>Salir</Button>
+          <Button variant="outline-danger" onClick={handleClick} style={{ width: 100 }}>Salir</Button>
         </Navbar.Collapse>
       </Navbar>
     </div>
