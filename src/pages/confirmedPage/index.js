@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import '../__shared__/styles.css'
 
-export const confirmedPage = () => {
+export const ConfirmedPage = () => {
   return (
     <div className="col-12 center">
       <div className="col-md-4 m-auto">

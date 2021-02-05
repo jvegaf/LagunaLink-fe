@@ -1,16 +1,21 @@
-import React, { useContext } from 'react'
+import React from 'react'
+import { Redirect } from 'react-router-dom'
 import { Header } from '../../components/Header'
 import { JobOpeningsGrid } from '../../components/JobOpening/JobOpeningsGrid'
-import Context from '../../context/UserContext'
 import '../__shared__/styles.css'
+import { useUser } from './../../hooks/useUser'
 
 export function MainPage () {
-  const { email } = useContext(Context)
+  const { isSigned } = useUser()
 
-  return (
+  if (isSigned) {
+    return (
     <div>
-      <Header email={email} />
+      <Header />
       <JobOpeningsGrid />
     </div>
-  )
+    )
+  }
+
+  return <Redirect to='/signin' />
 };
