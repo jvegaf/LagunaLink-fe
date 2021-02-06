@@ -8,14 +8,14 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css'
 import SignInPage from './pages/signInPage'
 import { SignUpPage } from './pages/signUpPage'
-import { MainPage } from './pages/mainPage'
+import { MainPage } from './pages/mainPage/MainPage'
 import { RegisterPage } from './pages/registerPage'
 import { ConfirmedPage } from './pages/confirmedPage'
 import path from 'path'
 import dotenv from 'dotenv'
 
 import { UserContextProvider } from './context/UserContext'
-import DashboardPage from './pages/dashboardPage/index'
+import DashboardPage from './pages/dashboardPage/DashBoardPage'
 
 function App () {
   dotenv.config()

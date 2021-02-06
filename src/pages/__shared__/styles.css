@@ -11,9 +11,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height:100vh;  
+  height:100vh;
 }
 
 .h400 {
   height: 400px;
+}
+
+.ll-bg {
+  background-color: #EDEDED;
 }

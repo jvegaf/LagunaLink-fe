@@ -2,9 +2,9 @@ import React from 'react'
 
 function Element (props) {
   return (
-    <div className="d-flex row">
+    <div className="mt-3 mb-3 d-flex w-75 flex-row-reverse">
+      <div className="w-75 pl-2 text-dark">{props.content}</div>
       <div className="text-secondary">{props.title}</div>
-      <div className="ml-2 text-body">{props.content}</div>
     </div>
   )
 }
