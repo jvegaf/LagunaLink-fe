@@ -7,9 +7,11 @@ export const RegisterPage = (props) => {
   const accType = props.match.params.accountType
 
   return (
-    <div className="row m-0 p-0">
-      <div className="col-12 center">
-        {accType === 'student' ? <StudentRegister /> : <CompanyRegister />}
+    <div className="container-fluid vh-100 ll-bg">
+      <div className="row h-100">
+        <div className="col-12 d-flex align-items-center justify-content-center">
+          {accType === 'student' ? <StudentRegister /> : <CompanyRegister />}
+        </div>
       </div>
     </div>
   )

@@ -8,7 +8,7 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css'
 import SignInPage from './pages/signInPage'
 import { SignUpPage } from './pages/signUpPage'
-import { MainPage } from './pages/mainPage/MainPage'
+import { MainPage } from './pages/MainPage/MainPage'
 import { RegisterPage } from './pages/registerPage'
 import { ConfirmedPage } from './pages/confirmedPage'
 import path from 'path'
@@ -34,9 +34,7 @@ function App () {
           <Route path="/signup">
             <SignUpPage />
           </Route>
-          <Route path="/register/:accountType">
-            <RegisterPage />
-          </Route>
+          <Route path="/register/:accountType" component={RegisterPage} />
           <Route path="/dashboard">
             <DashboardPage />
           </Route>
