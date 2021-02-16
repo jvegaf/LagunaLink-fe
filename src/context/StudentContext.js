@@ -1,49 +1,39 @@
 import React, { useState } from 'react'
 
-const Context = React.createContext({})
+const StudentContext = React.createContext({})
 
-export function StudentContextProvider({ children }) {
-  const [token, setToken] = useState(
-    () => window.localStorage.getItem('access_token')
-  )
+export function StudentContextProvider ({ children }) {
+  const [name, setName] = useState('')
 
-  const [email, setEmail] = useState(
-    () => window.localStorage.getItem('email')
-  )
+  const [surname, setSurname] = useState('')
 
-  const [userId, setUserId] = useState(
-    () => window.localStorage.getItem('user_id')
-  )
+  const [lastname, setLastname] = useState('')
 
-  const [status, setStatus] = useState(0)
+  const [qualifications, setQualifications] = useState([])
 
-  const [isSigned, setIsSigned] = useState(
-    () => window.localStorage.getItem('signed')
-  )
+  const [languages, setLanguages] = useState([])
 
-  const [userRole, setUserRole] = useState(
-    () => window.localStorage.getItem('user_role')
-  )
+  const [jobExperiences, setJobExperiences] = useState([])
 
   return (
-    <Context.Provider value={{
-      token,
-      setToken,
-      email,
-      setEmail,
-      userId,
-      setUserId,
-      status,
-      setStatus,
-      isSigned,
-      setIsSigned,
-      userRole,
-      setUserRole
+    <StudentContext.Provider value={{
+      name,
+      setName,
+      surname,
+      setSurname,
+      lastname,
+      setLastname,
+      qualifications,
+      setQualifications,
+      languages,
+      setLanguages,
+      jobExperiences,
+      setJobExperiences
     }}
     >
       {children}
-    </Context.Provider>
+    </StudentContext.Provider>
   )
 }
 
-export default Context
+export default StudentContext
