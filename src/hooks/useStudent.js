@@ -1,16 +1,13 @@
 import { useCallback } from 'react'
-import { GetProfile } from '../services/student/GetProfile'
-import { useUser } from './useUser'
+import { GetStudentProfile } from '../services/student/GetProfile'
 
 export const useStudent = () => {
-  const { token, userId } = useUser()
-
   const getStudentProfile = useCallback(
-    () => {
-      GetProfile({ token, userId })
+    (token, userId) => {
+      GetStudentProfile(token, userId)
         .then(response => {
           if (response === undefined) {
-            return
+            console.log('undefined rsponse')
           }
           console.log(response)
         }
@@ -18,7 +15,7 @@ export const useStudent = () => {
           console.log(e.response)
         })
     },
-    [token, userId]
+    []
   )
   return {
     getStudentProfile

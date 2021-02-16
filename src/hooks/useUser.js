@@ -64,9 +64,14 @@ export const useUser = () => {
     setStatus(0)
   }, [setStatus])
 
+  const getTokenAndId = useCallback(() => {
+    return { token, userId }
+  }, [token, userId])
+
   return {
     token,
     userId,
+    getTokenAndId,
     isSigned,
     email,
     signInReq,

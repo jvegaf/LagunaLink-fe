@@ -1,13 +1,17 @@
 import API from '../API'
 
-export const GetProfile = ({ accessToken, studentId }) => {
+export const GetStudentProfile = (accessToken, studentId) => {
   API.defaults.headers.common.Authorization = accessToken
 
-  return API.get(`/students/${studentId}`)
+  const reqUri = `/students/${studentId}`
+  console.log(reqUri)
+  return API.get(reqUri)
     .then(function (response) {
       console.log(response)
+      return response
     })
     .catch(function (error) {
       console.log(error)
+      return error
     })
 }
