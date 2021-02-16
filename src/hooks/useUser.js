@@ -4,9 +4,11 @@ import { SignInService } from '../services/auth/SignInService'
 
 export const useUser = () => {
   const {
+    token,
     setToken,
     email,
     setEmail,
+    userId,
     setUserId,
     userRole,
     setUserRole,
@@ -60,11 +62,11 @@ export const useUser = () => {
 
   const resetStatus = useCallback(() => {
     setStatus(0)
-  },
-  [setStatus]
-  )
+  }, [setStatus])
 
   return {
+    token,
+    userId,
     isSigned,
     email,
     signInReq,
