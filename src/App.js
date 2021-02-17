@@ -16,6 +16,7 @@ import dotenv from 'dotenv'
 import { UserContextProvider } from './context/UserContext'
 import DashboardPage from './pages/dashboardPage/DashBoardPage'
 import { StudentContextProvider } from './context/StudentContext'
+import { CompanyContextProvider } from './context/CompanyContext'
 
 function App () {
   dotenv.config()
@@ -26,27 +27,30 @@ function App () {
   return (
     <UserContextProvider>
       <StudentContextProvider>
-        <Router>
-          <Switch>
-            <Redirect exact from="/" to="/main" />
-            <Route path="/signin">
-              <SignInPage />
-            </Route>
-            <Route path="/signup">
-              <SignUpPage />
-            </Route>
-            <Route path="/register/:accountType" component={RegisterPage} />
-            <Route path="/dashboard">
-              <DashboardPage />
-            </Route>
-            <Route path="/auth/confirmed">
-              <ConfirmedPage />
-            </Route>
-            <Route path="/main">
-              <MainPage />
-            </Route>
-          </Switch>
-        </Router>
+        <CompanyContextProvider>
+
+          <Router>
+            <Switch>
+              <Redirect exact from="/" to="/main" />
+              <Route path="/signin">
+                <SignInPage />
+              </Route>
+              <Route path="/signup">
+                <SignUpPage />
+              </Route>
+              <Route path="/register/:accountType" component={RegisterPage} />
+              <Route path="/dashboard">
+                <DashboardPage />
+              </Route>
+              <Route path="/auth/confirmed">
+                <ConfirmedPage />
+              </Route>
+              <Route path="/main">
+                <MainPage />
+              </Route>
+            </Switch>
+          </Router>
+        </CompanyContextProvider>
       </StudentContextProvider>
     </UserContextProvider>
   )
