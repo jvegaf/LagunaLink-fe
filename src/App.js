@@ -1,4 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope */
 import {
   BrowserRouter as Router,
   Redirect,
@@ -6,15 +5,18 @@ import {
   Switch
 } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import signIn from './pages/signInPage'
-import { signUp } from './pages/signUpPage'
-import { MainPage } from './pages/MainPage'
-import { register } from './pages/registerPage'
-import { confirmedPage } from './pages/confirmedPage'
+import SignInPage from './pages/signInPage'
+import { SignUpPage } from './pages/signUpPage'
+import { MainPage } from './pages/MainPage/MainPage'
+import { RegisterPage } from './pages/registerPage'
+import { ConfirmedPage } from './pages/confirmedPage'
 import path from 'path'
 import dotenv from 'dotenv'
 
 import { UserContextProvider } from './context/UserContext'
+import DashboardPage from './pages/dashboardPage/DashBoardPage'
+import { StudentContextProvider } from './context/StudentContext'
+import { CompanyContextProvider } from './context/CompanyContext'
 
 function App () {
   dotenv.config()
@@ -24,28 +26,32 @@ function App () {
 
   return (
     <UserContextProvider>
-      <Router>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() =>
-              UserContextProvider.isSigned
-                ? (
-                <Redirect to="/main" />
-                  )
-                : (
-                <Redirect to="/signin" />
-                  )
-            }
-          />
-          <Route exact path="/signin" component={signIn} />
-          <Route exact path="/signup" component={signUp} />
-          <Route exact path="/register/:accountType" component={register} />
-          <Route exact path="/main" component={MainPage} />
-          <Route exact path="/auth/confirmed" component={confirmedPage} />
-        </Switch>
-      </Router>
+      <StudentContextProvider>
+        <CompanyContextProvider>
+
+          <Router>
+            <Switch>
+              <Redirect exact from="/" to="/main" />
+              <Route path="/signin">
+                <SignInPage />
+              </Route>
+              <Route path="/signup">
+                <SignUpPage />
+              </Route>
+              <Route path="/register/:accountType" component={RegisterPage} />
+              <Route path="/dashboard">
+                <DashboardPage />
+              </Route>
+              <Route path="/auth/confirmed">
+                <ConfirmedPage />
+              </Route>
+              <Route path="/main">
+                <MainPage />
+              </Route>
+            </Switch>
+          </Router>
+        </CompanyContextProvider>
+      </StudentContextProvider>
     </UserContextProvider>
   )
 }

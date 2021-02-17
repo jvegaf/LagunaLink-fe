@@ -2,7 +2,7 @@ import React from 'react'
 import './signIn.css'
 import { SignInComponent } from './../../components/SignIn/index'
 
-export default function signIn () {
+export default function SignInPage () {
   return (
     <div className="row m-0">
       <div className="col-md-6 p-0">

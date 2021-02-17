@@ -18,7 +18,7 @@ export const StudentRegister = () => {
   }
 
   return (
-    <div className="col-3 m-auto">
+    <div className="col-md-8 col-lg-5 bg-white p-lg-5 ll-corners">
       <div className="row justify-content-center">
         <h1>Registro Estudiante</h1>
       </div>

@@ -8,7 +8,7 @@ export function UserContextProvider ({ children }) {
   )
 
   const [email, setEmail] = useState(
-    () => window.sessionStorage.getItem('email')
+    () => window.localStorage.getItem('email')
   )
 
   const [userId, setUserId] = useState(
@@ -17,8 +17,12 @@ export function UserContextProvider ({ children }) {
 
   const [status, setStatus] = useState(0)
 
-  const [isSigned] = useState(
-    () => (token !== undefined)
+  const [isSigned, setIsSigned] = useState(
+    () => window.localStorage.getItem('signed')
+  )
+
+  const [userRole, setUserRole] = useState(
+    () => window.localStorage.getItem('user_role')
   )
 
   return (
@@ -31,7 +35,10 @@ export function UserContextProvider ({ children }) {
       setUserId,
       status,
       setStatus,
-      isSigned
+      isSigned,
+      setIsSigned,
+      userRole,
+      setUserRole
     }}
     >
       {children}

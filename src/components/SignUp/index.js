@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
+import { useUser } from '../../hooks/useUser'
 import { SignUpService } from '../../services/auth/SignUpService'
 import { ModalView } from '../ModalView'
 
 export const SignUp = () => {
   const history = useHistory()
+  const { resetStatus } = useUser()
   const { register, getValues, errors, handleSubmit } = useForm()
   const [modalShow, setModalShow] = useState({
     show: false,
@@ -13,6 +15,7 @@ export const SignUp = () => {
   })
   const onSubmit = (data, e) => {
     console.log(data)
+    resetStatus()
     SignUpService({
       email: data.email,
       password: data.password,
