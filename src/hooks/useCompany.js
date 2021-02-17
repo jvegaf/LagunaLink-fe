@@ -10,7 +10,7 @@ export const useCompany = () => {
     setDescription,
     address,
     setAddress,
-    postalcode,
+    postalCode,
     setPostalCode,
     region,
     setRegion,
@@ -27,7 +27,7 @@ export const useCompany = () => {
           setName(company.name)
           setDescription(company.description)
           setAddress(company.address)
-          setPostalCode(company.postalcode)
+          setPostalCode(company.postalCode)
           setRegion(company.region)
           setCity(company.city)
         }
@@ -38,10 +38,11 @@ export const useCompany = () => {
     [setName, setDescription, setAddress, setPostalCode, setRegion, setCity]
   )
   return {
+    getProfile,
     name,
     description,
     address,
-    postalcode,
+    postalCode,
     region,
     city
   }

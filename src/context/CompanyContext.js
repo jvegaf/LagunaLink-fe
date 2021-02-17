@@ -9,7 +9,7 @@ export function CompanyContextProvider ({ children }) {
 
   const [address, setAddress] = useState('')
 
-  const [postalcode, setPostalCode] = useState('')
+  const [postalCode, setPostalCode] = useState('')
 
   const [region, setRegion] = useState('')
 
@@ -23,7 +23,7 @@ export function CompanyContextProvider ({ children }) {
       setDescription,
       address,
       setAddress,
-      postalcode,
+      postalCode,
       setPostalCode,
       region,
       setRegion,

@@ -6,14 +6,13 @@ import { useUser } from '../../hooks/useUser'
 import '../__shared__/styles.css'
 
 export default function DashboardPage () {
-
   const { userRole } = useUser()
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <Header />
       <div className="container-fluid ll-bg w-100 d-flex flex-grow-1 align-items-center justify-content-center">
-        { userRole === "ROLE_STUDENT" ? <StudentProfile /> : <CompanyProfile /> } 
+        { userRole === 'ROLE_STUDENT' ? <StudentProfile /> : <CompanyProfile /> }
       </div>
     </div>
   )

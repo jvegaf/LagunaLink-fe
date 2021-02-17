@@ -1,24 +1,24 @@
 import React from 'react'
 import Avatar from '../shared/Avatar'
-import Element from '../shared/Element'
+import { Element } from '../shared/Element'
 import { Container } from 'react-bootstrap'
 import H2Title from '../shared/H2Title'
 import './../shared/styles.css'
 import { DetailButton } from '../Detail/Button/index'
 import { useUser } from '../../hooks/useUser'
-import { useStudent } from '../../hooks/useStudent'
+import { useCompany } from '../../hooks/useCompany'
 
 export const CompanyProfile = () => {
   const { token, userId } = useUser()
   const {
     getProfile,
     name,
-    surname,
-    // lastname,
-    qualifications,
-    languages,
-    jobExperiences
-  } = useStudent()
+    description,
+    address,
+    postalCode,
+    region,
+    city
+  } = useCompany()
 
   getProfile(token, userId)
 
@@ -30,10 +30,11 @@ export const CompanyProfile = () => {
             <H2Title text="Perfil" className="mb-5" />
             <Avatar className="mt-5"/>
             <Element title="Nombre" content={ name } />
-            <Element title="Apellidos" content={ surname } />
-            <Element title="Titulacion" content={ qualifications } />
-            <Element title="Idioma" content={ languages } />
-            <Element title="Experiencias previas" content={ jobExperiences } />
+            <Element title="Descripcion" content={ description } />
+            <Element title="Direcion" content={ address } />
+            <Element title="Codigo Postal" content={ postalCode } />
+            <Element title="Provincia" content={ region } />
+            <Element title="Poblacion" content={ city } />
             <DetailButton content="Actualizar Perfil" />
           </div>
         </div>
