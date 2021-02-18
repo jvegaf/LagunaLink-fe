@@ -4,25 +4,23 @@ import { Element } from '../shared/Element'
 import { Container } from 'react-bootstrap'
 import H2Title from '../shared/H2Title'
 import './../shared/styles.css'
-import { DetailButton } from '../Detail/Button/index'
+import { DetailButton } from '../Detail/Button/DetailButton'
 import { useUser } from '../../hooks/useUser'
-import { useStudent } from '../../hooks/useStudent'
+import { useCompany } from '../../hooks/useCompany'
 
-export const StudentProfile = () => {
+export const CompanyProfile = () => {
   const { token, userId } = useUser()
   const {
     getProfile,
     name,
-    surname,
-    lastname,
-    qualifications,
-    languages,
-    jobExperiences
-  } = useStudent()
+    description,
+    address,
+    postalCode,
+    region,
+    city
+  } = useCompany()
 
   getProfile(token, userId)
-
-  const surnames = `${surname} ${lastname}`
 
   return (
     <Container className="d-flex ll-85 bg-white flex-column align-items-center ll-corners" fluid>
@@ -30,13 +28,14 @@ export const StudentProfile = () => {
         <div className="col pt-5">
           <div className="mt-5 w-100 d-flex flex-column align-items-center">
             <H2Title text="Perfil" className="mb-5" />
-            <Avatar className="mt-5 mb-2"/>
+            <Avatar className="mt-5"/>
             <Element title="Nombre" content={ name } />
-            <Element title="Apellidos" content={ surnames } />
-            <Element title="Titulacion" content={ qualifications } />
-            <Element title="Idioma" content={ languages } />
-            <Element title="Experiencias previas" content={ jobExperiences } />
-            <DetailButton content="Actualizar Curriculum" />
+            <Element title="Descripcion" content={ description } />
+            <Element title="Direcion" content={ address } />
+            <Element title="Codigo Postal" content={ postalCode } />
+            <Element title="Provincia" content={ region } />
+            <Element title="Poblacion" content={ city } />
+            <DetailButton content="Actualizar Perfil" />
           </div>
         </div>
         <div className="col"></div>

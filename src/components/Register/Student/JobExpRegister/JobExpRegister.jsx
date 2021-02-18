@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export const JobExpRegister = () => {
   const [data, setData] = useState({
@@ -17,7 +18,7 @@ export const JobExpRegister = () => {
   }
 
   return (
-    <div className="col-3 m-auto">
+    <div className="m-auto bg-white p-5 ll-corners">
       <div className="row justify-content-center">
         <h1>Tu Curriculum</h1>
       </div>
@@ -79,10 +80,13 @@ export const JobExpRegister = () => {
             />
           </div>
         </div>
-        <div className="form-group mt-5">
-          <button type="submit" className="btn btn-primary w-100">
-            Siguiente
+        <div className="d-flex mt-5 justify-content-around">
+          <button type="submit" className="btn btn-success px-5">
+            Guardar
           </button>
+          <Link to="/dashboard" className="btn btn-secondary px-5">
+            Volver
+          </Link>
         </div>
       </form>
       <div className="row mt-5 justify-content-center">
