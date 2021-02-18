@@ -1,7 +1,7 @@
 import React from 'react'
 import '../__shared__/styles.css'
-import { CompanyRegister } from '../../components/Register/Company/CompanyRegister'
-import { StudentRegister } from '../../components/Register/Student/StudentRegister'
+import { CompanyRegister } from '../../components/Register/Company/CompanyRegister/CompanyRegister'
+import { StudentRegister } from '../../components/Register/Student/StudentRegister/StudentRegister'
 
 export const RegisterPage = (props) => {
   const accType = props.match.params.accountType

@@ -4,7 +4,7 @@ import LLinkLogo from '../LLinkLogo'
 import { Link, useHistory } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { ModalView } from '../ModalView'
-import { useUser } from './../../hooks/useUser'
+import { useUser } from '../../hooks/useUser'
 
 export function SignInComponent () {
   const history = useHistory()
@@ -48,7 +48,7 @@ export function SignInComponent () {
   return (
     <div className="row col-md-5 m-auto">
       <ModalView show={modalShow.show} message={modalShow.message} onHide={() =>
-        resetStatus() } />
+        resetStatus()} />
       <div className="row col-md-12 justify-content-center mb-2">
         <LLinkLogo size="70px" />
       </div>

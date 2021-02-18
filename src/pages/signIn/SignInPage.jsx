@@ -1,6 +1,6 @@
 import React from 'react'
 import './signIn.css'
-import { SignInComponent } from './../../components/SignIn/index'
+import { SignInComponent } from '../../components/SignIn/Signin'
 
 export default function SignInPage () {
   return (
