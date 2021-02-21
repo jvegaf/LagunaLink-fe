@@ -1,10 +1,10 @@
-import API from '../API'
+import api from '../API'
 
 export const GetCompanyProfile = (accessToken, companyId) => {
-  API.defaults.headers.common.Authorization = accessToken
+  api.defaults.headers.common.Authorization = accessToken
 
   const reqUri = `/companies/${companyId}`
-  return API.get(reqUri)
+  return api.get(reqUri)
     .then(function (response) {
       return response.data.company
     })

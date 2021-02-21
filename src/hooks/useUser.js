@@ -40,6 +40,7 @@ export const useUser = () => {
         }
         )
         .catch(e => {
+          console.log(e)
           setStatus(e.response.status)
         })
     },

@@ -12,19 +12,11 @@ import { RegisterPage } from './pages/register/RegisterPage'
 import { ConfirmedPage } from './pages/confirmed/ConfirmedPage'
 import DashboardPage from './pages/dashboard/DashBoardPage'
 import { RegistryPage } from './pages/student/RegistryPage'
-import path from 'path'
-import dotenv from 'dotenv'
-
 import { UserContextProvider } from './context/UserContext'
 import { StudentContextProvider } from './context/StudentContext'
 import { CompanyContextProvider } from './context/CompanyContext'
 
 function App () {
-  dotenv.config()
-  const defaultEnv = 'local'
-  const envPath = path.resolve(process.cwd(), `.env.${defaultEnv}`)
-  dotenv.config({ path: envPath })
-
   return (
     <UserContextProvider>
       <StudentContextProvider>

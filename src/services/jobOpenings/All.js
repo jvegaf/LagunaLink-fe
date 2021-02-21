@@ -1,9 +1,9 @@
-import API from '../API'
+import api from '../API'
 
 export const All = ({ accessToken }) => {
-  API.defaults.headers.common.Authorization = accessToken
+  api.defaults.headers.common.Authorization = accessToken
 
-  return API.get('/job_openings')
+  return api.get('/job_openings')
     .then(function (response) {
       console.log(response)
     })
