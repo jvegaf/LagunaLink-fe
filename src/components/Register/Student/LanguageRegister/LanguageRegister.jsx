@@ -23,6 +23,11 @@ export const LanguageRegister = () => {
     })
   }
 
+  const onSubmit = (e) => {
+    e.preventDefault()
+    console.log(data)
+  }
+
   return (
     <div className="col-lg-4 bg-white m-auto ll-corners p-5">
       <div className="row justify-content-center">
@@ -31,7 +36,7 @@ export const LanguageRegister = () => {
       <div className="row justify-content-center mt-3">
         <p>Indica tus conocimientos de idiomas</p>
       </div>
-      <form className="mt-5">
+      <form onSubmit={ onSubmit } className="mt-5">
         <div className="form-group">
           <label htmlFor="language">Idioma</label>
           <input
