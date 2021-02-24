@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import StarRatings from 'react-star-ratings'
+import { Link } from 'react-router-dom'
 
 export const LanguageRegister = () => {
   const [data, setData] = useState({
@@ -23,7 +24,7 @@ export const LanguageRegister = () => {
   }
 
   return (
-    <div className="col-3 m-auto p-0">
+    <div className="col-lg-4 bg-white m-auto ll-corners p-5">
       <div className="row justify-content-center">
         <h1>Tu Curriculum</h1>
       </div>
@@ -75,9 +76,10 @@ export const LanguageRegister = () => {
             </div>
           </div>
         </div>
-        <div className="form-group mt-5">
-          <button type="submit" className="btn btn-primary w-100">
-            Siguiente
+        <div className="d-flex justify-content-around mt-5">
+          <Link className='btn btn-warning w-25' to='/dashboard'>Volver</Link>
+          <button type="submit" className="btn btn-success w-50">
+            Guardar
           </button>
         </div>
       </form>
