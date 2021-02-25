@@ -4,7 +4,8 @@ import { handleResponse, handleError } from './response'
 
 const BASE_URL = 'https://lagunalink-be.herokuapp.com'
 
-const getAll = (resource) => {
+const getAll = (resource, accessToken) => {
+  axios.defaults.headers.common.Authorization = accessToken
   return axios
     .get(`${BASE_URL}/${resource}`)
     .then(handleResponse)
@@ -24,15 +25,15 @@ const post = (resource, model, accessToken) => {
     axios.defaults.headers.common.Authorization = accessToken
   }
   return axios
-    .post(`${BASE_URL}/${resource}`, model)
+    .post(`${BASE_URL}${resource}`, model)
     .then(handleResponse)
     .catch(handleError)
 }
 
-const put = (resource, model, accessToken) => {
+const put = (resource, id, model, accessToken) => {
   axios.defaults.headers.common.Authorization = accessToken
   return axios
-    .put(`${BASE_URL}/${resource}`, model)
+    .put(`${BASE_URL}/${resource}/${id}`, model)
     .then(handleResponse)
     .catch(handleError)
 }

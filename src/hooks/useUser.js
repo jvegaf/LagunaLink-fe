@@ -1,6 +1,6 @@
 import { useCallback, useContext } from 'react'
 import Context from '../context/UserContext'
-import { SignInService } from '../services/auth/SignInService'
+import { apiProvider } from '../services/api/api-provider'
 
 export const useUser = () => {
   const {
@@ -20,20 +20,23 @@ export const useUser = () => {
 
   const signInReq = useCallback(
     ({ email, password }) => {
-      SignInService({ email, password })
+      apiProvider.post('/auth/signin', {
+        email: email,
+        password: password
+      })
         .then(response => {
           if (response === undefined) {
             return
           }
           console.log(response)
-          setToken(response.token)
-          window.localStorage.setItem('access_token', response.token)
+          setToken(response.data.access_token)
+          window.localStorage.setItem('access_token', response.data.access_token)
           setEmail(email)
           window.localStorage.setItem('email', email)
-          setUserId(response.user_id)
-          window.localStorage.setItem('user_id', response.user_id)
-          setUserRole(response.user_role)
-          window.localStorage.setItem('user_role', response.user_role)
+          setUserId(response.data.user_id)
+          window.localStorage.setItem('user_id', response.data.user_id)
+          setUserRole(response.data.user_role)
+          window.localStorage.setItem('user_role', response.data.user_role)
           setStatus(response.status)
           window.localStorage.setItem('signed', true)
           setIsSigned(true)
@@ -61,6 +64,16 @@ export const useUser = () => {
     setStatus(0)
   }, [setToken, setIsSigned, setUserRole, setEmail, setUserId, setStatus])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const signUp = useCallback((data) => {
+    return apiProvider.post('/auth/signup', {
+      email: data.email,
+      password: data.password,
+      role: data.role
+    }).then(response => { return response.status })
+      .catch(e => e.response.status)
+  })
+
   const resetStatus = useCallback(() => {
     setStatus(0)
   }, [setStatus])
@@ -77,6 +90,7 @@ export const useUser = () => {
     email,
     signInReq,
     signOutReq,
+    signUp,
     status,
     resetStatus,
     userRole
