@@ -11,35 +11,34 @@ const getAll = (resource) => {
     .catch(handleError)
 }
 
-const getSingle = (resource, id) => {
+const getSingle = (resource, id, accessToken) => {
+  axios.defaults.headers.common.Authorization = accessToken
   return axios
     .get(`${BASE_URL}/${resource}/${id}`)
     .then(handleResponse)
     .catch(handleError)
 }
 
-const post = (resource, model) => {
+const post = (resource, model, accessToken) => {
+  if (accessToken !== undefined) {
+    axios.defaults.headers.common.Authorization = accessToken
+  }
   return axios
     .post(`${BASE_URL}/${resource}`, model)
     .then(handleResponse)
     .catch(handleError)
 }
 
-const put = (resource, model) => {
+const put = (resource, model, accessToken) => {
+  axios.defaults.headers.common.Authorization = accessToken
   return axios
     .put(`${BASE_URL}/${resource}`, model)
     .then(handleResponse)
     .catch(handleError)
 }
 
-const patch = (resource, model) => {
-  return axios
-    .patch(`${BASE_URL}/${resource}`, model)
-    .then(handleResponse)
-    .catch(handleError)
-}
-
-const remove = (resource, id) => {
+const remove = (resource, id, accessToken) => {
+  axios.defaults.headers.common.Authorization = accessToken
   return axios
     .delete(`${BASE_URL}/${resource}`, id)
     .then(handleResponse)
@@ -51,6 +50,5 @@ export const apiProvider = {
   getSingle,
   post,
   put,
-  patch,
   remove
 }
