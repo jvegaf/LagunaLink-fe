@@ -1,20 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
 export const JobExpRegister = () => {
-  const [data, setData] = useState({
-    company: '',
-    position: '',
-    responsibilities: '',
-    start_date: '',
-    end_date: ''
-  })
+  const { register, errors, handleSubmit } = useForm()
 
-  const handleInputChange = (event) => {
-    setData({
-      ...data,
-      [event.target.name]: event.target.value
-    })
+  const onSubmit = (data) => {
+    console.log(data)
   }
 
   return (
@@ -25,7 +17,7 @@ export const JobExpRegister = () => {
       <div className="row justify-content-center mt-3">
         <p>Agrega tus experiencias de trabajo</p>
       </div>
-      <form className="mt-5">
+      <form onSubmit={ handleSubmit(onSubmit) } className="mt-5">
         <div className="form-group">
           <label htmlFor="company">Empresa</label>
           <input
@@ -34,8 +26,9 @@ export const JobExpRegister = () => {
             className="form-control"
             id="company"
             placeholder="Empresa"
-            onChange={handleInputChange}
+            ref={register({ required: 'Es necesario' })}
           />
+          {errors.company && <p style={{ color: 'red' }}>{errors.company.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="position">Puesto</label>
@@ -45,8 +38,9 @@ export const JobExpRegister = () => {
             className="form-control"
             id="position"
             placeholder="Puesto"
-            onChange={handleInputChange}
+            ref={register({ required: 'Es necesario' })}
           />
+          {errors.position && <p style={{ color: 'red' }}>{errors.position.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="responsibilities">Responsabilidades</label>
@@ -55,8 +49,9 @@ export const JobExpRegister = () => {
             id="responsibilities"
             name="responsibilities"
             rows="3"
-            onChange={handleInputChange}
+            ref={register({ required: 'Es necesario' })}
           ></textarea>
+          {errors.responsibilities && <p style={{ color: 'red' }}>{errors.responsibilities.message}</p>}
         </div>
         <div className="row justify-content-between">
           <div className="form-group col-6">
@@ -66,8 +61,9 @@ export const JobExpRegister = () => {
               name="start_date"
               className="form-control"
               id="start_date"
-              onChange={handleInputChange}
+              ref={register({ required: 'Es necesario' })}
             />
+            {errors.start_date && <p style={{ color: 'red' }}>{errors.start_date.message}</p>}
           </div>
           <div className="form-group col-6">
             <label htmlFor="end_date">Fecha de finalizacion</label>
@@ -76,7 +72,7 @@ export const JobExpRegister = () => {
               name="end_date"
               className="form-control"
               id="end_date"
-              onChange={handleInputChange}
+              ref={register({ required: 'Es necesario' })}
             />
           </div>
         </div>
