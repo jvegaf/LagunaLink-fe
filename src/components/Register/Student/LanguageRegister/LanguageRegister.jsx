@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import StarRatings from 'react-star-ratings'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { useStudent } from '../../../../hooks/useStudent'
 
 export const LanguageRegister = () => {
+  const history = useHistory()
+  const { addLanguage } = useStudent()
   const [data, setData] = useState({
-    language: '',
-    speak_level: 0,
-    write_level: 0
+    name: '',
+    speak: 0,
+    write: 0
   })
 
   const handleInputChange = (event) => {
@@ -25,7 +28,12 @@ export const LanguageRegister = () => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    console.log(data)
+    addLanguage(data)
+      .then(status => {
+        if (status === 200) {
+          history.goBack()
+        }
+      })
   }
 
   return (
@@ -38,10 +46,10 @@ export const LanguageRegister = () => {
       </div>
       <form onSubmit={ onSubmit } className="mt-5">
         <div className="form-group">
-          <label htmlFor="language">Idioma</label>
+          <label htmlFor="name">Idioma</label>
           <input
             type="text"
-            name="language"
+            name="name"
             onChange={handleInputChange}
             className="form-control"
             placeholder="Idioma"
@@ -54,13 +62,13 @@ export const LanguageRegister = () => {
             </div>
             <div className="row justify-content-center">
               <StarRatings
-                rating={data.speak_level}
+                rating={data.speak}
                 starHoverColor="#0275d8"
                 starRatedColor="#0275d8"
                 starDimension="25px"
                 changeRating={handleRatingChange}
                 numberOfStars={5}
-                name="speak_level"
+                name="speak"
               />
             </div>
           </div>
@@ -70,27 +78,24 @@ export const LanguageRegister = () => {
             </div>
             <div className="row justify-content-center">
               <StarRatings
-                rating={data.write_level}
+                rating={data.write}
                 starDimension="25px"
                 starHoverColor="#0275d8"
                 starRatedColor="#0275d8"
                 changeRating={handleRatingChange}
                 numberOfStars={5}
-                name="write_level"
+                name="write"
               />
             </div>
           </div>
         </div>
         <div className="d-flex justify-content-around mt-5">
-          <Link className='btn btn-warning w-25' to='/dashboard'>Volver</Link>
+          <Link className='btn btn-outline-warning w-25' to='/dashboard'>Volver</Link>
           <button type="submit" className="btn btn-success w-50">
             Guardar
           </button>
         </div>
       </form>
-      <div className="row mt-5 justify-content-center">
-        <button className="btn btn-outline-primary w-50">Agregar otro idioma</button>
-      </div>
     </div>
   )
 }

@@ -1,17 +1,15 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useHistory } from 'react-router-dom'
-import { useUser } from '../../../../hooks/useUser'
 import { useStudent } from '../../../../hooks/useStudent'
 
 export const QualificationRegister = () => {
   const history = useHistory()
-  const { token, userId } = useUser()
   const { addQualification } = useStudent()
   const { register, errors, handleSubmit } = useForm()
 
   const onSubmit = data => {
-    addQualification(data, userId, token)
+    addQualification(data)
       .then(status => {
         if (status === 200) { history.push('/dasboard') }
       })

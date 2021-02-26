@@ -1,8 +1,10 @@
 import { useCallback, useContext } from 'react'
 import StudentContext from '../context/StudentContext'
 import { apiProvider } from '../services/api/api-provider'
+import { useUser } from './useUser'
 
 export const useStudent = () => {
+  const { token, userId } = useUser()
   const {
     name,
     setName,
@@ -19,7 +21,7 @@ export const useStudent = () => {
   } = useContext(StudentContext)
 
   const getProfile = useCallback(
-    (token, userId) => {
+    () => {
       apiProvider.getSingle('students', userId, token)
         .then(response => {
           if (response.data.student === undefined) {
@@ -29,30 +31,43 @@ export const useStudent = () => {
           setSurname(response.data.student.surname)
           setLastname(response.data.student.lastname)
           setQualification(response.data.student.qualification)
-          setLanguages(response.data.student.languages)
-          setJobExperiences(response.data.student.job_experiences)
+          setLanguages(response.data.student.languages || [])
+          setJobExperiences(response.data.student.job_experiences || [])
         }
         ).catch(e => {
           console.log(e.response)
         })
     },
-    [setJobExperiences, setLanguages, setLastname, setName, setQualification, setSurname]
+    [setJobExperiences, setLanguages, setLastname, setName, setQualification, setSurname, token, userId]
   )
 
   const addQualification = useCallback(
-    (data, userId, token) => {
+    (data) => {
       return apiProvider.put('students', userId, {
         qualification: data
       }, token)
         .then(response => { return response.status })
         .catch(e => { console.log(e) })
     },
-    []
+    [token, userId]
+  )
+
+  const addLanguage = useCallback(
+    (data) => {
+      languages.push(data)
+      return apiProvider.put('students', userId, {
+        languages: languages
+      }, token)
+        .then(response => { return response.status })
+        .catch(e => { console.log(e) })
+    },
+    [languages, token, userId]
   )
 
   return {
     getProfile,
     addQualification,
+    addLanguage,
     name,
     surname,
     lastname,
