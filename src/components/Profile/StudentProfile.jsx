@@ -4,12 +4,12 @@ import { Element } from '../shared/Element'
 import { Container } from 'react-bootstrap'
 import H2Title from '../shared/H2Title'
 import './../shared/styles.css'
-import { useUser } from '../../hooks/useUser'
 import { useStudent } from '../../hooks/useStudent'
 import { SmallButton } from '../Detail/Button/SmallButton'
+import { useUser } from '../../hooks/useUser'
 
 export const StudentProfile = () => {
-  const { token, userId } = useUser()
+  const { userId, token } = useUser()
   const {
     getProfile,
     name,
@@ -20,7 +20,9 @@ export const StudentProfile = () => {
     jobExperiences
   } = useStudent()
 
-  getProfile(token, userId)
+  if (!name) {
+    getProfile(token, userId)
+  }
 
   const surnames = `${surname} ${lastname}`
   const qual = qualification === undefined ? <SmallButton content="Agregar Titulacion" path="/student/register/qualification" /> : qualification.title
