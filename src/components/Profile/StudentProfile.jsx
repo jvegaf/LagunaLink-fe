@@ -15,7 +15,7 @@ export const StudentProfile = () => {
     name,
     surname,
     lastname,
-    qualifications,
+    qualification,
     languages,
     jobExperiences
   } = useStudent()
@@ -23,7 +23,7 @@ export const StudentProfile = () => {
   getProfile(token, userId)
 
   const surnames = `${surname} ${lastname}`
-  const quals = qualifications === undefined ? <SmallButton content="Agregar Titulacion" path="/student/register/qualification" /> : qualifications
+  const qual = qualification === undefined ? <SmallButton content="Agregar Titulacion" path="/student/register/qualification" /> : qualification.title
   const langs = languages === undefined ? <SmallButton content="Agregar Idioma" path="/student/register/language" /> : languages
   const jobs = jobExperiences === undefined ? <SmallButton content="Agregar experiencia laboral" path="/student/register/job_experience" /> : jobExperiences
 
@@ -36,9 +36,9 @@ export const StudentProfile = () => {
             <Avatar className="mt-5 mb-2"/>
             <Element title="Nombre" content={ name } />
             <Element title="Apellidos" content={ surnames } />
-            <Element title="Titulacion" content={ quals } />
+            <Element title="Titulacion" content={ qual } />
             <Element title="Idioma" content={ langs } />
-            <Element title="Experiencias previas" content={ jobs } />
+            <Element title="Experiencia" content={ jobs } />
           </div>
         </div>
         <div className="col"></div>

@@ -1,6 +1,6 @@
 import { useCallback, useContext } from 'react'
 import StudentContext from '../context/StudentContext'
-import { GetStudentProfile } from '../services/student/GetProfile'
+import { apiProvider } from '../services/api/api-provider'
 
 export const useStudent = () => {
   const {
@@ -10,8 +10,8 @@ export const useStudent = () => {
     setSurname,
     lastname,
     setLastname,
-    qualifications,
-    setQualifications,
+    qualification,
+    setQualification,
     languages,
     setLanguages,
     jobExperiences,
@@ -20,30 +20,43 @@ export const useStudent = () => {
 
   const getProfile = useCallback(
     (token, userId) => {
-      GetStudentProfile(token, userId)
-        .then(student => {
-          if (student === undefined) {
+      apiProvider.getSingle('students', userId, token)
+        .then(response => {
+          if (response.data.student === undefined) {
             console.log('undefined response')
           }
-          setName(student.name)
-          setSurname(student.surname)
-          setLastname(student.lastname)
-          setQualifications(student.qualifications)
-          setLanguages(student.languages)
-          setJobExperiences(student.job_experiences)
+          setName(response.data.student.name)
+          setSurname(response.data.student.surname)
+          setLastname(response.data.student.lastname)
+          setQualification(response.data.student.qualification)
+          setLanguages(response.data.student.languages)
+          setJobExperiences(response.data.student.job_experiences)
         }
         ).catch(e => {
           console.log(e.response)
         })
     },
-    [setJobExperiences, setLanguages, setLastname, setName, setQualifications, setSurname]
+    [setJobExperiences, setLanguages, setLastname, setName, setQualification, setSurname]
   )
+
+  const addQualification = useCallback(
+    (data, userId, token) => {
+      return apiProvider.put('students', userId, {
+        qualification: data
+      }, token)
+        .then(response => { return response.status })
+        .catch(e => { console.log(e) })
+    },
+    []
+  )
+
   return {
     getProfile,
+    addQualification,
     name,
     surname,
     lastname,
-    qualifications,
+    qualification,
     languages,
     jobExperiences
   }

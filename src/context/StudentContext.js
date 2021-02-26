@@ -9,7 +9,7 @@ export function StudentContextProvider ({ children }) {
 
   const [lastname, setLastname] = useState('')
 
-  const [qualifications, setQualifications] = useState([])
+  const [qualification, setQualification] = useState({})
 
   const [languages, setLanguages] = useState([])
 
@@ -23,8 +23,8 @@ export function StudentContextProvider ({ children }) {
       setSurname,
       lastname,
       setLastname,
-      qualifications,
-      setQualifications,
+      qualification,
+      setQualification,
       languages,
       setLanguages,
       jobExperiences,

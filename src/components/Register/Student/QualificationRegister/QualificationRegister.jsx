@@ -1,14 +1,20 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { useUser } from '../../../../hooks/useUser'
+import { useStudent } from '../../../../hooks/useStudent'
 
 export const QualificationRegister = () => {
-  // const token = useContext(Context).token
-  // const path = '/students'
+  const history = useHistory()
+  const { token, userId } = useUser()
+  const { addQualification } = useStudent()
   const { register, errors, handleSubmit } = useForm()
 
-  const onSubmit = (data) => {
-    console.log(data)
+  const onSubmit = data => {
+    addQualification(data, userId, token)
+      .then(status => {
+        if (status === 200) { history.push('/dasboard') }
+      })
   }
 
   return (
