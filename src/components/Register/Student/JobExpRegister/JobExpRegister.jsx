@@ -1,12 +1,19 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { useStudent } from '../../../../hooks/useStudent'
 
 export const JobExpRegister = () => {
+  const history = useHistory()
   const { register, errors, handleSubmit } = useForm()
+  const { addJobExperience } = useStudent()
 
   const onSubmit = (data) => {
-    console.log(data)
+    addJobExperience(data).then(status => {
+      if (status === 200) {
+        history.goBack()
+      }
+    })
   }
 
   return (
@@ -76,18 +83,13 @@ export const JobExpRegister = () => {
             />
           </div>
         </div>
-        <div className="d-flex mt-5 justify-content-around">
-          <button type="submit" className="btn btn-success px-5">
+        <div className="d-flex justify-content-around mt-5">
+          <Link className='btn btn-outline-warning w-25' to='/dashboard'>Volver</Link>
+          <button type="submit" className="btn btn-success w-50">
             Guardar
           </button>
-          <Link to="/dashboard" className="btn btn-secondary px-5">
-            Volver
-          </Link>
         </div>
       </form>
-      <div className="row mt-5 justify-content-center">
-        <button className="btn btn-outline-primary">Agregar otra experiencia de trabajo</button>
-      </div>
     </div>
   )
 }

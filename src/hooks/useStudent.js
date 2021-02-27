@@ -64,10 +64,23 @@ export const useStudent = () => {
     [languages, token, userId]
   )
 
+  const addJobExperience = useCallback(
+    (data) => {
+      jobExperiences.push(data)
+      return apiProvider.put('students', userId, {
+        job_experiences: jobExperiences
+      }, token)
+        .then(response => { return response.status })
+        .catch(e => { console.log(e) })
+    },
+    [jobExperiences, token, userId]
+  )
+
   return {
     getProfile,
     addQualification,
     addLanguage,
+    addJobExperience,
     name,
     surname,
     lastname,

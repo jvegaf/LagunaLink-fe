@@ -1,7 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap');
 
 .title-style {
-  color: #47525E;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
   font-size: 40px;
 }
