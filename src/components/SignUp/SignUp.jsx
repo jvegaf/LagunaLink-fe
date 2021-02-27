@@ -2,33 +2,28 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 import { useUser } from '../../hooks/useUser'
-import { SignUpService } from '../../services/auth/SignUpService'
 import { ModalView } from '../ModalView'
 
 export const SignUp = () => {
   const history = useHistory()
-  const { resetStatus } = useUser()
+  const { resetStatus, signUp } = useUser()
   const { register, getValues, errors, handleSubmit } = useForm()
   const [modalShow, setModalShow] = useState({
     show: false,
     message: ''
   })
   const onSubmit = (data, e) => {
-    console.log(data)
     resetStatus()
-    SignUpService({
-      email: data.email,
-      password: data.password,
-      role: data.role
-    }).then((status) => {
-      if (status === 201) {
-        setModalShow({ show: true, message: 'Email de confirmacion enviado. Mira en tu buzon' })
-      }
+    signUp(data)
+      .then(status => {
+        if (status === 201) {
+          setModalShow({ show: true, message: 'Email de confirmacion enviado. Mira en tu buzon' })
+        }
 
-      if (status === 430) {
-        setModalShow({ show: true, message: 'El Email ya estaba registrado. Ingresa en tu cuenta' })
-      }
-    })
+        if (status === 430) {
+          setModalShow({ show: true, message: 'El Email ya estaba registrado. Ingresa en tu cuenta' })
+        }
+      }).catch(e => console.log(e))
   }
 
   return (

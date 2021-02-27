@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 body {
   margin: 0;
-  font-family: 'Lato', sans-serif;
-  color: #47525E;
+  font-family: 'Roboto', sans-serif;
+  color: #2a3138;
 }
 
 code {

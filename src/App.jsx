@@ -32,9 +32,7 @@ function App () {
               </Route>
               <Route path="/register/:accountType" component={RegisterPage} />
               <Route path="/student/register/:section" component={RegistryPage} />
-              <Route path="/dashboard">
-                <DashboardPage />
-              </Route>
+              <Route path="/dashboard" component={DashboardPage} />
               <Route path="/auth/confirmed">
                 <ConfirmedPage />
               </Route>

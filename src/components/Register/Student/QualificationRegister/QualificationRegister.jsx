@@ -1,28 +1,29 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { Link, useHistory } from 'react-router-dom'
+import { useStudent } from '../../../../hooks/useStudent'
 
 export const QualificationRegister = () => {
-  const [data, setData] = useState({
-    title: '',
-    start_date: '',
-    end_date: ''
-  })
+  const history = useHistory()
+  const { addQualification } = useStudent()
+  const { register, errors, handleSubmit } = useForm()
 
-  const handleInputChange = (event) => {
-    setData({
-      ...data,
-      [event.target.name]: event.target.value
-    })
+  const onSubmit = data => {
+    addQualification(data)
+      .then(status => {
+        if (status === 200) { history.push('/dasboard') }
+      })
   }
 
   return (
-    <div className="col-3 m-auto">
+    <div className="bg-white ll-corners p-5">
       <div className="row justify-content-center">
         <h1>Tu Curriculum</h1>
       </div>
       <div className="row justify-content-center mt-3">
         <p>Agrega tu ultima titulacion terminada</p>
       </div>
-      <form className="mt-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-5">
         <div className="form-group">
           <label htmlFor="title">Titulo</label>
           <input
@@ -31,34 +32,38 @@ export const QualificationRegister = () => {
             className="form-control"
             id="title"
             placeholder="Titulo"
-            onChange={handleInputChange}
+            ref={register({ required: 'Es necesario' })}
           />
+          {errors.title && <p style={{ color: 'red' }}>{errors.title.message}</p>}
         </div>
         <div className="row justify-content-between">
           <div className="form-group col-6">
-            <label htmlFor="start_date">Fecha de inicio</label>
+            <label htmlFor="start_date">Inicio</label>
             <input
               type="month"
               name="start_date"
               className="form-control"
               id="start_date"
-              onChange={handleInputChange}
+              ref={register({ required: 'Es necesario' })}
             />
+            {errors.start_date && <p style={{ color: 'red' }}>{errors.start_date.message}</p>}
           </div>
           <div className="form-group col-6">
-            <label htmlFor="end_date">Fecha de finalizacion</label>
+            <label htmlFor="end_date">Finalizacion</label>
             <input
               type="month"
               name="end_date"
               className="form-control"
               id="end_date"
-              onChange={handleInputChange}
+              ref={register({ required: 'Es necesario' })}
             />
+            {errors.end_date && <p style={{ color: 'red' }}>{errors.end_date.message}</p>}
           </div>
         </div>
-        <div className="form-group mt-5">
-          <button type="submit" className="btn btn-primary w-100">
-            Siguiente
+        <div className="d-flex justify-content-around mt-5">
+          <Link className='btn btn-warning w-25' to='/dashboard'>Volver</Link>
+          <button type="submit" className="btn btn-success w-50">
+            Guardar
           </button>
         </div>
       </form>
