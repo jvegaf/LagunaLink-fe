@@ -18,7 +18,7 @@ export const useUser = () => {
     setIsSigned
   } = useContext(Context)
 
-  const signInReq = useCallback(
+  const signIn = useCallback(
     ({ email, password }) => {
       apiProvider.post('/auth/signin', {
         email: email,
@@ -43,14 +43,14 @@ export const useUser = () => {
         }
         )
         .catch(e => {
-          console.log(e)
+          console.error({ e })
           setStatus(e.response.status)
         })
     },
     [setToken, setEmail, setUserId, setUserRole, setStatus, setIsSigned]
   )
 
-  const signOutReq = useCallback(() => {
+  const signOut = useCallback(() => {
     setToken(null)
     window.localStorage.removeItem('access_token')
     setIsSigned(false)
@@ -71,7 +71,7 @@ export const useUser = () => {
       password: data.password,
       role: data.role
     }).then(response => { return response.status })
-      .catch(e => e.response.status)
+      .catch(e => { return e.response.status })
   })
 
   const resetStatus = useCallback(() => {
@@ -88,11 +88,12 @@ export const useUser = () => {
     getTokenAndId,
     isSigned,
     email,
-    signInReq,
-    signOutReq,
+    signIn,
+    signOut,
     signUp,
     status,
     resetStatus,
+    setStatus,
     userRole
   }
 }

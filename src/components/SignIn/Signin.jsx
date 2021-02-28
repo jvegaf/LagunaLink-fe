@@ -15,7 +15,7 @@ export function SignInComponent () {
   })
   const [authError, setAuthError] = useState(false)
 
-  const { signInReq, status, resetStatus } = useUser()
+  const { signIn, status, resetStatus } = useUser()
 
   useEffect(() => {
     switch (status) {
@@ -42,7 +42,7 @@ export function SignInComponent () {
   }, [history, status, setAuthError, setModalShow])
 
   const onSubmit = (data) => {
-    signInReq({ email: data.email, password: data.password })
+    signIn({ email: data.email, password: data.password })
   }
 
   return (

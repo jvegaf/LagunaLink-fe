@@ -3,8 +3,5 @@ export function handleResponse (response) {
 }
 
 export function handleError (error) {
-  if (error.data) {
-    return error.data
-  }
-  return error
+  throw error
 }

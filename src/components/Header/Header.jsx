@@ -5,12 +5,12 @@ import { useUser } from '../../hooks/useUser'
 import { NavLink, useHistory } from 'react-router-dom'
 
 export const Header = () => {
-  const { email, signOutReq } = useUser()
+  const { email, signOut } = useUser()
   const history = useHistory()
 
   const handleClick = e => {
     e.preventDefault()
-    signOutReq()
+    signOut()
     history.push('/signin')
   }
 
