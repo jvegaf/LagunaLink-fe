@@ -41,6 +41,15 @@ export const useStudent = () => {
     [setJobExperiences, setLanguages, setLastname, setName, setQualification, setSurname, token, userId]
   )
 
+  const registerStudent = useCallback(
+    (data) => {
+      return apiProvider.post('/students', data, token)
+        .then(response => { return response.status })
+        .catch(e => { console.log(e) })
+    },
+    [token]
+  )
+
   const addQualification = useCallback(
     (data) => {
       return apiProvider.put('students', userId, {
@@ -78,6 +87,7 @@ export const useStudent = () => {
 
   return {
     getProfile,
+    registerStudent,
     addQualification,
     addLanguage,
     addJobExperience,

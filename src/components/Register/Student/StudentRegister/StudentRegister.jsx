@@ -1,74 +1,61 @@
-import React, { useContext } from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import Context from '../../../../context/UserContext'
-import { RegisterService } from '../../../../services/register/RegisterService'
+import { useStudent } from '../../../../hooks/useStudent'
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBBtn,
+  MDBInput,
+  MDBTypography
+} from 'mdbreact'
 
 export const StudentRegister = () => {
-  const token = useContext(Context).token
-  const path = '/students'
-  const { register, errors, handleSubmit } = useForm()
-
+  const { registerStudent } = useStudent()
+  const [data, setData] = useState({
+    name: '',
+    surname: '',
+    lastname: ''
+  })
   const history = useHistory()
 
+  const handleInputChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value
+    })
+  }
+
   const onSubmit = (data) => {
-    RegisterService({ token, data, path }).then((status) => {
+    registerStudent(data).then((status) => {
       if (status === 201) history.push('/main')
     })
   }
 
   return (
-    <div className="col-md-8 col-lg-5 bg-white p-lg-5 ll-corners">
-      <div className="row justify-content-center">
-        <h1>Registro Estudiante</h1>
-      </div>
-      <div className="row justify-content-center mt-3">
-        <p>Completa el registro de tu cuenta</p>
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-5">
-        <div className="form-group">
-          <label htmlFor="name">Nombre</label>
-          <input
-            type="text"
-            name="name"
-            className="form-control"
-            ref={register({ required: 'Es necesario' })}
-            placeholder="Nombre"
-          />
-          {errors.name && <p style={{ color: 'red' }}>{errors.name.message}</p>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="surname">Primer Apellido</label>
-          <input
-            type="text"
-            name="surname"
-            className="form-control"
-            ref={register({ required: 'Es necesario' })}
-            placeholder="Apellido 1"
-          />
-          {errors.surname && (
-            <p style={{ color: 'red' }}>{errors.surname.message}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="lastname">Segundo Apellido</label>
-          <input
-            type="text"
-            name="lastname"
-            className="form-control"
-            ref={register({ required: 'Es necesario' })}
-            placeholder="Apellido 2"
-          />
-          {errors.lastname && (
-            <p style={{ color: 'red' }}>{errors.lastname.message}</p>
-          )}
-        </div>
-        <div className="form-group mt-5">
-          <button type="submit" className="btn btn-primary w-100">
-            Completar Registro
-          </button>
-        </div>
-      </form>
-    </div>
+    <MDBContainer>
+    <MDBRow className="justify-content-center">
+      <MDBCol md="7" sm="12">
+        <MDBTypography tag="h2" className="text-center mb-5">
+          Registro de Estudiante
+        </MDBTypography>
+        <form onSubmit={onSubmit}>
+          <p className="h5 text-center mb-4"></p>
+          <div className="grey-text">
+            <MDBInput label="Nombre" icon="user"
+            group type="text" validate error="wrong" name="name"
+              onChange={handleInputChange} success="right" />
+            <MDBInput label="Primer Apellido" name="surname" onChange={handleInputChange}
+            icon="user" group type="text" validate />
+            <MDBInput label="Segundo Apellido" name="lastname" onChange={handleInputChange}
+            icon="user" group type="text" validate />
+          </div>
+          <div className="text-center">
+            <MDBBtn type="submit" color="default">Completar Registro</MDBBtn>
+          </div>
+        </form>
+      </MDBCol>
+    </MDBRow>
+  </MDBContainer>
   )
 }

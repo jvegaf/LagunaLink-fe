@@ -1,108 +1,71 @@
-import React, { useContext } from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import Context from '../../../../context/UserContext'
-import { RegisterService } from '../../../../services/register/RegisterService'
+import { useCompany } from '../../../../hooks/useCompany'
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBBtn,
+  MDBInput,
+  MDBTypography
+} from 'mdbreact'
 
 export const CompanyRegister = () => {
-  const token = useContext(Context).token
-  const path = '/companies'
-  const { register, errors, handleSubmit } = useForm()
   const history = useHistory()
+  const { registerCompany } = useCompany()
 
-  const onSubmit = (data) => {
-    RegisterService({ token, data, path }).then((status) => {
+  const [data, setData] = useState({
+    name: '',
+    description: '',
+    address: '',
+    postalCode: '',
+    region: '',
+    city: ''
+  })
+
+  const handleInputChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value
+    })
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+    registerCompany(data).then((status) => {
       if (status === 201) history.push('/main')
     })
   }
   return (
-    <div className="col-md-8 col-lg-5 bg-white p-lg-5 ll-corners">
-      <div className="row justify-content-center">
-        <h1>Registro Empresa</h1>
-      </div>
-      <div className="row justify-content-center mt-3">
-        <p>Completa el registro de tu cuenta</p>
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-5">
-        <div className="form-group">
-          <label htmlFor="name">Nombre</label>
-          <input
-            type="text"
-            name="name"
-            className="form-control"
-            ref={register({ required: 'Es necesario' })}
-            placeholder="Nombre"
-          />
-          {errors.name && <p style={{ color: 'red' }}>{errors.name.message}</p>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="description">Descripcion</label>
-          <textarea
-            className="form-control"
-            ref={register({ required: 'Es necesario' })}
-            name="description"
-            rows="3"
-          ></textarea>
-          {errors.description && <p style={{ color: 'red' }}>{errors.description.message}</p>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="address">Direccion</label>
-          <input
-            type="text"
-            name="address"
-            className="form-control"
-            ref={register({ required: 'Es necesario' })}
-            placeholder="Direccion"
-          />
-          {errors.address && <p style={{ color: 'red' }}>{errors.address.message}</p>}
-        </div>
-        <div className="row">
-          <div className="col-4">
-            <div className="form-group">
-              <label htmlFor="postalCode">Codigo Postal</label>
-              <input
-                type="text"
-                name="postalCode"
-                className="form-control"
-                ref={register({ required: 'Es necesario' })}
-                placeholder="Codigo Postal"
-              />
-            </div>
-            {errors.postalCode && <p style={{ color: 'red' }}>{errors.postalCode.message}</p>}
+    <MDBContainer>
+    <MDBRow className="justify-content-center">
+      <MDBCol md="7" sm="12">
+        <MDBTypography tag="h2" className="text-center mb-5">
+          Registro de Empresa
+        </MDBTypography>
+        <form onSubmit={onSubmit}>
+          <p className="h5 text-center mb-4"></p>
+          <div className="grey-text">
+            <MDBInput label="Nombre" icon="building"
+            group type="text" validate error="wrong" name="name"
+              onChange={handleInputChange} success="right" />
+            <MDBInput label="Descripcion" name="description" onChange={handleInputChange}
+            icon="glasses" group type="text" validate />
+            <MDBInput label="Direccion" name="address" onChange={handleInputChange}
+            icon="map-marker-alt" group type="text" validate />
+            <MDBInput label="Codigo Postal" name="postalCode" onChange={handleInputChange}
+            icon="envelope" group type="text" validate />
+            <MDBInput label="Provincia" name="region" onChange={handleInputChange}
+            icon="map-marked" group type="text" validate />
+            <MDBInput label="Poblacion" name="city" onChange={handleInputChange}
+            icon="city" group type="text" validate />
           </div>
-          <div className="col-4">
-            <div className="form-group">
-              <label htmlFor="region">Provincia</label>
-              <input
-                type="text"
-                name="region"
-                className="form-control"
-                ref={register({ required: 'Es necesario' })}
-                placeholder="Provincia"
-              />
-              {errors.region && <p style={{ color: 'red' }}>{errors.region.message}</p>}
-            </div>
+          <div className="text-center">
+            <MDBBtn type="submit" color="default">Completar Registro</MDBBtn>
           </div>
-          <div className="col-4">
-            <div className="form-group">
-              <label htmlFor="city">Poblacion</label>
-              <input
-                type="text"
-                name="city"
-                className="form-control"
-                ref={register({ required: 'Es necesario' })}
-                placeholder="Poblacion"
-              />
-              {errors.city && <p style={{ color: 'red' }}>{errors.city.message}</p>}
-            </div>
-          </div>
-        </div>
-        <div className="form-group mt-5">
-          <button type="submit" className="btn btn-primary w-100">
-            Completar Registro
-          </button>
-        </div>
-      </form>
-    </div>
+        </form>
+      </MDBCol>
+    </MDBRow>
+  </MDBContainer>
   )
 }

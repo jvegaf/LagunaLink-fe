@@ -1,8 +1,10 @@
 import { useCallback, useContext } from 'react'
 import CompanyContext from '../context/CompanyContext'
-import { GetCompanyProfile } from '../services/company/GetProfile'
+import { apiProvider } from '../services/api/api-provider'
+import { useUser } from './useUser'
 
 export const useCompany = () => {
+  const { token, userId } = useUser()
   const {
     name,
     setName,
@@ -17,28 +19,40 @@ export const useCompany = () => {
     city,
     setCity
   } = useContext(CompanyContext)
+
   const getProfile = useCallback(
-    (token, userId) => {
-      GetCompanyProfile(token, userId)
-        .then(company => {
-          if (company === undefined) {
+    () => {
+      apiProvider.getSingle('companies', userId, token)
+        .then(response => {
+          if (response === undefined) {
             console.log('undefined response')
           }
-          setName(company.name)
-          setDescription(company.description)
-          setAddress(company.address)
-          setPostalCode(company.postalCode)
-          setRegion(company.region)
-          setCity(company.city)
+          setName(response.data.company.name)
+          setDescription(response.data.company.description)
+          setAddress(response.data.company.address)
+          setPostalCode(response.data.company.postalCode)
+          setRegion(response.data.company.region)
+          setCity(response.data.company.city)
         }
         ).catch(e => {
           console.log(e.response)
         })
     },
-    [setName, setDescription, setAddress, setPostalCode, setRegion, setCity]
+    [userId, token, setName, setDescription, setAddress, setPostalCode, setRegion, setCity]
   )
+
+  const registerCompany = useCallback(
+    (data) => {
+      return apiProvider.post('/companies', data, token)
+        .then(response => { return response.status })
+        .catch(e => { console.log(e) })
+    },
+    [token]
+  )
+
   return {
     getProfile,
+    registerCompany,
     name,
     description,
     address,
