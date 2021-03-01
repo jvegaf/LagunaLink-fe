@@ -1,21 +1,40 @@
 import { useState, useEffect } from 'react'
-import LLTitle from '../LLTitle'
-import LLinkLogo from '../LLinkLogo'
-import { Link, useHistory } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import { ModalView } from '../ModalView'
+import { useHistory } from 'react-router-dom'
 import { useUser } from '../../hooks/useUser'
+import {
+  MDBContainer,
+  MDBCol,
+  MDBRow,
+  MDBInput,
+  MDBBtn
+} from 'mdbreact'
+import { ModalView } from '../ModalView'
 
 export function SignInComponent () {
   const history = useHistory()
-  const { register, errors, handleSubmit } = useForm()
-  const [modalShow, setModalShow] = useState({
-    show: false,
-    message: ''
+  const { status, setStatus, signIn } = useUser()
+  const [data, setData] = useState({
+    email: '',
+    password: ''
   })
-  const [authError, setAuthError] = useState(false)
+  const [modal, setModal] = useState({
+    open: false,
+    body: ''
+  })
 
-  const { signIn, status, resetStatus } = useUser()
+  const handleInputChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value
+    })
+  }
+
+  const onSubmit = (e) => {
+    setStatus(0)
+    setModal({ open: false, body: '' })
+    e.preventDefault()
+    signIn(data)
+  }
 
   useEffect(() => {
     switch (status) {
@@ -29,76 +48,34 @@ export function SignInComponent () {
         history.push('/register/company')
         break
       case 400:
-        setAuthError(true)
+        setModal({ open: true, body: 'Correo o Contraseña erroneo' })
         break
       case 450:
-        setModalShow({ show: true, message: 'Necesitas verificar tu cuenta antes de ingresar' })
-        break
-
-      default:
-        setModalShow(false, '')
+        setModal({ open: true, body: 'Necesitas verificar tu cuenta antes de ingresar' })
         break
     }
-  }, [history, status, setAuthError, setModalShow])
-
-  const onSubmit = (data) => {
-    signIn({ email: data.email, password: data.password })
-  }
+  }, [history, status, setModal])
 
   return (
-    <div className="row col-md-5 m-auto">
-      <ModalView show={modalShow.show} message={modalShow.message} onHide={() =>
-        resetStatus()} />
-      <div className="row col-md-12 justify-content-center mb-2">
-        <LLinkLogo size="70px" />
-      </div>
-      <div className="row mx-auto mb-4">
-        <LLTitle />
-      </div>
-      <div className="row mx-auto mb-4">
-        {authError && <p style={{ color: 'red' }}>Correo o Contraseña erroneos</p>}
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="col-md-12 mx-auto">
-        <div className="form-group">
-          <input
-            type="email"
-            name="email"
-            className="form-control"
-            placeholder="Correo Electronico"
-            ref={register({ required: 'La dirección de correo es necesaria' })}
-          />
-          {errors.email && (
-            <p style={{ color: 'red' }}>{errors.email.message}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            name="password"
-            className="form-control"
-            placeholder="Contraseña"
-            ref={register({ required: 'La contraseña es necesaria' })}
-          />
-          {errors.password && (
-            <p style={{ color: 'red' }}>{errors.password.message}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <button type="submit" className="btn btn-primary w-100">
-            Entrar
-          </button>
-        </div>
-        <div className="form-group mt-4 mb-5">
-          <Link to="/reset" className="text-secondary text-center">
-            ¿ Olvidaste tu contraseña ?
-          </Link>
-        </div>
-        <div className="row justify-content-center mt-5">
-          <Link to="/signup" className="text-secondary">
-            Registrarse
-          </Link>
-        </div>
-      </form>
-    </div>
+    <MDBContainer fluid>
+      {modal.open && <ModalView open={modal.open} body={modal.body} />}
+      <MDBRow className="justify-content-center">
+        <MDBCol md="7" sm="12">
+          <form onSubmit={onSubmit}>
+            <p className="h5 text-center mb-4">Sign in</p>
+            <div className="grey-text">
+              <MDBInput label="Correo Electronico" name="email" icon="envelope" group type="email" validate
+                error="wrong" onChange={handleInputChange}
+                success="right" />
+              <MDBInput label="Contraseña" name="password"
+              onChange={handleInputChange} icon="lock" group type="password" validate />
+            </div>
+            <div className="text-center">
+              <MDBBtn type="submit">Login</MDBBtn>
+            </div>
+          </form>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   )
 }

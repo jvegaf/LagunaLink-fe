@@ -21,3 +21,16 @@ body {
 .ll-bg {
   background-color: #EDEDED;
 }
+
+.handshake-bg {
+  height: 100vh;
+  min-height: 500px;
+  background-image: url(../../assets/handshake.jpg);
+  filter: opacity(70%);
+  -webkit-filter: opacity(70%);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: inherit;
+  background-size: cover;
+  background-color: #EDEDED;
+}

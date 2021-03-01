@@ -4,7 +4,6 @@ import {
   Route,
   Switch
 } from 'react-router-dom'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import SignInPage from './pages/signIn/SignInPage'
 import { SignUpPage } from './pages/signUp/SignUpPage'
 import { MainPage } from './pages/main/MainPage'
