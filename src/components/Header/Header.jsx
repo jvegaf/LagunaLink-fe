@@ -1,31 +1,61 @@
-import React from 'react'
-import { Button, Navbar } from 'react-bootstrap'
-import LLinkLogo from '../LLinkLogo'
+/* eslint-disable no-unused-vars */
+import {
+  MDBCollapse,
+  MDBContainer,
+  MDBDropdown,
+  MDBNavbar,
+  MDBNavbarBrand,
+  MDBNavbarNav,
+  MDBNavbarToggler,
+  MDBNavItem,
+  MDBDropdownToggle,
+  MDBIcon,
+  MDBDropdownMenu,
+  MDBDropdownItem,
+  MDBTypography
+} from 'mdbreact'
+import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useUser } from '../../hooks/useUser'
-import { NavLink, useHistory } from 'react-router-dom'
 
 export const Header = () => {
-  const { email, signOut } = useUser()
+  const { signOut } = useUser()
   const history = useHistory()
+  const [collapse, setCollapse] = useState(false)
+  const goToDashboard = (e) => {
+    e.preventDefault()
+    history.push('/dashboard')
+  }
 
-  const handleClick = e => {
+  const signout = (e) => {
     e.preventDefault()
     signOut()
     history.push('/signin')
   }
 
   return (
-      <Navbar bg="dark" variant="dark">
-        <Navbar.Brand className="pl-2" href="/main">
-          <LLinkLogo size="40px" />
-          <span className="pl-3 h3">LagunaLink</span>
-        </Navbar.Brand>
-        <Navbar.Collapse className="justify-content-end">
-          <Navbar.Text className="pr-3">
-            <NavLink to="/dashboard">{email}</NavLink>
-          </Navbar.Text>
-          <Button variant="outline-danger" onClick={handleClick} style={{ width: '10em', paddingRight: '20px' }}>Salir</Button>
-        </Navbar.Collapse>
-      </Navbar>
+    <MDBNavbar color="unique-color" fixed="top" dark expand="md">
+      <MDBContainer>
+        <MDBNavbarBrand href="/">
+          <h4><span className="font-weight-bolder">LagunaLink</span></h4>
+        </MDBNavbarBrand>
+        <MDBNavbarToggler />
+        <MDBCollapse isOpen={collapse} navbar>
+          <MDBNavbarNav right>
+          <MDBNavItem>
+              <MDBDropdown>
+                <MDBDropdownToggle nav caret>
+                  <MDBIcon icon="user" />
+                </MDBDropdownToggle>
+                <MDBDropdownMenu className="dropdown-default">
+                  <MDBDropdownItem onClick={goToDashboard}>Cuenta</MDBDropdownItem>
+                  <MDBDropdownItem onClick={signout}>Cerrar Sesion</MDBDropdownItem>
+                </MDBDropdownMenu>
+              </MDBDropdown>
+            </MDBNavItem>
+          </MDBNavbarNav>
+        </MDBCollapse>
+      </MDBContainer>
+    </MDBNavbar>
   )
 }
