@@ -10,7 +10,7 @@ import {
   MDBLink,
   MDBTypography
 } from 'mdbreact'
-import { ModalView } from '../ModalView'
+import { ModalView } from '../ModalView/ModalView'
 
 export function SignInComponent () {
   const history = useHistory()
