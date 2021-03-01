@@ -6,7 +6,9 @@ import {
   MDBCol,
   MDBRow,
   MDBInput,
-  MDBBtn
+  MDBBtn,
+  MDBLink,
+  MDBTypography
 } from 'mdbreact'
 import { ModalView } from '../ModalView'
 
@@ -61,19 +63,24 @@ export function SignInComponent () {
       {modal.open && <ModalView open={modal.open} body={modal.body} />}
       <MDBRow className="justify-content-center">
         <MDBCol md="7" sm="12">
+          <MDBTypography tag="h2" className="text-center mb-5">
+            Iniciar Sesión
+          </MDBTypography>
           <form onSubmit={onSubmit}>
-            <p className="h5 text-center mb-4">Sign in</p>
             <div className="grey-text">
-              <MDBInput label="Correo Electronico" name="email" icon="envelope" group type="email" validate
+              <MDBInput className="mt-5" label="Correo Electronico" name="email" icon="envelope" group type="email" validate
                 error="wrong" onChange={handleInputChange}
                 success="right" />
               <MDBInput label="Contraseña" name="password"
               onChange={handleInputChange} icon="lock" group type="password" validate />
             </div>
             <div className="text-center">
-              <MDBBtn type="submit">Login</MDBBtn>
+              <MDBBtn type="submit">Entrar</MDBBtn>
             </div>
           </form>
+          <MDBRow className='justify-content-end mt-4'>
+            <MDBLink to="/signup">¿No tienes una cuenta? Registrate</MDBLink>
+          </MDBRow>
         </MDBCol>
       </MDBRow>
     </MDBContainer>

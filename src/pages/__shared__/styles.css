@@ -34,3 +34,15 @@ body {
   background-size: cover;
   background-color: #EDEDED;
 }
+
+.building-bg {
+  height: 100vh;
+  min-height: 500px;
+  background-image: url(../../assets/building.jpg);
+  filter: brightness(80%);
+  -webkit-filter: brightness(80%);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: inherit;
+  background-size: cover;
+}

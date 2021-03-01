@@ -1,13 +1,19 @@
 import React from 'react'
 import { SignUp } from '../../components/SignUp/SignUp'
-import './signUp.css'
+import '../__shared__/styles.css'
+import { MDBBox, MDBCol, MDBContainer, MDBRow } from 'mdbreact'
 
 export const SignUpPage = () => {
   return (
-    <div className="row">
-      <div className="col-12 center">
-        <SignUp />
-      </div>
-    </div>
+    <MDBContainer fluid>
+      <MDBRow>
+        <MDBCol md="7" className="d-none d-md-block">
+          <MDBBox className="building-bg" />
+        </MDBCol>
+        <MDBCol md="5" sm="12" className="d-flex align-items-center">
+          <SignUp />
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   )
 }
