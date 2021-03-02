@@ -6,9 +6,9 @@ import {
   MDBRow,
   MDBCol,
   MDBBtn,
-  MDBInput,
-  MDBTypography
+  MDBInput
 } from 'mdbreact'
+import { HeadTitle } from '../../../shared/HeadTitle'
 
 export const CompanyRegister = () => {
   const history = useHistory()
@@ -40,9 +40,7 @@ export const CompanyRegister = () => {
     <MDBContainer>
     <MDBRow className="justify-content-center">
       <MDBCol md="7" sm="12">
-        <MDBTypography tag="h2" className="text-center mb-5">
-          Registro de Empresa
-        </MDBTypography>
+        <HeadTitle content="Registro de Empresa" />
         <form onSubmit={onSubmit}>
           <p className="h5 text-center mb-4"></p>
           <div className="grey-text">
