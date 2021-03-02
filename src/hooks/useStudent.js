@@ -85,6 +85,25 @@ export const useStudent = () => {
     [jobExperiences, token, userId]
   )
 
+  const studentNavItems = [
+    {
+      icon: 'user-circle',
+      name: 'Cuenta'
+    },
+    {
+      icon: 'graduation-cap',
+      name: 'Curriculum'
+    },
+    {
+      icon: 'industry',
+      name: 'Exp. Laborales'
+    },
+    {
+      icon: 'highlighter',
+      name: 'Ofertas Aplicadas'
+    }
+  ]
+
   return {
     getProfile,
     registerStudent,
@@ -96,6 +115,7 @@ export const useStudent = () => {
     lastname,
     qualification,
     languages,
-    jobExperiences
+    jobExperiences,
+    studentNavItems
   }
 }

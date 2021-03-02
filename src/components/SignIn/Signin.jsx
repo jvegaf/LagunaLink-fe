@@ -7,10 +7,10 @@ import {
   MDBRow,
   MDBInput,
   MDBBtn,
-  MDBLink,
-  MDBTypography
+  MDBLink
 } from 'mdbreact'
 import { ModalView } from '../ModalView/ModalView'
+import { HeadTitle } from '../shared/HeadTitle'
 
 export function SignInComponent () {
   const history = useHistory()
@@ -63,9 +63,7 @@ export function SignInComponent () {
       {modal.open && <ModalView open={modal.open} body={modal.body} />}
       <MDBRow className="justify-content-center">
         <MDBCol md="7" sm="12">
-          <MDBTypography tag="h2" className="text-center mb-5">
-            Iniciar Sesión
-          </MDBTypography>
+          <HeadTitle content="Iniciar Sesion" />
           <form onSubmit={onSubmit}>
             <div className="grey-text">
               <MDBInput className="mt-5" label="Correo Electronico" name="email" icon="envelope" group type="email" validate

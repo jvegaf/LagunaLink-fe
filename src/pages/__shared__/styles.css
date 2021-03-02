@@ -1,27 +1,3 @@
-body {
-  font-family: 'Roboto', sans-serif;
-}
-
-.ll-container {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  height:100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #EDEDED;
-}
-
-.h400 {
-  height: 400px;
-}
-
-.ll-bg {
-  background-color: #EDEDED;
-}
-
 .handshake-bg {
   height: 100vh;
   min-height: 500px;

@@ -50,6 +50,21 @@ export const useCompany = () => {
     [token]
   )
 
+  const companyNavItems = [
+    {
+      icon: 'user-circle',
+      name: 'Cuenta'
+    },
+    {
+      icon: 'industry',
+      name: 'Vacantes Publicadas'
+    },
+    {
+      icon: 'edit',
+      name: 'Crear Vacante'
+    }
+  ]
+
   return {
     getProfile,
     registerCompany,
@@ -58,6 +73,7 @@ export const useCompany = () => {
     address,
     postalCode,
     region,
-    city
+    city,
+    companyNavItems
   }
 }

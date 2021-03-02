@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { useUser } from '../../hooks/useUser'
 import { ModalView } from '../ModalView/ModalView'
 import {
@@ -11,8 +9,7 @@ import {
   MDBInput,
   MDBBox,
   MDBIcon,
-  MDBNavLink,
-  MDBTypography
+  MDBNavLink
 } from 'mdbreact'
 import {
   FormControl,
@@ -21,6 +18,7 @@ import {
   MenuItem,
   makeStyles
 } from '@material-ui/core'
+import { HeadTitle } from '../shared/HeadTitle'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -32,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 export const SignUp = () => {
   const singinPath = '/signin'
   const classes = useStyles()
-  const history = useHistory()
   const { setStatus, signUp } = useUser()
   const [data, setData] = useState({
     role: '',
@@ -74,9 +71,7 @@ export const SignUp = () => {
       {modal.open && <ModalView open={modal.open} body={modal.body} redirect={modal.redirect} />}
     <MDBRow className="justify-content-center">
       <MDBCol md="7" sm="12">
-        <MDBTypography tag="h2" className="text-center mb-5">
-          Registro
-        </MDBTypography>
+        <HeadTitle content="Registro"/>
         <form onSubmit={onSubmit}>
           <p className="h5 text-center mb-4"></p>
           <div className="grey-text">

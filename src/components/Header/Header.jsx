@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
 import {
   MDBCollapse,
-  MDBContainer,
   MDBDropdown,
   MDBNavbar,
   MDBNavbarBrand,
@@ -11,8 +9,7 @@ import {
   MDBDropdownToggle,
   MDBIcon,
   MDBDropdownMenu,
-  MDBDropdownItem,
-  MDBTypography
+  MDBDropdownItem
 } from 'mdbreact'
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
@@ -21,7 +18,7 @@ import { useUser } from '../../hooks/useUser'
 export const Header = () => {
   const { signOut } = useUser()
   const history = useHistory()
-  const [collapse, setCollapse] = useState(false)
+  const [collapse] = useState(false)
   const goToDashboard = (e) => {
     e.preventDefault()
     history.push('/dashboard')
@@ -34,8 +31,7 @@ export const Header = () => {
   }
 
   return (
-    <MDBNavbar color="unique-color" fixed="top" dark expand="md">
-      <MDBContainer>
+      <MDBNavbar color="unique-color" fixed="top" dark double expand="md">
         <MDBNavbarBrand href="/">
           <h4><span className="font-weight-bolder">LagunaLink</span></h4>
         </MDBNavbarBrand>
@@ -55,7 +51,6 @@ export const Header = () => {
             </MDBNavItem>
           </MDBNavbarNav>
         </MDBCollapse>
-      </MDBContainer>
-    </MDBNavbar>
+      </MDBNavbar>
   )
 }
