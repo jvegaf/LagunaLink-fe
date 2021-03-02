@@ -1,14 +1,27 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { Link, useHistory } from 'react-router-dom'
+import React, { useState } from 'react'
+import { MDBBtn, MDBCol, MDBContainer, MDBInput, MDBNavLink, MDBRow } from 'mdbreact'
+import { useHistory } from 'react-router-dom'
 import { useStudent } from '../../../../hooks/useStudent'
+import { HeadTitle } from '../../../shared/HeadTitle'
 
 export const QualificationRegister = () => {
   const history = useHistory()
   const { addQualification } = useStudent()
-  const { register, errors, handleSubmit } = useForm()
+  const [data, setData] = useState({
+    title: '',
+    start_date: '',
+    end_date: ''
+  })
 
-  const onSubmit = data => {
+  const handleInputChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value
+    })
+  }
+
+  const onSubmit = e => {
+    e.preventDefault()
     addQualification(data)
       .then(status => {
         if (status === 200) { history.push('/dasboard') }
@@ -16,57 +29,29 @@ export const QualificationRegister = () => {
   }
 
   return (
-    <div className="bg-white ll-corners p-5">
-      <div className="row justify-content-center">
-        <h1>Tu Curriculum</h1>
-      </div>
-      <div className="row justify-content-center mt-3">
-        <p>Agrega tu ultima titulacion terminada</p>
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-5">
-        <div className="form-group">
-          <label htmlFor="title">Titulo</label>
-          <input
-            type="text"
-            name="title"
-            className="form-control"
-            id="title"
-            placeholder="Titulo"
-            ref={register({ required: 'Es necesario' })}
-          />
-          {errors.title && <p style={{ color: 'red' }}>{errors.title.message}</p>}
-        </div>
-        <div className="row justify-content-between">
-          <div className="form-group col-6">
-            <label htmlFor="start_date">Inicio</label>
-            <input
-              type="month"
-              name="start_date"
-              className="form-control"
-              id="start_date"
-              ref={register({ required: 'Es necesario' })}
-            />
-            {errors.start_date && <p style={{ color: 'red' }}>{errors.start_date.message}</p>}
+
+    <MDBContainer>
+    <MDBRow className="justify-content-center">
+      <MDBCol md="7" sm="12">
+        <HeadTitle content="Tu Curriculum"/>
+        <form onSubmit={onSubmit}>
+          <p className="h5 text-center mb-4"></p>
+          <div className="grey-text">
+            <MDBInput label="Titulacion" icon="envelope"
+            group type="text" validate error="wrong" name="company"
+              onChange={handleInputChange} success="right" />
+            <MDBInput label="Comienzo" name="start_date" onChange={handleInputChange}
+            icon="lock" group type="month" validate />
+            <MDBInput label="Terminacion" name="end_date" onChange={handleInputChange}
+            icon="lock" group type="month" validate />
           </div>
-          <div className="form-group col-6">
-            <label htmlFor="end_date">Finalizacion</label>
-            <input
-              type="month"
-              name="end_date"
-              className="form-control"
-              id="end_date"
-              ref={register({ required: 'Es necesario' })}
-            />
-            {errors.end_date && <p style={{ color: 'red' }}>{errors.end_date.message}</p>}
+          <div className="text-center">
+            <MDBBtn type="submit" color="default">Guardar</MDBBtn>
           </div>
-        </div>
-        <div className="d-flex justify-content-around mt-5">
-          <Link className='btn btn-warning w-25' to='/dashboard'>Volver</Link>
-          <button type="submit" className="btn btn-success w-50">
-            Guardar
-          </button>
-        </div>
-      </form>
-    </div>
+        </form>
+        <MDBNavLink to='/dashboard' className="mt-5 text-center" >Volver</MDBNavLink>
+      </MDBCol>
+    </MDBRow>
+  </MDBContainer>
   )
 }
