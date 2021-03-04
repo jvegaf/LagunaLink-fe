@@ -9,7 +9,8 @@ import {
   MDBDropdownToggle,
   MDBIcon,
   MDBDropdownMenu,
-  MDBDropdownItem
+  MDBDropdownItem,
+  MDBContainer
 } from 'mdbreact'
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
@@ -19,26 +20,29 @@ export const Header = () => {
   const { signOut } = useUser()
   const history = useHistory()
   const [collapse] = useState(false)
-  const goToDashboard = (e) => {
+  const goToDashboard = e => {
     e.preventDefault()
     history.push('/dashboard')
   }
 
-  const signout = (e) => {
+  const signout = e => {
     e.preventDefault()
     signOut()
     history.push('/signin')
   }
 
   return (
-      <MDBNavbar color="unique-color" fixed="top" dark double expand="md">
+    <MDBNavbar color="unique-color" fixed="top" dark double expand="md">
+      <MDBContainer>
         <MDBNavbarBrand href="/">
-          <h4><span className="font-weight-bolder">LagunaLink</span></h4>
+          <h4>
+            <span className="font-weight-bolder">LagunaLink</span>
+          </h4>
         </MDBNavbarBrand>
         <MDBNavbarToggler />
         <MDBCollapse isOpen={collapse} navbar>
           <MDBNavbarNav right>
-          <MDBNavItem>
+            <MDBNavItem>
               <MDBDropdown>
                 <MDBDropdownToggle nav caret>
                   <MDBIcon icon="user" />
@@ -51,6 +55,7 @@ export const Header = () => {
             </MDBNavItem>
           </MDBNavbarNav>
         </MDBCollapse>
-      </MDBNavbar>
+      </MDBContainer>
+    </MDBNavbar>
   )
 }

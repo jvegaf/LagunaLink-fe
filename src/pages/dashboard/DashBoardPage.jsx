@@ -1,40 +1,21 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 import { MDBCol, MDBContainer, MDBRow } from 'mdbreact'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Header } from '../../components/Header/Header'
-import { Profile } from '../../components/Profile/Profile'
-import { NavDrawer } from '../../components/SideNav/NavDrawer'
-import { SideNav } from '../../components/SideNav/SideNav'
-import { useCompany } from '../../hooks/useCompany'
-import { useStudent } from '../../hooks/useStudent'
 import { useUser } from '../../hooks/useUser'
 import '../__shared__/styles.css'
+import { StudentProfile } from '../../components/Profile/StudentProfile'
+import { CompanyProfile } from '../../components/Profile/CompanyProfile'
 
-export default function DashboardPage () {
+export default function DashboardPage() {
   const { userRole } = useUser()
-  const { studentNavItems } = useStudent()
-  const { companyNavItems } = useCompany()
-  const [items, setItems] = useState([])
-
-  useEffect(() => {
-    if (userRole === 'ROLE_STUDENT') {
-      setItems(studentNavItems)
-    }
-    if (userRole === 'ROLE_COMPANY') {
-      setItems(companyNavItems)
-    }
-  }, [])
+  const profile = userRole === 'ROLE_STUDENT' ? <StudentProfile /> : <CompanyProfile />
 
   return (
-    <MDBContainer fluid>
-    <Header />
-      <MDBRow className="vh-100">
-        <MDBCol lg="3" className="m-auto">
-          <NavDrawer elements={items} />
-        </MDBCol>
-        <MDBCol lg="9" className="d-flex align-items-center">
-          <Profile />
+    <MDBContainer>
+      <MDBRow>
+        <MDBCol>
+          <Header />
+          {profile}
         </MDBCol>
       </MDBRow>
     </MDBContainer>

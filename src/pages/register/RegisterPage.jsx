@@ -3,7 +3,7 @@ import '../__shared__/styles.css'
 import { CompanyRegister } from '../../components/Register/Company/CompanyRegister/CompanyRegister'
 import { StudentRegister } from '../../components/Register/Student/StudentRegister/StudentRegister'
 
-export const RegisterPage = (props) => {
+export const RegisterPage = props => {
   const accType = props.match.params.accountType
 
   return (

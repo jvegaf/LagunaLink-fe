@@ -3,7 +3,7 @@ import '../__shared__/styles.css'
 import { SignInComponent } from '../../components/SignIn/Signin'
 import { MDBCol, MDBContainer, MDBRow } from 'mdbreact'
 
-export default function SignInPage () {
+export default function SignInPage() {
   return (
     <MDBContainer fluid>
       <MDBRow>

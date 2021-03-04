@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch
-} from 'react-router-dom'
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import SignInPage from './pages/signIn/SignInPage'
 import { SignUpPage } from './pages/signUp/SignUpPage'
 import { MainPage } from './pages/main/MainPage'
@@ -15,7 +10,7 @@ import { UserContextProvider } from './context/UserContext'
 import { StudentContextProvider } from './context/StudentContext'
 import { CompanyContextProvider } from './context/CompanyContext'
 
-function App () {
+function App() {
   return (
     <UserContextProvider>
       <StudentContextProvider>

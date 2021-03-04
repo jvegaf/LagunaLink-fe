@@ -1,37 +1,30 @@
 import { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useUser } from '../../hooks/useUser'
-import {
-  MDBContainer,
-  MDBCol,
-  MDBRow,
-  MDBInput,
-  MDBBtn,
-  MDBLink
-} from 'mdbreact'
+import { MDBContainer, MDBCol, MDBRow, MDBInput, MDBBtn, MDBLink, MDBCard, MDBCardBody } from 'mdbreact'
 import { ModalView } from '../ModalView/ModalView'
 import { HeadTitle } from '../shared/HeadTitle'
 
-export function SignInComponent () {
+export function SignInComponent() {
   const history = useHistory()
   const { status, setStatus, signIn } = useUser()
   const [data, setData] = useState({
     email: '',
-    password: ''
+    password: '',
   })
   const [modal, setModal] = useState({
     open: false,
-    body: ''
+    body: '',
   })
 
-  const handleInputChange = (event) => {
+  const handleInputChange = event => {
     setData({
       ...data,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     })
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = e => {
     setStatus(0)
     setModal({ open: false, body: '' })
     e.preventDefault()
@@ -53,32 +46,56 @@ export function SignInComponent () {
         setModal({ open: true, body: 'Correo o Contraseña erroneo' })
         break
       case 450:
-        setModal({ open: true, body: 'Necesitas verificar tu cuenta antes de ingresar' })
+        setModal({
+          open: true,
+          body: 'Necesitas verificar tu cuenta antes de ingresar',
+        })
         break
     }
   }, [history, status, setModal])
 
   return (
-    <MDBContainer fluid>
-      {modal.open && <ModalView open={modal.open} body={modal.body} />}
+    <MDBContainer>
       <MDBRow className="justify-content-center">
         <MDBCol md="7" sm="12">
-          <HeadTitle content="Iniciar Sesion" />
-          <form onSubmit={onSubmit}>
-            <div className="grey-text">
-              <MDBInput className="mt-5" label="Correo Electronico" name="email" icon="envelope" group type="email" validate
-                error="wrong" onChange={handleInputChange}
-                success="right" />
-              <MDBInput label="Contraseña" name="password"
-              onChange={handleInputChange} icon="lock" group type="password" validate />
-            </div>
-            <div className="text-center">
-              <MDBBtn type="submit">Entrar</MDBBtn>
-            </div>
-          </form>
-          <MDBRow className='justify-content-end mt-4'>
-            <MDBLink to="/signup">¿No tienes una cuenta? Registrate</MDBLink>
-          </MDBRow>
+          <MDBCard className="py-4">
+            <MDBCardBody>
+              {modal.open && <ModalView open={modal.open} body={modal.body} />}
+              <HeadTitle content="Iniciar Sesion" />
+              <form onSubmit={onSubmit}>
+                <div className="grey-text">
+                  <MDBInput
+                    className="mt-5 pl-3"
+                    label="Correo Electronico"
+                    name="email"
+                    icon="envelope"
+                    group
+                    type="email"
+                    validate
+                    error="wrong"
+                    onChange={handleInputChange}
+                    success="right"
+                  />
+                  <MDBInput
+                    className="pl-3"
+                    label="Contraseña"
+                    name="password"
+                    onChange={handleInputChange}
+                    icon="lock"
+                    group
+                    type="password"
+                    validate
+                  />
+                </div>
+                <div className="text-center">
+                  <MDBBtn type="submit">Entrar</MDBBtn>
+                </div>
+              </form>
+              <MDBRow className="justify-content-end mt-4">
+                <MDBLink to="/signup">¿No tienes una cuenta? Registrate</MDBLink>
+              </MDBRow>
+            </MDBCardBody>
+          </MDBCard>
         </MDBCol>
       </MDBRow>
     </MDBContainer>

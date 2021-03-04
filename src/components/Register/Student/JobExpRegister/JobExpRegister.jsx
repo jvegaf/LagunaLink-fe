@@ -12,17 +12,17 @@ export const JobExpRegister = () => {
     position: '',
     responsibilities: '',
     start_date: '',
-    end_date: ''
+    end_date: '',
   })
 
-  const handleInputChange = (event) => {
+  const handleInputChange = event => {
     setData({
       ...data,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     })
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = e => {
     e.preventDefault()
     addJobExperience(data).then(status => {
       if (status === 200) {
@@ -33,31 +33,72 @@ export const JobExpRegister = () => {
 
   return (
     <MDBContainer>
-    <MDBRow className="justify-content-center">
-      <MDBCol md="7" sm="12">
-        <HeadTitle content="Tu Curriculum"/>
-        <form onSubmit={onSubmit}>
-          <p className="h5 text-center mb-4"></p>
-          <div className="grey-text">
-            <MDBInput label="Empresa" icon="envelope"
-            group type="text" validate error="wrong" name="company"
-              onChange={handleInputChange} success="right" />
-            <MDBInput label="Puesto" name="position" onChange={handleInputChange}
-            icon="lock" group type="text" validate />
-            <MDBInput label="Responsabilidades" name="responsibilities" onChange={handleInputChange}
-            icon="lock" group type="textarea" rows="4" validate />
-            <MDBInput label="Comienzo" name="start_date" onChange={handleInputChange}
-            icon="lock" group type="month" validate />
-            <MDBInput label="Terminacion" name="end_date" onChange={handleInputChange}
-            icon="lock" group type="month" validate />
-          </div>
-          <div className="text-center">
-            <MDBBtn type="submit" color="default">Guardar</MDBBtn>
-          </div>
-        </form>
-        <MDBNavLink to='/dashboard' className="mt-5 text-center" >Volver</MDBNavLink>
-      </MDBCol>
-    </MDBRow>
-  </MDBContainer>
+      <MDBRow className="justify-content-center">
+        <MDBCol md="7" sm="12">
+          <HeadTitle content="Tu Curriculum" />
+          <form onSubmit={onSubmit}>
+            <p className="h5 text-center mb-4"></p>
+            <div className="grey-text">
+              <MDBInput
+                label="Empresa"
+                icon="envelope"
+                group
+                type="text"
+                validate
+                error="wrong"
+                name="company"
+                onChange={handleInputChange}
+                success="right"
+              />
+              <MDBInput
+                label="Puesto"
+                name="position"
+                onChange={handleInputChange}
+                icon="lock"
+                group
+                type="text"
+                validate
+              />
+              <MDBInput
+                label="Responsabilidades"
+                name="responsibilities"
+                onChange={handleInputChange}
+                icon="lock"
+                group
+                type="textarea"
+                rows="4"
+                validate
+              />
+              <MDBInput
+                label="Comienzo"
+                name="start_date"
+                onChange={handleInputChange}
+                icon="lock"
+                group
+                type="month"
+                validate
+              />
+              <MDBInput
+                label="Terminacion"
+                name="end_date"
+                onChange={handleInputChange}
+                icon="lock"
+                group
+                type="month"
+                validate
+              />
+            </div>
+            <div className="text-center">
+              <MDBBtn type="submit" color="default">
+                Guardar
+              </MDBBtn>
+            </div>
+          </form>
+          <MDBNavLink to="/dashboard" className="mt-5 text-center">
+            Volver
+          </MDBNavLink>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   )
 }

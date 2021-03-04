@@ -15,15 +15,16 @@ export const useUser = () => {
     status,
     setStatus,
     isSigned,
-    setIsSigned
+    setIsSigned,
   } = useContext(Context)
 
   const signIn = useCallback(
     ({ email, password }) => {
-      apiProvider.post('/auth/signin', {
-        email: email,
-        password: password
-      })
+      apiProvider
+        .post('/auth/signin', {
+          email: email,
+          password: password,
+        })
         .then(response => {
           if (response === undefined) {
             return
@@ -40,8 +41,7 @@ export const useUser = () => {
           setStatus(response.status)
           window.localStorage.setItem('signed', true)
           setIsSigned(true)
-        }
-        )
+        })
         .catch(e => {
           console.error({ e })
           setStatus(e.response.status)
@@ -65,13 +65,19 @@ export const useUser = () => {
   }, [setToken, setIsSigned, setUserRole, setEmail, setUserId, setStatus])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const signUp = useCallback((data) => {
-    return apiProvider.post('/auth/signup', {
-      email: data.email,
-      password: data.password,
-      role: data.role
-    }).then(response => { return response.status })
-      .catch(e => { return e.response.status })
+  const signUp = useCallback(data => {
+    return apiProvider
+      .post('/auth/signup', {
+        email: data.email,
+        password: data.password,
+        role: data.role,
+      })
+      .then(response => {
+        return response.status
+      })
+      .catch(e => {
+        return e.response.status
+      })
   })
 
   const resetStatus = useCallback(() => {
@@ -94,6 +100,6 @@ export const useUser = () => {
     status,
     resetStatus,
     setStatus,
-    userRole
+    userRole,
   }
 }

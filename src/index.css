@@ -6,7 +6,11 @@ body {
   color: #2a3138;
 }
 
-code {
+#root {
+  background-color: #ededee;
+}
+
+/* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
+} */

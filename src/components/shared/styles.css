@@ -1,12 +1,9 @@
-.ll-corners {
-  border-radius: 30px;
+.mt-sidenav {
+  margin-top: 15%;
 }
 
-.ll-85 {
-  height: 90%;
-  width: 90%;
-  padding: 0;
-  margin: 0;
+.fw300 {
+  font-weight: 300;
 }
 
 .fw400 {
@@ -19,4 +16,8 @@
 
 .fw700 {
   font-weight: 700;
+}
+
+.fs13 {
+  font-size: 1.3rem;
 }

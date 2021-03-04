@@ -17,35 +17,38 @@ export const useCompany = () => {
     region,
     setRegion,
     city,
-    setCity
+    setCity,
   } = useContext(CompanyContext)
 
-  const getProfile = useCallback(
-    () => {
-      apiProvider.getSingle('companies', userId, token)
-        .then(response => {
-          if (response === undefined) {
-            console.log('undefined response')
-          }
-          setName(response.data.company.name)
-          setDescription(response.data.company.description)
-          setAddress(response.data.company.address)
-          setPostalCode(response.data.company.postalCode)
-          setRegion(response.data.company.region)
-          setCity(response.data.company.city)
+  const getProfile = useCallback(() => {
+    apiProvider
+      .getSingle('companies', userId, token)
+      .then(response => {
+        if (response === undefined) {
+          console.log('undefined response')
         }
-        ).catch(e => {
-          console.log(e.response)
-        })
-    },
-    [userId, token, setName, setDescription, setAddress, setPostalCode, setRegion, setCity]
-  )
+        setName(response.data.company.name)
+        setDescription(response.data.company.description)
+        setAddress(response.data.company.address)
+        setPostalCode(response.data.company.postalCode)
+        setRegion(response.data.company.region)
+        setCity(response.data.company.city)
+      })
+      .catch(e => {
+        console.log(e.response)
+      })
+  }, [userId, token, setName, setDescription, setAddress, setPostalCode, setRegion, setCity])
 
   const registerCompany = useCallback(
-    (data) => {
-      return apiProvider.post('/companies', data, token)
-        .then(response => { return response.status })
-        .catch(e => { console.log(e) })
+    data => {
+      return apiProvider
+        .post('/companies', data, token)
+        .then(response => {
+          return response.status
+        })
+        .catch(e => {
+          console.log(e)
+        })
     },
     [token]
   )
@@ -53,16 +56,16 @@ export const useCompany = () => {
   const companyNavItems = [
     {
       icon: 'user-circle',
-      name: 'Cuenta'
+      name: 'Cuenta',
     },
     {
       icon: 'industry',
-      name: 'Vacantes Publicadas'
+      name: 'Vacantes Publicadas',
     },
     {
       icon: 'edit',
-      name: 'Crear Vacante'
-    }
+      name: 'Crear Vacante',
+    },
   ]
 
   return {
@@ -74,6 +77,6 @@ export const useCompany = () => {
     postalCode,
     region,
     city,
-    companyNavItems
+    companyNavItems,
   }
 }

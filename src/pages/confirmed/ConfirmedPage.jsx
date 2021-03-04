@@ -11,13 +11,12 @@ export const ConfirmedPage = () => {
             <h2>Cuenta activada</h2>
           </div>
           <div className="row justify-content-center mt-4 p-3">
-            <p>
-              Gracias por confirmar tu cuenta, ahora puedes continuar con el
-              registro
-            </p>
+            <p>Gracias por confirmar tu cuenta, ahora puedes continuar con el registro</p>
           </div>
           <div className="row justify-content-center mt-4">
-            <Link to='/signin' className="btn btn-primary px-5">Volver</Link>
+            <Link to="/signin" className="btn btn-primary px-5">
+              Volver
+            </Link>
           </div>
         </div>
       </div>
