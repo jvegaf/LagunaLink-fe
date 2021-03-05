@@ -1,18 +1,18 @@
 import React from 'react'
-import '../__shared__/styles.css'
 import { CompanyRegister } from '../../components/Register/Company/CompanyRegister/CompanyRegister'
 import { StudentRegister } from '../../components/Register/Student/StudentRegister/StudentRegister'
+import { MDBCol, MDBContainer, MDBRow } from 'mdbreact'
 
 export const RegisterPage = props => {
   const accType = props.match.params.accountType
 
   return (
-    <div className="container-fluid vh-100 ll-bg">
-      <div className="row h-100">
-        <div className="col-12 d-flex align-items-center justify-content-center">
+    <MDBContainer fluid>
+      <MDBRow className="vh-100 justify-content-center">
+        <MDBCol lg="5" md="8" sm="12" className="align-self-center justify-content-center">
           {accType === 'student' ? <StudentRegister /> : <CompanyRegister />}
-        </div>
-      </div>
-    </div>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   )
 }

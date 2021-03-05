@@ -1,25 +1,24 @@
+import { MDBBtn, MDBCol, MDBCard, MDBCardBody, MDBCardTitle, MDBContainer, MDBRow } from 'mdbreact'
 import React from 'react'
-import { Link } from 'react-router-dom'
-import '../__shared__/styles.css'
 
 export const ConfirmedPage = () => {
   return (
-    <div className="col-12 center">
-      <div className="col-md-4 m-auto">
-        <div className="h400 border border-secondary">
-          <div className="row justify-content-center mt-5">
-            <h2>Cuenta activada</h2>
-          </div>
-          <div className="row justify-content-center mt-4 p-3">
-            <p>Gracias por confirmar tu cuenta, ahora puedes continuar con el registro</p>
-          </div>
-          <div className="row justify-content-center mt-4">
-            <Link to="/signin" className="btn btn-primary px-5">
+    <MDBContainer fluid>
+      <MDBRow className="vh-100">
+        <MDBCol className="d-flex align-items-center justify-content-center">
+          <MDBCard className="p-5 text-center">
+            <MDBCardTitle>
+              <h2>Cuenta activada</h2>
+            </MDBCardTitle>
+            <MDBCardBody>
+              <p>Gracias por confirmar tu cuenta, ahora puedes continuar con el registro</p>
+            </MDBCardBody>
+            <MDBBtn href="/signin" className="w-50 w-responsive align-self-center" color="secondary">
               Volver
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
+            </MDBBtn>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   )
 }

@@ -1,42 +1,32 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import { useUser } from '../../hooks/useUser'
 import { ModalView } from '../ModalView/ModalView'
-import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput, MDBBox, MDBIcon, MDBNavLink } from 'mdbreact'
-import { FormControl, InputLabel, Select, MenuItem, makeStyles } from '@material-ui/core'
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBBtn,
+  MDBNavLink,
+  MDBCard,
+  MDBCardBody,
+} from 'mdbreact'
 import { HeadTitle } from '../shared/HeadTitle'
-
-const useStyles = makeStyles(theme => ({
-  formControl: {
-    margin: theme.spacing(1),
-    width: '100%',
-  },
-}))
+import { RoleSelectInput } from '../Form/RoleSelectInput'
+import { EmailInput } from '../Form/EmailInput'
+import { PasswordInput } from '../Form/PasswordInput'
+import { FormProvider, useForm } from 'react-hook-form'
 
 export const SignUp = () => {
-  const singinPath = '/signin'
-  const classes = useStyles()
   const { setStatus, signUp } = useUser()
-  const [data, setData] = useState({
-    role: '',
-    email: '',
-    password: '',
-  })
-
+  const methods = useForm()
   const [modal, setModal] = useState({
     open: false,
     body: '',
     redirect: undefined,
   })
 
-  const handleInputChange = event => {
-    setData({
-      ...data,
-      [event.target.name]: event.target.value,
-    })
-  }
-
-  const onSubmit = e => {
-    e.preventDefault()
+  const onSubmit = data => {
     setModal({ open: false, body: '', redirect: undefined })
     setStatus(0)
     signUp(data)
@@ -62,53 +52,29 @@ export const SignUp = () => {
 
   return (
     <MDBContainer>
-      {modal.open && <ModalView open={modal.open} body={modal.body} redirect={modal.redirect} />}
       <MDBRow className="justify-content-center">
-        <MDBCol md="7" sm="12">
-          <HeadTitle content="Registro" />
-          <form onSubmit={onSubmit}>
-            <p className="h5 text-center mb-4"></p>
-            <div className="grey-text">
-              <MDBBox display="flex" flex="row">
-                <MDBIcon icon="user" size="2x" className="my-auto mr-1" />
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="role">Tipo de Cuenta</InputLabel>
-                  <Select labelId="role" name="role" value={data.role} onChange={handleInputChange}>
-                    <MenuItem value={'ROLE_STUDENT'}>Estudiante</MenuItem>
-                    <MenuItem value={'ROLE_COMPANY'}>Empresa</MenuItem>
-                  </Select>
-                </FormControl>
-              </MDBBox>
-              <MDBInput
-                label="Correo Electronico"
-                icon="envelope"
-                group
-                type="email"
-                validate
-                error="wrong"
-                name="email"
-                onChange={handleInputChange}
-                success="right"
-              />
-              <MDBInput
-                label="Contraseña"
-                name="password"
-                onChange={handleInputChange}
-                icon="lock"
-                group
-                type="password"
-                validate
-              />
-            </div>
-            <div className="text-center">
-              <MDBBtn type="submit" color="default">
-                Registrar
-              </MDBBtn>
-            </div>
-          </form>
-          <MDBNavLink to={singinPath} className="mt-5 text-center">
-            ¿Ya tienes una cuenta? Ingresa
-          </MDBNavLink>
+        <MDBCol md="8" sm="12">
+          <MDBCard className="p-4">
+            <MDBCardBody>
+              {modal.open && <ModalView open={modal.open} body={modal.body} redirect={modal.redirect} />}
+              <HeadTitle content="Registro" />
+              <FormProvider {...methods} >
+                <form onSubmit={methods.handleSubmit(onSubmit)}>
+                  <div className="text-center">
+                    <RoleSelectInput></RoleSelectInput>
+                    <EmailInput />
+                    <PasswordInput />
+                    <MDBBtn type="submit" color="default">
+                      Registrar
+                    </MDBBtn>
+                  </div>
+                </form>
+              </FormProvider>
+              <MDBNavLink to="/signin" className="mt-5 text-center">
+                ¿Ya tienes una cuenta? Ingresa
+              </MDBNavLink>
+            </MDBCardBody>
+          </MDBCard>
         </MDBCol>
       </MDBRow>
     </MDBContainer>

@@ -1,20 +1,32 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useStudent } from '../../../hooks/useStudent'
 import { useUser } from '../../../hooks/useUser'
 import { HeadTitle } from '../../shared/HeadTitle'
 import { LLAvatar } from '../../shared/LLAvatar'
-import { MDBContainer, MDBCard, MDBCardBody, MDBRow, MDBCol } from 'mdbreact'
+import { MDBContainer, MDBCard, MDBCardBody, MDBRow, MDBCol, MDBBtn } from 'mdbreact'
+import { FormProvider, useForm } from 'react-hook-form'
+import { EmailInput } from '../../Form/EmailInput'
+import { TextInput } from '../../Form/TextInput'
+import { useSnackbar } from 'notistack'
 
 export const StudentAccount = () => {
-  const { name, surname, lastname, getProfile } = useStudent()
+  const { name, surname, lastname, updateStudent } = useStudent()
   const { email } = useUser()
+  const preloadedValues = { email, name, surname, lastname }
+  const methods = useForm({
+    defaultValues: preloadedValues,
+  })
+  const { enqueueSnackbar } = useSnackbar()
 
-  useEffect(() => {
-    if (name === '') {
-      getProfile()
-    }
-  }, [])
-
+  const onSubmit = data => {
+    updateStudent(data).then(status => {
+      if (status !== 200) {
+        enqueueSnackbar('Error al intentar guardar los cambios', 'error')
+        return
+      }
+      enqueueSnackbar('Cambios guardados con exito', {variant: 'success'})
+    })
+  }
 
   return (
     <MDBContainer>
@@ -23,32 +35,22 @@ export const StudentAccount = () => {
           <HeadTitle content="Perfil" />
           <LLAvatar />
           <MDBRow className="justify-content-center">
-            <MDBCol md="7" sm="12">
-              <form>
-                <p className="h5 text-center mb-4"></p>
-                <div className="grey-text">
-                  <label className="grey-text">
-                    Nombre
-                  </label>
-                  <input type="text" name="name" value={name} className="form-control" />
-                  <br />
-                  <label className="grey-text">
-                    Primer Apellido
-                  </label>
-                  <input type="text" name="surname" value={surname} className="form-control" />
-                  <br />
-                  <label className="grey-text">
-                    Segundo Apellido
-                  </label>
-                  <input type="text" name="lastname" value={lastname} className="form-control" />
-                  <br />
-                  <label className="grey-text">
-                    Correo Electronico
-                  </label>
-                  <input type="email" name="email" value={email} className="form-control" />
-                  <br />
-                </div>
-              </form>
+            <MDBCol md="8" sm="12">
+              <FormProvider {...methods}>
+                <form onSubmit={methods.handleSubmit(onSubmit)}>
+                  <EmailInput disabled />
+                  <TextInput label="Nombre" name="name" />
+                  <TextInput label="Primer Apellido" name="surname" />
+                  <TextInput label="Segundo Apellido" name="lastname" />
+                  {methods.formState.isDirty && (
+                    <div className="text-center mt-5">
+                      <MDBBtn type="submit" color="default">
+                        Guardar
+                      </MDBBtn>
+                    </div>
+                  )}
+                </form>
+              </FormProvider>
             </MDBCol>
           </MDBRow>
         </MDBCardBody>

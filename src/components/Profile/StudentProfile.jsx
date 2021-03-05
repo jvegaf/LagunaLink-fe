@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import './../shared/styles.css'
 import { useStudent } from '../../hooks/useStudent'
 import { MDBCol, MDBContainer, MDBRow } from 'mdbreact'
@@ -6,13 +6,8 @@ import { SideNav } from '../SideNav/SideNav'
 import { StudentAccount } from '../Detail/account/StudentAccount'
 
 export const StudentProfile = () => {
-  const { getProfile, navItems, name } = useStudent()
+  const { navItems, name } = useStudent()
 
-  useEffect(() => {
-    if (name === '') {
-      getProfile()
-    }
-  }, [])
 
   return (
     <MDBContainer fluid>

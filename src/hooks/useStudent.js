@@ -20,7 +20,7 @@ export const useStudent = () => {
     setJobExperiences,
   } = useContext(StudentContext)
 
-  const getProfile = useCallback(() => {
+  const getStudentProfile = useCallback(() => {
     apiProvider
       .getSingle('students', userId, token)
       .then(response => {
@@ -51,6 +51,20 @@ export const useStudent = () => {
         })
     },
     [token]
+  )
+
+  const updateStudent = useCallback(
+    data => {
+      return apiProvider
+        .put('students', userId, data, token)
+        .then(response => {
+          return response.status
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    [token, userId]
   )
 
   const addQualification = useCallback(
@@ -128,18 +142,15 @@ export const useStudent = () => {
       name: 'Curriculum',
     },
     {
-      icon: 'industry',
-      name: 'Exp. Laborales',
-    },
-    {
       icon: 'highlighter',
       name: 'Ofertas Aplicadas',
     },
   ]
 
   return {
-    getProfile,
+    getStudentProfile,
     registerStudent,
+    updateStudent,
     addQualification,
     addLanguage,
     addJobExperience,

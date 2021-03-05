@@ -20,7 +20,7 @@ export const useCompany = () => {
     setCity,
   } = useContext(CompanyContext)
 
-  const getProfile = useCallback(() => {
+  const getCompanyProfile = useCallback(() => {
     apiProvider
       .getSingle('companies', userId, token)
       .then(response => {
@@ -69,7 +69,7 @@ export const useCompany = () => {
   ]
 
   return {
-    getProfile,
+    getCompanyProfile,
     registerCompany,
     name,
     description,
