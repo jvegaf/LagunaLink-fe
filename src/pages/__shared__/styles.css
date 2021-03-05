@@ -1,23 +1,24 @@
-body {
-  font-family: 'Roboto', sans-serif;
+.handshake-bg {
+  height: 100vh;
+  min-height: 500px;
+  background-image: url(../../assets/handshake.jpg);
+  filter: opacity(70%);
+  -webkit-filter: opacity(70%);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: inherit;
+  background-size: cover;
+  background-color: #ededed;
 }
 
-.ll-container {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  height:100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #EDEDED;
-}
-
-.h400 {
-  height: 400px;
-}
-
-.ll-bg {
-  background-color: #EDEDED;
+.building-bg {
+  height: 100vh;
+  min-height: 500px;
+  background-image: url(../../assets/building.jpg);
+  filter: brightness(80%);
+  -webkit-filter: brightness(80%);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: inherit;
+  background-size: cover;
 }

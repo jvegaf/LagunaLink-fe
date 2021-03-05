@@ -1,16 +1,19 @@
 import React from 'react'
-import './signIn.css'
+import '../__shared__/styles.css'
 import { SignInComponent } from '../../components/SignIn/Signin'
+import { MDBCol, MDBContainer, MDBRow } from 'mdbreact'
 
-export default function SignInPage () {
+export default function SignInPage() {
   return (
-    <div className="row m-0">
-      <div className="col-md-6 p-0">
-        <div className="handshake-bg"></div>
-      </div>
-      <div className="col-md-6 p-0 align-self-center">
-        <SignInComponent />
-      </div>
-    </div>
+    <MDBContainer fluid>
+      <MDBRow>
+        <MDBCol md="7" className="d-none d-md-block">
+          <div className="handshake-bg"></div>
+        </MDBCol>
+        <MDBCol md="5" sm="12" className="d-flex align-items-center">
+          <SignInComponent />
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   )
 }

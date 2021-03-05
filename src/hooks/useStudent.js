@@ -17,67 +17,140 @@ export const useStudent = () => {
     languages,
     setLanguages,
     jobExperiences,
-    setJobExperiences
+    setJobExperiences,
   } = useContext(StudentContext)
 
-  const getProfile = useCallback(
-    () => {
-      apiProvider.getSingle('students', userId, token)
-        .then(response => {
-          if (response.data.student === undefined) {
-            console.log('undefined response')
-          }
-          setName(response.data.student.name)
-          setSurname(response.data.student.surname)
-          setLastname(response.data.student.lastname)
-          setQualification(response.data.student.qualification)
-          setLanguages(response.data.student.languages || [])
-          setJobExperiences(response.data.student.job_experiences || [])
+  const getStudentProfile = useCallback(() => {
+    apiProvider
+      .getSingle('students', userId, token)
+      .then(response => {
+        if (response.data.student === undefined) {
+          console.log('undefined response')
         }
-        ).catch(e => {
-          console.log(e.response)
+        setName(response.data.student.name)
+        setSurname(response.data.student.surname)
+        setLastname(response.data.student.lastname)
+        setQualification(response.data.student.qualification)
+        setLanguages(response.data.student.languages || [])
+        setJobExperiences(response.data.student.job_experiences || [])
+      })
+      .catch(e => {
+        console.log(e.response)
+      })
+  }, [setJobExperiences, setLanguages, setLastname, setName, setQualification, setSurname, token, userId])
+
+  const registerStudent = useCallback(
+    data => {
+      return apiProvider
+        .post('/students', data, token)
+        .then(response => {
+          return response.status
+        })
+        .catch(e => {
+          console.log(e)
         })
     },
-    [setJobExperiences, setLanguages, setLastname, setName, setQualification, setSurname, token, userId]
+    [token]
+  )
+
+  const updateStudent = useCallback(
+    data => {
+      return apiProvider
+        .put('students', userId, data, token)
+        .then(response => {
+          return response.status
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    [token, userId]
   )
 
   const addQualification = useCallback(
-    (data) => {
-      return apiProvider.put('students', userId, {
-        qualification: data
-      }, token)
-        .then(response => { return response.status })
-        .catch(e => { console.log(e) })
+    data => {
+      return apiProvider
+        .put(
+          'students',
+          userId,
+          {
+            qualification: data,
+          },
+          token
+        )
+        .then(response => {
+          return response.status
+        })
+        .catch(e => {
+          console.log(e)
+        })
     },
     [token, userId]
   )
 
   const addLanguage = useCallback(
-    (data) => {
+    data => {
       languages.push(data)
-      return apiProvider.put('students', userId, {
-        languages: languages
-      }, token)
-        .then(response => { return response.status })
-        .catch(e => { console.log(e) })
+      return apiProvider
+        .put(
+          'students',
+          userId,
+          {
+            languages: languages,
+          },
+          token
+        )
+        .then(response => {
+          return response.status
+        })
+        .catch(e => {
+          console.log(e)
+        })
     },
     [languages, token, userId]
   )
 
   const addJobExperience = useCallback(
-    (data) => {
+    data => {
       jobExperiences.push(data)
-      return apiProvider.put('students', userId, {
-        job_experiences: jobExperiences
-      }, token)
-        .then(response => { return response.status })
-        .catch(e => { console.log(e) })
+      return apiProvider
+        .put(
+          'students',
+          userId,
+          {
+            job_experiences: jobExperiences,
+          },
+          token
+        )
+        .then(response => {
+          return response.status
+        })
+        .catch(e => {
+          console.log(e)
+        })
     },
     [jobExperiences, token, userId]
   )
 
+  const navItems = [
+    {
+      icon: 'user-circle',
+      name: 'Cuenta',
+    },
+    {
+      icon: 'graduation-cap',
+      name: 'Curriculum',
+    },
+    {
+      icon: 'highlighter',
+      name: 'Ofertas Aplicadas',
+    },
+  ]
+
   return {
-    getProfile,
+    getStudentProfile,
+    registerStudent,
+    updateStudent,
     addQualification,
     addLanguage,
     addJobExperience,
@@ -86,6 +159,7 @@ export const useStudent = () => {
     lastname,
     qualification,
     languages,
-    jobExperiences
+    jobExperiences,
+    navItems,
   }
 }

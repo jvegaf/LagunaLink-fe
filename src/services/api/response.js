@@ -1,7 +1,7 @@
-export function handleResponse (response) {
+export function handleResponse(response) {
   return response
 }
 
-export function handleError (error) {
+export function handleError(error) {
   throw error
 }

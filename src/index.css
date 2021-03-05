@@ -6,7 +6,10 @@ body {
   color: #2a3138;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#root {
+  background-color: #ededee;
+}
+
+.bg-gradient {
+  background: linear-gradient(90deg, #1CB5E0 0%, #000851 100%);
 }

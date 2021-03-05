@@ -1,21 +1,38 @@
-import React from 'react'
-import { Redirect } from 'react-router-dom'
+import { MDBCol, MDBContainer, MDBRow } from 'mdbreact'
+import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Header } from '../../components/Header/Header'
-import { JobOpeningsGrid } from '../../components/JobOpening/JobOpeningsGrid'
-import '../__shared__/styles.css'
+import { useCompany } from '../../hooks/useCompany'
+import { useStudent } from '../../hooks/useStudent'
 import { useUser } from '../../hooks/useUser'
 
-export function MainPage () {
-  const { isSigned } = useUser()
+export function MainPage() {
+  const { isSigned, userRole } = useUser()
+  const history = useHistory()
+  const { getStudentProfile } = useStudent()
+  const { getCompanyProfile } = useCompany()
 
-  if (isSigned) {
-    return (
-    <div>
-      <Header />
-      <JobOpeningsGrid />
-    </div>
-    )
-  }
+  useEffect(() => {
+    if (!isSigned) {
+      history.push('/signin')
+    }
+    switch(userRole){
+      case 'ROLE_STUDENT':
+        getStudentProfile()
+        break
+      case 'ROLE_COMPANY':
+        getCompanyProfile()
+        break
+    }
+  }, [isSigned, userRole])
 
-  return <Redirect to='/signin' />
-};
+  return (
+    <MDBContainer fluid>
+      <MDBRow className="vh-100">
+        <MDBCol>
+          <Header />
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
+  )
+}

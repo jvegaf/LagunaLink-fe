@@ -1,8 +1,10 @@
 import { useCallback, useContext } from 'react'
 import CompanyContext from '../context/CompanyContext'
-import { GetCompanyProfile } from '../services/company/GetProfile'
+import { apiProvider } from '../services/api/api-provider'
+import { useUser } from './useUser'
 
 export const useCompany = () => {
+  const { token, userId } = useUser()
   const {
     name,
     setName,
@@ -15,35 +17,66 @@ export const useCompany = () => {
     region,
     setRegion,
     city,
-    setCity
+    setCity,
   } = useContext(CompanyContext)
-  const getProfile = useCallback(
-    (token, userId) => {
-      GetCompanyProfile(token, userId)
-        .then(company => {
-          if (company === undefined) {
-            console.log('undefined response')
-          }
-          setName(company.name)
-          setDescription(company.description)
-          setAddress(company.address)
-          setPostalCode(company.postalCode)
-          setRegion(company.region)
-          setCity(company.city)
+
+  const getCompanyProfile = useCallback(() => {
+    apiProvider
+      .getSingle('companies', userId, token)
+      .then(response => {
+        if (response === undefined) {
+          console.log('undefined response')
         }
-        ).catch(e => {
-          console.log(e.response)
+        setName(response.data.company.name)
+        setDescription(response.data.company.description)
+        setAddress(response.data.company.address)
+        setPostalCode(response.data.company.postalCode)
+        setRegion(response.data.company.region)
+        setCity(response.data.company.city)
+      })
+      .catch(e => {
+        console.log(e.response)
+      })
+  }, [userId, token, setName, setDescription, setAddress, setPostalCode, setRegion, setCity])
+
+  const registerCompany = useCallback(
+    data => {
+      return apiProvider
+        .post('/companies', data, token)
+        .then(response => {
+          return response.status
+        })
+        .catch(e => {
+          console.log(e)
         })
     },
-    [setName, setDescription, setAddress, setPostalCode, setRegion, setCity]
+    [token]
   )
+
+  const companyNavItems = [
+    {
+      icon: 'user-circle',
+      name: 'Cuenta',
+    },
+    {
+      icon: 'industry',
+      name: 'Vacantes Publicadas',
+    },
+    {
+      icon: 'edit',
+      name: 'Crear Vacante',
+    },
+  ]
+
   return {
-    getProfile,
+    getCompanyProfile,
+    registerCompany,
     name,
     description,
     address,
     postalCode,
     region,
-    city
+    city,
+    companyNavItems,
   }
 }

@@ -1,125 +1,82 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { useHistory } from 'react-router-dom'
 import { useUser } from '../../hooks/useUser'
-import { ModalView } from '../ModalView'
+import { ModalView } from '../ModalView/ModalView'
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBBtn,
+  MDBNavLink,
+  MDBCard,
+  MDBCardBody,
+} from 'mdbreact'
+import { HeadTitle } from '../shared/HeadTitle'
+import { RoleSelectInput } from '../Form/RoleSelectInput'
+import { EmailInput } from '../Form/EmailInput'
+import { PasswordInput } from '../Form/PasswordInput'
+import { FormProvider, useForm } from 'react-hook-form'
 
 export const SignUp = () => {
-  const history = useHistory()
-  const { resetStatus, signUp } = useUser()
-  const { register, getValues, errors, handleSubmit } = useForm()
-  const [modalShow, setModalShow] = useState({
-    show: false,
-    message: ''
+  const { setStatus, signUp } = useUser()
+  const methods = useForm()
+  const [modal, setModal] = useState({
+    open: false,
+    body: '',
+    redirect: undefined,
   })
-  const onSubmit = (data, e) => {
-    resetStatus()
+
+  const onSubmit = data => {
+    setModal({ open: false, body: '', redirect: undefined })
+    setStatus(0)
     signUp(data)
       .then(status => {
         if (status === 201) {
-          setModalShow({ show: true, message: 'Email de confirmacion enviado. Mira en tu buzon' })
+          setModal({
+            open: true,
+            body: 'Email de confirmacion enviado. Mira en tu buzon',
+            redirect: '/signin',
+          })
         }
 
         if (status === 430) {
-          setModalShow({ show: true, message: 'El Email ya estaba registrado. Ingresa en tu cuenta' })
+          setModal({
+            open: true,
+            body: 'El Email ya estaba registrado. Ingresa en tu cuenta',
+            redirect: '/signin',
+          })
         }
-      }).catch(e => console.log(e))
+      })
+      .catch(e => console.log(e))
   }
 
   return (
-    <div className="col-md-3 m-auto">
-      <ModalView show={modalShow.show} message={modalShow.message} onHide={() =>
-        history.push('/signin')}/>
-      <div className="row justify-content-center">
-        <h1>Registro</h1>
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-group mt-5">
-          <label htmlFor="role">Tipo de Cuenta</label>
-          <select
-            name="role"
-            ref={register({
-              required: 'Debes elegir entre Estudiante o Empresa'
-            })}
-            className="custom-select"
-          >
-            <option value="">Elige el tipo de cuenta</option>
-            <option value="ROLE_STUDENT">Estudiante</option>
-            <option value="ROLE_COMPANY">Empresa</option>
-          </select>
-          {errors.role && <p style={{ color: 'red' }}>{errors.role.message}</p>}
-        </div>
-        <div className="form-group mt-5">
-          <label htmlFor="email">Correo Electrónico</label>
-          <input
-            type="email"
-            name="email"
-            className="form-control"
-            ref={register({ required: 'La dirección de correo es necesaria' })}
-            placeholder="Introduce tu dirección de correo electrónico"
-          />
-          {errors.email && (
-            <p style={{ color: 'red' }}>{errors.email.message}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Contraseña</label>
-          <input
-            type="password"
-            name="password"
-            className="form-control"
-            ref={register({ required: 'La contraseña es necesaria' })}
-            placeholder="Introduce tu contraseña"
-          />
-          {errors.password && (
-            <p style={{ color: 'red' }}>{errors.password.message}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="passwordConfirmation">Confirmación Contraseña</label>
-          <input
-            type="password"
-            name="passwordConfirmation"
-            className="form-control"
-            placeholder="Vuelve a introducir tu contraseña"
-            ref={register({
-              required: 'Por favor, vuelve a introducir tu contraseña ',
-              validate: {
-                matchesPreviousPassword: (value) => {
-                  const { password } = getValues()
-                  return password === value || 'contraseñas no coinciden'
-                }
-              }
-            })}
-          />
-          {errors.passwordConfirmation && (
-            <p style={{ color: 'red' }}>
-              {errors.passwordConfirmation.message}
-            </p>
-          )}
-        </div>
-        <div className="form-group mb-5 mt-4">
-          <div className="form-check">
-            <input
-              type="checkbox"
-              name="agreement"
-              className="form-check-input"
-              ref={register({ required: 'Es necesaria la confirmacion' })}
-            />
-            <label className="form-check-label" htmlFor="remember">
-              Acepto los terminos y condiciones
-            </label>
-          </div>
-          {errors.agreement && (
-            <p style={{ color: 'red' }}>{errors.agreement.message}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <button type="submit" className="btn btn-primary w-100">
-            Registrar
-          </button>
-        </div>
-      </form>
-    </div>
+    <MDBContainer>
+      <MDBRow className="justify-content-center">
+        <MDBCol md="8" sm="12">
+          <MDBCard className="p-4">
+            <MDBCardBody>
+              {modal.open && <ModalView open={modal.open} body={modal.body} redirect={modal.redirect} />}
+              <HeadTitle content="Registro" />
+              <FormProvider {...methods} >
+                <form onSubmit={methods.handleSubmit(onSubmit)}>
+                  <div className="text-center">
+                    <RoleSelectInput></RoleSelectInput>
+                    <EmailInput />
+                    <PasswordInput />
+                    <MDBBtn type="submit" color="default">
+                      Registrar
+                    </MDBBtn>
+                  </div>
+                </form>
+              </FormProvider>
+              <MDBNavLink to="/signin" className="mt-5 text-center">
+                ¿Ya tienes una cuenta? Ingresa
+              </MDBNavLink>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   )
 }

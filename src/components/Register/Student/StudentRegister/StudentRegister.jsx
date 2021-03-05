@@ -1,74 +1,42 @@
-import React, { useContext } from 'react'
-import { useForm } from 'react-hook-form'
+import React from 'react'
 import { useHistory } from 'react-router-dom'
-import Context from '../../../../context/UserContext'
-import { RegisterService } from '../../../../services/register/RegisterService'
+import { useStudent } from '../../../../hooks/useStudent'
+import { FormProvider, useForm } from 'react-hook-form'
+import { MDBBtn, MDBTypography, MDBCard, MDBCardBody } from 'mdbreact'
+import { TextInput } from '../../../Form/TextInput'
 
 export const StudentRegister = () => {
-  const token = useContext(Context).token
-  const path = '/students'
-  const { register, errors, handleSubmit } = useForm()
-
+  const { registerStudent } = useStudent()
+  const methods = useForm()
   const history = useHistory()
 
-  const onSubmit = (data) => {
-    RegisterService({ token, data, path }).then((status) => {
+  const onSubmit = data => {
+    registerStudent(data).then(status => {
       if (status === 201) history.push('/main')
     })
   }
 
   return (
-    <div className="col-md-8 col-lg-5 bg-white p-lg-5 ll-corners">
-      <div className="row justify-content-center">
-        <h1>Registro Estudiante</h1>
-      </div>
-      <div className="row justify-content-center mt-3">
-        <p>Completa el registro de tu cuenta</p>
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-5">
-        <div className="form-group">
-          <label htmlFor="name">Nombre</label>
-          <input
-            type="text"
-            name="name"
-            className="form-control"
-            ref={register({ required: 'Es necesario' })}
-            placeholder="Nombre"
-          />
-          {errors.name && <p style={{ color: 'red' }}>{errors.name.message}</p>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="surname">Primer Apellido</label>
-          <input
-            type="text"
-            name="surname"
-            className="form-control"
-            ref={register({ required: 'Es necesario' })}
-            placeholder="Apellido 1"
-          />
-          {errors.surname && (
-            <p style={{ color: 'red' }}>{errors.surname.message}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="lastname">Segundo Apellido</label>
-          <input
-            type="text"
-            name="lastname"
-            className="form-control"
-            ref={register({ required: 'Es necesario' })}
-            placeholder="Apellido 2"
-          />
-          {errors.lastname && (
-            <p style={{ color: 'red' }}>{errors.lastname.message}</p>
-          )}
-        </div>
-        <div className="form-group mt-5">
-          <button type="submit" className="btn btn-primary w-100">
-            Completar Registro
-          </button>
-        </div>
-      </form>
-    </div>
+    <MDBCard className="p-5">
+      <MDBCardBody className="p-5">
+        <MDBTypography tag="h2" className="text-center mb-5">
+          Registro Estudiante
+        </MDBTypography>
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <div className="mb-3">
+              <TextInput name="name" label="Nombre" />
+              <TextInput name="surname" label="Primer Apellido" />
+              <TextInput name="lastname" label="Segundo Apellido" />
+            </div>
+            <div className="text-center mt-5">
+              <MDBBtn type="submit" color="default">
+                Completar Registro
+              </MDBBtn>
+            </div>
+          </form>
+        </FormProvider>
+      </MDBCardBody>
+    </MDBCard>
   )
 }
