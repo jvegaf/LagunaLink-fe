@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import './../shared/styles.css'
-import { StudentNav } from '../SideNav/StudentNav'
+import { StudentNav } from '../nav/StudentNav'
 import { Grid } from '@material-ui/core'
-import { StudentAccount } from '../Detail/account/StudentAccount'
-import { Qualification } from '../Detail/curriculum/Qualification'
+import { StudentAccount } from '../detail/account/StudentAccount'
+import { Qualification } from '../detail/curriculum/Qualification'
+import { Languages } from '../detail/curriculum/Languages'
 
 
 export const StudentProfile = () => {
@@ -19,16 +20,19 @@ export const StudentProfile = () => {
       case 1:
         setComponent(<Qualification/>)
         break
+      case 2:
+        setComponent(<Languages/>)
+        break
     }
   }, [section])
 
 
   return (
     <Grid container>
-      <Grid item md={4}>
-        <StudentNav change={change} />
+      <Grid item md={4} xl={2}>
+        <StudentNav change={change}/>
       </Grid>
-      <Grid item md={8}>
+      <Grid item xs={12} md={8} xl={10} container justify={'center'} alignItems={'center'}>
         {component}
       </Grid>
     </Grid>

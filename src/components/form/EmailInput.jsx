@@ -14,7 +14,6 @@ export const EmailInput = ({ disabled }) => {
 
   return (
     <TextField
-      fullWidth
       className={classes.formControl}
       id="email"
       disabled={disabled}

@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export function LLAvatar() {
+export function LinkAvatar() {
   const classes = useStyles()
   return (
     <Avatar className={classes.large}>

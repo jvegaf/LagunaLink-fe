@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import { useUser } from '../../hooks/useUser'
-import { ModalView } from '../ModalView/ModalView'
+import { ModalView } from '../modal/ModalView'
 import {
   MDBContainer,
   MDBRow,
@@ -11,7 +11,7 @@ import {
   MDBCard,
   MDBCardBody,
 } from 'mdbreact'
-import { HeadTitle } from '../shared/HeadTitle'
+import { Title } from '../shared/Title'
 import { RoleSelectInput } from '../form/RoleSelectInput'
 import { EmailInput } from '../form/EmailInput'
 import { PasswordInput } from '../form/PasswordInput'
@@ -57,7 +57,7 @@ export const SignUp = () => {
           <MDBCard className="p-4">
             <MDBCardBody>
               {modal.open && <ModalView open={modal.open} body={modal.body} redirect={modal.redirect} />}
-              <HeadTitle content="Registro" />
+              <Title content="Registro" />
               <FormProvider {...methods} >
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
                   <div className="text-center">

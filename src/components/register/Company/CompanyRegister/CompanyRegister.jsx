@@ -2,7 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useCompany } from '../../../../hooks/useCompany'
 import { MDBBtn, MDBCard, MDBCardBody } from 'mdbreact'
-import { HeadTitle } from '../../../shared/HeadTitle'
+import { Title } from '../../../shared/Title'
 import { TextInput } from '../../../form/TextInput'
 import { FormProvider, useForm } from 'react-hook-form'
 
@@ -20,7 +20,7 @@ export const CompanyRegister = () => {
   return (
     <MDBCard className="py-3">
       <MDBCardBody className="p-5">
-        <HeadTitle content="Registro de Empresa" />
+        <Title content="Registro de Empresa" />
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <TextInput label="Nombre" name="name" />

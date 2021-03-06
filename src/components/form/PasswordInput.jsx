@@ -13,7 +13,6 @@ export const PasswordInput = () => {
   const classes = useStyles()
   return (
     <TextField
-      fullWidth
       id="password"
       className={classes.formControl}
       inputRef={register}

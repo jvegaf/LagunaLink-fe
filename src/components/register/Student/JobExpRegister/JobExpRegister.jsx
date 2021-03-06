@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
 import { MDBBtn, MDBCol, MDBContainer, MDBInput, MDBNavLink, MDBRow } from 'mdbreact'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useStudent } from '../../../../hooks/useStudent'
-import { HeadTitle } from '../../../shared/HeadTitle'
+import { Title } from '../../../shared/Title'
 
-export const QualificationRegister = () => {
+export const JobExpRegister = () => {
   const history = useHistory()
-  const { addQualification } = useStudent()
+  const { addJobExperience } = useStudent()
   const [data, setData] = useState({
-    title: '',
+    company: '',
+    position: '',
+    responsibilities: '',
     start_date: '',
     end_date: '',
   })
@@ -22,9 +24,9 @@ export const QualificationRegister = () => {
 
   const onSubmit = e => {
     e.preventDefault()
-    addQualification(data).then(status => {
+    addJobExperience(data).then(status => {
       if (status === 200) {
-        history.push('/dasboard')
+        history.goBack()
       }
     })
   }
@@ -33,12 +35,12 @@ export const QualificationRegister = () => {
     <MDBContainer>
       <MDBRow className="justify-content-center">
         <MDBCol md="7" sm="12">
-          <HeadTitle content="Tu Curriculum" />
+          <Title content="Tu Curriculum" />
           <form onSubmit={onSubmit}>
             <p className="h5 text-center mb-4"></p>
             <div className="grey-text">
               <MDBInput
-                label="Titulacion"
+                label="Empresa"
                 icon="envelope"
                 group
                 type="text"
@@ -47,6 +49,25 @@ export const QualificationRegister = () => {
                 name="company"
                 onChange={handleInputChange}
                 success="right"
+              />
+              <MDBInput
+                label="Puesto"
+                name="position"
+                onChange={handleInputChange}
+                icon="lock"
+                group
+                type="text"
+                validate
+              />
+              <MDBInput
+                label="Responsabilidades"
+                name="responsibilities"
+                onChange={handleInputChange}
+                icon="lock"
+                group
+                type="textarea"
+                rows="4"
+                validate
               />
               <MDBInput
                 label="Comienzo"

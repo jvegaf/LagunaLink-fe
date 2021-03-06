@@ -2,8 +2,8 @@ import React from 'react'
 import { Header } from '../../components/header/Header'
 import { useUser } from '../../hooks/useUser'
 import '../__shared__/styles.css'
-import { StudentProfile } from '../../components/Profile/StudentProfile'
-import { CompanyProfile } from '../../components/Profile/CompanyProfile'
+import { StudentProfile } from '../../components/profile/StudentProfile'
+import { CompanyProfile } from '../../components/profile/CompanyProfile'
 
 export default function DashboardPage() {
   const {userRole} = useUser()

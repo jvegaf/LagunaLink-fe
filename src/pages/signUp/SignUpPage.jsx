@@ -1,5 +1,5 @@
 import React from 'react'
-import { SignUp } from '../../components/SignUp/SignUp'
+import { SignUp } from '../../components/sign/SignUp'
 import '../__shared__/styles.css'
 import { MDBBox, MDBCol, MDBContainer, MDBRow } from 'mdbreact'
 

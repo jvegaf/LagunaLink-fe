@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useUser } from '../../hooks/useUser'
-import { ModalView } from '../ModalView/ModalView'
-import { HeadTitle } from '../shared/HeadTitle'
+import { ModalView } from '../modal/ModalView'
+import { Title } from '../shared/Title'
 import { FormProvider, useForm } from 'react-hook-form'
 import { EmailInput } from '../form/EmailInput'
 import { PasswordInput } from '../form/PasswordInput'
@@ -10,14 +10,14 @@ import { Button, Link, makeStyles, Paper, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
     root: {
-      padding: '3rem',
-      
+      padding: '2em'
+
     },
     button: {
-      paddingLeft: '4rem',
-      paddingRight: '4rem',
-      marginTop: '2rem',
-      marginBottom: '2rem'
+      paddingLeft: '4em',
+      paddingRight: '4em',
+      marginTop: '2em',
+      marginBottom: '2em'
     }
   }
 ))
@@ -64,13 +64,19 @@ export const SignInComponent = () => {
   return (
     <Paper elevation={3} className={classes.root}>
       {modal.open && <ModalView open={modal.open} body={modal.body}/>}
-      <HeadTitle content="Iniciar Sesion"/>
+      <Title content="Iniciar Sesion"/>
       <FormProvider {...methods} >
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="text-center">
-            <EmailInput/>
-            <PasswordInput/>
-            <Button color={'primary'} className={classes.button} variant={'contained'} type={'submit'}>Entrar</Button>
+          <div className="col">
+            <div className="row justify-content-center">
+              <EmailInput/>
+            </div>
+            <div className="row justify-content-center">
+              <PasswordInput/>
+            </div>
+            <div className="row justify-content-center">
+              <Button color={'primary'} className={classes.button} variant={'contained'} type={'submit'}>Entrar</Button>
+            </div>
           </div>
         </form>
       </FormProvider>

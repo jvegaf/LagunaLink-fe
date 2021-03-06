@@ -1,6 +1,6 @@
 import React from 'react'
-import { CompanyRegister } from '../../components/Register/Company/CompanyRegister/CompanyRegister'
-import { StudentRegister } from '../../components/Register/Student/StudentRegister/StudentRegister'
+import { CompanyRegister } from '../../components/register/Company/CompanyRegister/CompanyRegister'
+import { StudentRegister } from '../../components/register/Student/StudentRegister/StudentRegister'
 import { MDBCol, MDBContainer, MDBRow } from 'mdbreact'
 
 export const RegisterPage = props => {

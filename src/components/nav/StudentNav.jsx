@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { LLAvatar } from '../shared/LLAvatar'
+import { LinkAvatar } from '../shared/LinkAvatar'
 import './../shared/styles.css'
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, makeStyles, Typography } from '@material-ui/core'
 import { useStudent } from '../../hooks/useStudent'
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     paddingTop: 100,
     width: drawerWidth,
-    zIndex: 'auto'
+    zIndex: 1000
   },
   drawerContainer: {
     overflow: 'auto'
@@ -49,7 +49,7 @@ export const StudentNav = ({change}) => {
                     button onClick={(event) => handleListItemClick(event, 0)}>
             <div className="col">
               <div className="row justify-content-center m-3">
-                <LLAvatar/>
+                <LinkAvatar/>
               </div>
               <div className="row justify-content-center m-3">
                 <Typography variant={'h4'}>
@@ -70,12 +70,12 @@ export const StudentNav = ({change}) => {
           </ListItem>
           <ListItem selected={selIndex === 3}
                     button onClick={(event) => handleListItemClick(event, 3)}>
-            <ListItemIcon><Work /> </ListItemIcon>
+            <ListItemIcon><Work /></ListItemIcon>
             <ListItemText primary={'Exp. Laboral'}/>
           </ListItem>
           <ListItem selected={selIndex === 4}
                     button onClick={(event) => handleListItemClick(event, 4)}>
-            <ListItemIcon><Assignment /> </ListItemIcon>
+            <ListItemIcon><Assignment /></ListItemIcon>
             <ListItemText primary={'Ofertas Aplicadas'}/>
           </ListItem>
         </List>

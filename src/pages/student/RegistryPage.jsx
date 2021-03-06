@@ -1,7 +1,7 @@
 import { Header } from '../../components/header/Header'
-import { JobExpRegister } from '../../components/Register/Student/JobExpRegister/JobExpRegister'
-import { LanguageRegister } from '../../components/Register/Student/LanguageRegister/LanguageRegister'
-import { QualificationRegister } from '../../components/Register/Student/QualificationRegister/QualificationRegister'
+import { JobExpRegister } from '../../components/register/Student/JobExpRegister/JobExpRegister'
+import { LanguageRegister } from '../../components/register/Student/LanguageRegister/LanguageRegister'
+import { QualificationRegister } from '../../components/register/Student/QualificationRegister/QualificationRegister'
 
 export const RegistryPage = props => {
   const section = props.match.params.section
