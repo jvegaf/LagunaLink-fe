@@ -1,24 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './../shared/styles.css'
-import { useStudent } from '../../hooks/useStudent'
-import { MDBCol, MDBContainer, MDBRow } from 'mdbreact'
-import { SideNav } from '../SideNav/SideNav'
+import { StudentNav } from '../SideNav/StudentNav'
+import { Grid } from '@material-ui/core'
 import { StudentAccount } from '../Detail/account/StudentAccount'
+import { Qualification } from '../Detail/curriculum/Qualification'
+
 
 export const StudentProfile = () => {
-  const { navItems, name } = useStudent()
+  const [section, setSection] = useState(0)
+  const change = (value) => setSection(value)
+  const [component, setComponent] = useState(<StudentAccount/>)
+
+  useEffect(() => {
+    switch (section) {
+      case 0:
+        setComponent(<StudentAccount/>)
+        break
+      case 1:
+        setComponent(<Qualification/>)
+        break
+    }
+  }, [section])
 
 
   return (
-    <MDBContainer fluid>
-      <MDBRow className="vh-100">
-        <MDBCol md="4" className="mt-sidenav">
-          <SideNav name={name} elements={navItems} />
-        </MDBCol>
-        <MDBCol md="8" className="d-flex align-items-center">
-          <StudentAccount />
-        </MDBCol>
-      </MDBRow>
-    </MDBContainer>
+    <Grid container>
+      <Grid item md={4}>
+        <StudentNav change={change} />
+      </Grid>
+      <Grid item md={8}>
+        {component}
+      </Grid>
+    </Grid>
   )
 }

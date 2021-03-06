@@ -51,16 +51,12 @@ export const useUser = () => {
   )
 
   const signOut = useCallback(() => {
+    window.localStorage.clear()
     setToken(null)
-    window.localStorage.removeItem('access_token')
     setIsSigned(false)
-    window.localStorage.removeItem('signed')
     setUserRole(null)
-    window.localStorage.removeItem('user_role')
     setEmail(null)
-    window.localStorage.removeItem('email')
     setUserId(null)
-    window.localStorage.removeItem('user_id')
     setStatus(0)
   }, [setToken, setIsSigned, setUserRole, setEmail, setUserId, setStatus])
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 const Context = React.createContext({})
 
-export function UserContextProvider({ children }) {
+export function UserContextProvider({children}) {
   const [token, setToken] = useState(() => window.localStorage.getItem('access_token'))
 
   const [email, setEmail] = useState(() => window.localStorage.getItem('email'))
@@ -29,7 +29,7 @@ export function UserContextProvider({ children }) {
         isSigned,
         setIsSigned,
         userRole,
-        setUserRole,
+        setUserRole
       }}
     >
       {children}

@@ -57,22 +57,7 @@ export const LanguageRegister = () => {
                 success="right"
               />
               <div className="row">
-                <div className="col-6">
-                  <div className="row justify-content-center">
-                    <label>Nivel Oral</label>
-                  </div>
-                  <div className="row justify-content-center">
-                    <StarRatings
-                      rating={data.speak}
-                      starHoverColor="#0275d8"
-                      starRatedColor="#0275d8"
-                      starDimension="25px"
-                      changeRating={handleRatingChange}
-                      numberOfStars={5}
-                      name="speak"
-                    />
-                  </div>
-                </div>
+                <div className="col-6"></div>
                 <div className="col-6">
                   <div className="row justify-content-center">
                     <label>Nivel Escrito</label>

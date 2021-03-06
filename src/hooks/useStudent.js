@@ -28,11 +28,17 @@ export const useStudent = () => {
           console.log('undefined response')
         }
         setName(response.data.student.name)
+        window.localStorage.setItem('name', response.data.student.name)
         setSurname(response.data.student.surname)
+        window.localStorage.setItem('surname', response.data.student.surname)
         setLastname(response.data.student.lastname)
+        window.localStorage.setItem('lastname', response.data.student.lastname)
         setQualification(response.data.student.qualification)
-        setLanguages(response.data.student.languages || [])
-        setJobExperiences(response.data.student.job_experiences || [])
+        window.localStorage.setItem('qualification', response.data.student.qualification)
+        setLanguages(response.data.student.languages)
+        window.localStorage.setItem('languages', response.data.student.languages)
+        setJobExperiences(response.data.student.job_experiences)
+        window.localStorage.setItem('jobExperiences', response.data.student.job_experiences)
       })
       .catch(e => {
         console.log(e.response)
@@ -140,6 +146,10 @@ export const useStudent = () => {
     {
       icon: 'graduation-cap',
       name: 'Curriculum',
+    },
+    {
+      icon: 'industry',
+      name: 'Exp. Laboral',
     },
     {
       icon: 'highlighter',

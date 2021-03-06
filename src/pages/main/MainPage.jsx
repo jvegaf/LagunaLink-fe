@@ -1,7 +1,7 @@
 import { MDBCol, MDBContainer, MDBRow } from 'mdbreact'
 import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Header } from '../../components/Header/Header'
+import { Header } from '../../components/header/Header'
 import { useCompany } from '../../hooks/useCompany'
 import { useStudent } from '../../hooks/useStudent'
 import { useUser } from '../../hooks/useUser'

@@ -12,9 +12,9 @@ import {
   MDBCardBody,
 } from 'mdbreact'
 import { HeadTitle } from '../shared/HeadTitle'
-import { RoleSelectInput } from '../Form/RoleSelectInput'
-import { EmailInput } from '../Form/EmailInput'
-import { PasswordInput } from '../Form/PasswordInput'
+import { RoleSelectInput } from '../form/RoleSelectInput'
+import { EmailInput } from '../form/EmailInput'
+import { PasswordInput } from '../form/PasswordInput'
 import { FormProvider, useForm } from 'react-hook-form'
 
 export const SignUp = () => {

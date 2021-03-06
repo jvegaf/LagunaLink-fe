@@ -1,13 +1,11 @@
 import React from 'react'
 import { useStudent } from '../../../hooks/useStudent'
-import { useUser } from '../../../hooks/useUser'
 import { HeadTitle } from '../../shared/HeadTitle'
-import { LLAvatar } from '../../shared/LLAvatar'
 import { MDBBtn } from 'mdbreact'
 import { FormProvider, useForm } from 'react-hook-form'
-import { EmailInput } from '../../form/EmailInput'
 import { TextInput } from '../../form/TextInput'
 import { useSnackbar } from 'notistack'
+import { DateInput } from '../../form/DateInput'
 import { makeStyles, Paper } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
@@ -17,13 +15,11 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const StudentAccount = () => {
+export const Qualification = () => {
   const classes = useStyles()
-  const {name, surname, lastname, updateStudent, getStudentProfile} = useStudent()
-  const {email} = useUser()
-  const preloadedValues = {email, name, surname, lastname}
+  const {updateStudent, qualification} = useStudent()
   const methods = useForm({
-    defaultValues: preloadedValues
+    defaultValues: qualification
   })
   const {enqueueSnackbar} = useSnackbar()
 
@@ -34,30 +30,26 @@ export const StudentAccount = () => {
         return
       }
       enqueueSnackbar('Cambios guardados con exito', {variant: 'success'})
-      getStudentProfile()
+      // preloadedValues = data
     })
   }
 
   return (
     <Paper className={classes.root} elevation={6}>
-      <HeadTitle content="Perfil"/>
-      <div className="row justify-content-center">
-        <LLAvatar/>
-      </div>
+      <HeadTitle content="Titulación"/>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <EmailInput disabled/>
-          <TextInput label="Nombre" name="name"/>
-          <div className="row">
-            <div className="col">
-              <TextInput label="Primer Apellido" name="surname"/>
+          <TextInput label="Titulo" name="title"/>
+          <div className="row mt-4">
+            <div className="col-md-6 col-sm-12">
+              <DateInput componentName="start_date" label="Comienzo"/>
             </div>
-            <div className="col">
-              <TextInput label="Segundo Apellido" name="lastname"/>
+            <div className="col-md-6 col-sm-12">
+              <DateInput componentName="end_date" label="Finalización"/>
             </div>
           </div>
           {methods.formState.isDirty && (
-            <div className="d-block text-center mt-5">
+            <div className="text-center mt-5">
               <MDBBtn type="submit" color="default">
                 Guardar
               </MDBBtn>
@@ -66,5 +58,7 @@ export const StudentAccount = () => {
         </form>
       </FormProvider>
     </Paper>
+
+
   )
 }
