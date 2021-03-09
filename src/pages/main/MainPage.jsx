@@ -1,30 +1,24 @@
 import { MDBCol, MDBContainer, MDBRow } from 'mdbreact'
 import React, { useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
 import { Header } from '../../components/header/Header'
 import { useCompany } from '../../hooks/useCompany'
 import { useStudent } from '../../hooks/useStudent'
 import { useUser } from '../../hooks/useUser'
 
 export function MainPage() {
-  const { isSigned, userRole } = useUser()
-  const history = useHistory()
+
+  const { userRole } = useUser()
   const { getStudentProfile } = useStudent()
   const { getCompanyProfile } = useCompany()
 
   useEffect(() => {
-    if (!isSigned) {
-      history.push('/signin')
+    if(userRole ==='ROLE_STUDENT'){
+      getStudentProfile()
     }
-    switch(userRole){
-      case 'ROLE_STUDENT':
-        getStudentProfile()
-        break
-      case 'ROLE_COMPANY':
-        getCompanyProfile()
-        break
+    if(userRole ==='ROLE_COMPANY'){
+      getCompanyProfile()
     }
-  }, [isSigned, userRole])
+  }, [userRole])
 
   return (
     <MDBContainer fluid>

@@ -20,13 +20,10 @@ export const useCompany = () => {
     setCity,
   } = useContext(CompanyContext)
 
-  const getCompanyProfile = useCallback(() => {
+  const getCompanyProfile = useCallback((id, toKen) => {
     apiProvider
-      .getSingle('companies', userId, token)
+      .getSingle('companies', id, toKen)
       .then(response => {
-        if (response === undefined) {
-          console.log('undefined response')
-        }
         setName(response.data.company.name)
         setDescription(response.data.company.description)
         setAddress(response.data.company.address)

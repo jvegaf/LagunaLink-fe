@@ -20,13 +20,12 @@ export const useStudent = () => {
     setJobExperiences,
   } = useContext(StudentContext)
 
+  
+
   const getStudentProfile = useCallback(() => {
     apiProvider
       .getSingle('students', userId, token)
       .then(response => {
-        if (response.data.student === undefined) {
-          console.log('undefined response')
-        }
         setName(response.data.student.name)
         window.localStorage.setItem('name', response.data.student.name)
         setSurname(response.data.student.surname)
