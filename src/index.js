@@ -6,15 +6,15 @@ import reportWebVitals from './reportWebVitals'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import 'bootstrap-css-only/css/bootstrap.min.css'
 import 'mdbreact/dist/css/mdb.css'
-import { CssBaseline, MuiThemeProvider } from '@material-ui/core'
-import { theme } from './theme'
+import { CssBaseline, ThemeProvider } from '@material-ui/core'
+import theme from './theme/index'
 
 ReactDOM.render(
   <React.StrictMode>
-    <MuiThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <App/>
-    </MuiThemeProvider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )

@@ -1,10 +1,10 @@
 import { useCallback, useContext } from 'react'
 import CompanyContext from '../context/CompanyContext'
 import { apiProvider } from '../services/api/api-provider'
-import { useUser } from './useUser'
 
 export const useCompany = () => {
-  const { token, userId } = useUser()
+  const token = window.localStorage.getItem('access_token')
+  const userId = window.localStorage.getItem('user_id')
   const {
     name,
     setName,

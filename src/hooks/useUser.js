@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react'
-import Context from '../context/UserContext'
+import UserContext from '../context/UserContext'
 import { apiProvider } from '../services/api/api-provider'
 
 export const useUser = () => {
@@ -16,7 +16,7 @@ export const useUser = () => {
     setStatus,
     isSigned,
     setIsSigned,
-  } = useContext(Context)
+  } = useContext(UserContext)
 
   const signIn = useCallback(
     ({ email, password }) => {
