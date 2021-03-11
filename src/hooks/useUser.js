@@ -63,11 +63,7 @@ export const useUser = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const signUp = useCallback(data => {
     return apiProvider
-      .post('/auth/signup', {
-        email: data.email,
-        password: data.password,
-        role: data.role,
-      })
+      .post('/auth/signup', data)
       .then(response => {
         return response.status
       })
