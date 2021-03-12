@@ -5,15 +5,7 @@ import { apiProvider } from '../services/api/api-provider'
 export const useStudent = () => {
   const token = window.localStorage.getItem('access_token')
   const userId = window.localStorage.getItem('user_id')
-  const {
-    name,
-    surname,
-    lastname,
-    qualification,
-    languages,
-    jobExperiences,
-  } = useContext(StudentContext)
-
+  const { name, surname, lastname, qualification, languages, jobExperiences } = useContext(StudentContext)
 
   const registerStudent = useCallback(
     data => {

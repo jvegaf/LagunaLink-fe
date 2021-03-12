@@ -1,4 +1,5 @@
 import { apiProvider } from '../services/api/api-provider'
+import { actions as studentActions } from './student'
 
 const initialState = {
   token: '',
@@ -9,7 +10,6 @@ const initialState = {
   isSignedIn: false,
   inactiveError: null,
   signinError: null,
-  profile: null,
 }
 
 // const types
@@ -27,6 +27,7 @@ const COMPANY_REGISTER = 'COMPANY_REGISTER'
 const SIGNIN_ERROR = 'SIGNIN_ERROR'
 const INACTIVE_ERROR = 'INACTIVE_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
+const SIGN_UP = 'SIGN_UP'
 
 // reducers
 const currentUser = (state = initialState, action) => {
@@ -37,20 +38,19 @@ const currentUser = (state = initialState, action) => {
         isFetching: true,
         signinError: null,
       }
-    
-      case SIGNIN_SUCCESS:
+
+    case SIGNIN_SUCCESS:
       return {
         ...state,
-        userId: action.payload.response.data.user_id,
-        token: action.payload.response.data.access_token,
-        email: action.payload.response.data.email,
-        role: action.payload.response.data.user_role,
+        userId: action.payload.user_id,
+        token: action.payload.access_token,
+        email: action.payload.email,
+        role: action.payload.user_role,
         isSignedIn: true,
         isFetching: false,
-        profile: action.payload.profile,
       }
-    
-      case SIGNIN_ERROR:
+
+    case SIGNIN_ERROR:
       return {
         ...state,
         isFetching: false,
@@ -61,9 +61,9 @@ const currentUser = (state = initialState, action) => {
       return initialState
 
     case STUDENT_REGISTER:
-    break    // LLAMAR A LA ACCION DE REGISTRO
+      break // LLAMAR A LA ACCION DE REGISTRO
     case COMPANY_REGISTER:
-    break   // LLAMAR A LA ACCION DE REGISTRO
+      break // LLAMAR A LA ACCION DE REGISTRO
     case INACTIVE_ERROR:
       return {
         ...state,
@@ -98,13 +98,18 @@ const signIn = data => dispatch => {
         dispatch({ type: INACTIVE_ERROR, payload: { message: 'Necesitas verificar tu cuenta antes de ingresar' } })
       }
       if (response.status === STATUS_OK) {
-        const path = response.data.user_role === ROLE_STUDENT ? 'students' : 'companies'
-        apiProvider.getSingle(path, response.data.user_id, response.data.access_token).then(profile =>
-          dispatch({
-            type: SIGNIN_SUCCESS,
-            payload: { response, profile },
-          })
-        )
+        const role = response.data.user_role
+        if (role === ROLE_STUDENT) {
+          studentActions.getProfile(
+            response.data.userId,
+            response.data.access_token,
+          )
+        }
+        // falta la accion getProfile de empresa
+        dispatch({
+          type: SIGNIN_SUCCESS,
+          payload: response.data,
+        })
       }
     })
     .catch(err => {
@@ -119,17 +124,15 @@ const signOut = dispatch => dispatch({ type: SIGN_OUT })
 
 const signUp = data => dispatch => {
   apiProvider
-      .post('/auth/signup', data)
-      .then(response => {
-        return response.status
-      })
-      .catch(e => {
-        return e.response.status
-      })
+    .post('/auth/signup', data)
+    .catch(e => {
+      console.log({ e })
+    })
+    .then(dispatch({ type: SIGN_UP }))
 }
 
 export const actions = {
   signIn,
   signOut,
-  signUp
+  signUp,
 }
