@@ -24,6 +24,8 @@ const useStyles = makeStyles(theme => ({
 ))
 
 export const SignInComponent = () => {
+  const needStudentRegister = useSelector(state => state.user.needStudentRegister)
+  const needCompanyRegister = useSelector(state => state.user.needCompanyRegister)
   const isSignedIn = useSelector(state => state.user.isSignedIn)
   const dispatch = useDispatch()
   const classes = useStyles()
@@ -38,6 +40,8 @@ export const SignInComponent = () => {
     dispatch(actions.signInAction(data))
   }
 
+  if (needStudentRegister) return <Redirect to="/register/student"/>
+  if (needCompanyRegister) return <Redirect to="/register/company"/>
   if (isSignedIn) return <Redirect to="/main"/>
 
   return (

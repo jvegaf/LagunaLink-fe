@@ -1,5 +1,6 @@
 import { apiProvider } from '../services/api/api-provider'
 import { actions as studentActions } from './student'
+import { actions as companyActions } from './company'
 
 const initialState = {
   token: '',
@@ -7,6 +8,8 @@ const initialState = {
   email: '',
   isFetching: false,
   role: '',
+  needStudentRegister: false,
+  needCompanyRegister: false,
   isSignedIn: false,
   inactiveError: null,
   signinError: null,
@@ -14,6 +17,7 @@ const initialState = {
 
 // const types
 const ROLE_STUDENT = 'ROLE_STUDENT'
+const ROLE_COMPANY = 'ROLE_COMPANY'
 const STATUS_OK = 200
 const STUDENT_NEW = 230
 const COMPANY_NEW = 231
@@ -24,6 +28,7 @@ const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS'
 const SIGNIN = 'SIGNIN'
 const STUDENT_REGISTER = 'STUDENT_REGISTER'
 const COMPANY_REGISTER = 'COMPANY_REGISTER'
+const REGISTER_COMPLETED = 'REGISTER_COMPLETED'
 const SIGNIN_ERROR = 'SIGNIN_ERROR'
 const INACTIVE_ERROR = 'INACTIVE_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
@@ -61,9 +66,35 @@ const currentUser = (state = initialState, action) => {
       return initialState
 
     case STUDENT_REGISTER:
-      break // LLAMAR A LA ACCION DE REGISTRO
+      return {
+        ...state,
+        userId: action.payload.user_id,
+        token: action.payload.access_token,
+        email: action.payload.email,
+        role: action.payload.user_role,
+        isSignedIn: true,
+        isFetching: false,
+        needStudentRegister: true,
+      }
     case COMPANY_REGISTER:
-      break // LLAMAR A LA ACCION DE REGISTRO
+      return {
+        ...state,
+        userId: action.payload.user_id,
+        token: action.payload.access_token,
+        email: action.payload.email,
+        role: action.payload.user_role,
+        isSignedIn: true,
+        isFetching: false,
+        needCompanyRegister: true,
+      }
+
+    case REGISTER_COMPLETED:
+      return {
+        ...state,
+        needCompanyRegister: false,
+        needStudentRegister: false
+      }
+
     case INACTIVE_ERROR:
       return {
         ...state,
@@ -86,10 +117,10 @@ const signIn = data => dispatch => {
     .post('/auth/signin', data)
     .then(response => {
       if (response.status === STUDENT_NEW) {
-        dispatch({ type: STUDENT_REGISTER, payload: response })
+        dispatch({ type: STUDENT_REGISTER })
       }
       if (response.status === COMPANY_NEW) {
-        dispatch({ type: COMPANY_REGISTER, payload: response })
+        dispatch({ type: COMPANY_REGISTER })
       }
       if (response.status === BAD_REQUEST) {
         dispatch({ type: SIGNIN_ERROR, payload: { message: 'Correo o Contraseña erroneo' } })
@@ -100,12 +131,11 @@ const signIn = data => dispatch => {
       if (response.status === STATUS_OK) {
         const role = response.data.user_role
         if (role === ROLE_STUDENT) {
-          studentActions.getProfile(
-            response.data.userId,
-            response.data.access_token,
-          )
+          studentActions.getProfile(response.data.userId, response.data.access_token)
         }
-        // falta la accion getProfile de empresa
+        if (role === ROLE_COMPANY) {
+          companyActions.getProfile(response.data.userId, response.data.access_token)
+        }
         dispatch({
           type: SIGNIN_SUCCESS,
           payload: response.data,
@@ -131,8 +161,11 @@ const signUp = data => dispatch => {
     .then(dispatch({ type: SIGN_UP }))
 }
 
+const unsetRegister = dispatch => dispatch({type: REGISTER_COMPLETED })
+
 export const actions = {
   signIn,
   signOut,
   signUp,
+  unsetRegister,
 }

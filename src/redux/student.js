@@ -1,4 +1,5 @@
 import { apiProvider } from '../services/api/api-provider'
+import { actions as userActions } from './user'
 
 const initialState = {
   profile: {
@@ -147,7 +148,9 @@ const registerStudent = (data, token) => dispatch => {
   dispatch({ type: STUDENT_REGISTER })
   apiProvider
     .post('/students', data, token)
-    .then(() => dispatch({ type: STUDENT_REGISTER_COMPLETE, payload: data }))
+    .then(() =>{ 
+      userActions.unsetRegister() 
+      dispatch({ type: STUDENT_REGISTER_COMPLETE, payload: data })})
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
