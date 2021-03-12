@@ -1,6 +1,4 @@
 import React from 'react'
-import { useStudent } from '../../../hooks/useStudent'
-import { useUser } from '../../../hooks/useUser'
 import { Title } from '../../shared/Title'
 import { LinkAvatar } from '../../shared/LinkAvatar'
 import { MDBBtn } from 'mdbreact'
@@ -19,11 +17,9 @@ const useStyles = makeStyles(theme => ({
 
 export const StudentAccount = () => {
   const classes = useStyles()
-  const {name, surname, lastname, updateStudent, getStudentProfile} = useStudent()
-  const {email} = useUser()
-  const preloadedValues = {email, name, surname, lastname}
+  // const preloadedValues = {email, name, surname, lastname}
   const methods = useForm({
-    defaultValues: preloadedValues
+    // defaultValues: preloadedValues
   })
   const {enqueueSnackbar} = useSnackbar()
 

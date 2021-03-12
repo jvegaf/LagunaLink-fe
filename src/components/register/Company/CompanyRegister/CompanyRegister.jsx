@@ -1,20 +1,13 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { useCompany } from '../../../../hooks/useCompany'
 import { MDBBtn, MDBCard, MDBCardBody } from 'mdbreact'
 import { Title } from '../../../shared/Title'
 import { TextInput } from '../../../form/TextInput'
 import { FormProvider, useForm } from 'react-hook-form'
 
 export const CompanyRegister = () => {
-  const history = useHistory()
-  const { registerCompany } = useCompany()
   const methods = useForm()
 
   const onSubmit = data => {
-    registerCompany(data).then(status => {
-      if (status === 201) history.push('/main')
-    })
   }
 
   return (

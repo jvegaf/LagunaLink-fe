@@ -1,5 +1,4 @@
 import React from 'react'
-import { useStudent } from '../../../hooks/useStudent'
 import { Title } from '../../shared/Title'
 import { MDBBtn } from 'mdbreact'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -17,9 +16,8 @@ const useStyles = makeStyles(theme => ({
 
 export const Qualification = () => {
   const classes = useStyles()
-  const {updateStudent, qualification} = useStudent()
   const methods = useForm({
-    defaultValues: qualification
+    // defaultValues: qualification
   })
   const {enqueueSnackbar} = useSnackbar()
 

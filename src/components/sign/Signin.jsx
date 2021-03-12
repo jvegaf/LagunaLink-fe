@@ -42,7 +42,7 @@ export const SignInComponent = () => {
 
   if (needStudentRegister) return <Redirect to="/register/student"/>
   if (needCompanyRegister) return <Redirect to="/register/company"/>
-  if (isSignedIn) return <Redirect to="/main"/>
+  if (isSignedIn) return <Redirect to="/app"/>
 
   return (
     <Paper elevation={3} className={classes.root}>

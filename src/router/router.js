@@ -26,7 +26,7 @@ export default function Router() {
         <Route path="/signup" component={SignUpPage} />
         <Route path="/register/:accountType" component={RegisterPage} />
         <Route path="/auth/confirmed" component={ConfirmedPage} />
-        <PrivateRoute path="/main">
+        <PrivateRoute path="/app">
           <DashBoard />
         </PrivateRoute>
         <PrivateRoute path="/dashboard">

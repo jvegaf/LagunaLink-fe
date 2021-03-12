@@ -1,19 +1,12 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { useStudent } from '../../../../hooks/useStudent'
 import { FormProvider, useForm } from 'react-hook-form'
 import { MDBBtn, MDBTypography, MDBCard, MDBCardBody } from 'mdbreact'
 import { TextInput } from '../../../form/TextInput'
 
 export const StudentRegister = () => {
-  const { registerStudent } = useStudent()
   const methods = useForm()
-  const history = useHistory()
 
-  const onSubmit = data => {
-    registerStudent(data).then(status => {
-      if (status === 201) history.push('/main')
-    })
+  const onSubmit = () => {
   }
 
   return (
