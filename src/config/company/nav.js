@@ -21,12 +21,12 @@ const companyNavConf = {
     {
       href: '/app/account',
       icon: UserIcon,
-      title: 'Exp. Laboral',
+      title: 'Ofertas Publicadas',
     },
     {
       href: '/register',
       icon: UserPlusIcon,
-      title: 'Ofertas Aplicadas',
+      title: 'Crear Oferta ',
     },
     {
       href: '/app/settings',
