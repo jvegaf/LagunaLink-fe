@@ -37,7 +37,7 @@ export const SignInComponent = () => {
 
   const onSubmit = data => {
     setModal({open: false, body: ''})
-    dispatch(actions.signInAction(data))
+    dispatch(actions.signIn(data))
   }
 
   if (needStudentRegister) return <Redirect to="/register/student"/>

@@ -83,13 +83,15 @@ export default currentCompany
 
 // actions
 
-const signOut = dispatch => dispatch({ type: SIGN_OUT })
+const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
 const getProfile = (userId, token) => dispatch => {
   dispatch({ type: GET_PROFILE })
   apiProvider
     .getSingle('companies', userId, token)
-    .then(res => dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data }))
+    .then(res => {
+      dispatch(userActions.setPrefName(res.data.name))
+      dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data })})
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 

@@ -77,7 +77,7 @@ const currentStudent = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        profile: action.payload.student,
+        profile: action.payload
       }
 
     case STUDENT_REGISTER_COMPLETE:
@@ -134,13 +134,16 @@ export default currentStudent
 
 // actions
 
-const signOut = dispatch => dispatch({ type: SIGN_OUT })
+const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
 const getProfile = (userId, token) => dispatch => {
   dispatch({ type: GET_PROFILE })
   apiProvider
     .getSingle('students', userId, token)
-    .then(res => dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data }))
+    .then(res =>{
+      const prefName = `${res.data.student.name} ${res.data.student.surname}`
+      dispatch(userActions.setPrefName(prefName))
+      dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data.student })})
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 

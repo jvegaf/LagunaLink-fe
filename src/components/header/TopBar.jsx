@@ -7,7 +7,8 @@ import MenuIcon from '@material-ui/icons/Menu'
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined'
 import InputIcon from '@material-ui/icons/Input'
 import { Logo } from '../logo/Logo'
-import { useUser } from '../../hooks/useUser'
+import { actions } from '../../redux/user'
+import { useDispatch } from 'react-redux'
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -22,8 +23,8 @@ const useStyles = makeStyles(() => ({
 
 const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
   const [notifications] = useState([])
-  const { signOut } = useUser()
 
   return (
     <AppBar className={clsx(classes.root, className)} elevation={3} {...rest}>
@@ -38,7 +39,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton color="inherit" onClick={signOut}>
+          <IconButton color="inherit" onClick={() => dispatch(actions.signOut())}>
             <InputIcon />
           </IconButton>
         </Hidden>

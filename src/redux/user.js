@@ -13,6 +13,8 @@ const initialState = {
   isSignedIn: false,
   inactiveError: null,
   signinError: null,
+  prefName: '',
+  avatar: '/static/images/avatars/avatar_5.png'
 }
 
 // const types
@@ -33,6 +35,7 @@ const SIGNIN_ERROR = 'SIGNIN_ERROR'
 const INACTIVE_ERROR = 'INACTIVE_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
 const SIGN_UP = 'SIGN_UP'
+const SET_NAME = 'SET_NAME'
 
 // reducers
 const currentUser = (state = initialState, action) => {
@@ -95,6 +98,12 @@ const currentUser = (state = initialState, action) => {
         needStudentRegister: false
       }
 
+    case SET_NAME:
+      return {
+        ...state,
+        prefName: action.payload
+      }
+
     case INACTIVE_ERROR:
       return {
         ...state,
@@ -129,12 +138,11 @@ const signIn = data => dispatch => {
         dispatch({ type: INACTIVE_ERROR, payload: { message: 'Necesitas verificar tu cuenta antes de ingresar' } })
       }
       if (response.status === STATUS_OK) {
-        const role = response.data.user_role
-        if (role === ROLE_STUDENT) {
-          studentActions.getProfile(response.data.userId, response.data.access_token)
+        if (response.data.user_role === ROLE_STUDENT) {
+          dispatch(studentActions.getProfile(response.data.user_id, response.data.access_token))
         }
-        if (role === ROLE_COMPANY) {
-          companyActions.getProfile(response.data.userId, response.data.access_token)
+        if (response.data.user_role === ROLE_COMPANY) {
+         dispatch(companyActions.getProfile(response.data.user_id, response.data.access_token))
         }
         dispatch({
           type: SIGNIN_SUCCESS,
@@ -150,7 +158,11 @@ const signIn = data => dispatch => {
     })
 }
 
-const signOut = dispatch => dispatch({ type: SIGN_OUT })
+const signOut = () => dispatch => {
+  dispatch(studentActions.signOut())
+  dispatch(companyActions.signOut())
+  dispatch({ type: SIGN_OUT })
+}
 
 const signUp = data => dispatch => {
   apiProvider
@@ -161,6 +173,10 @@ const signUp = data => dispatch => {
     .then(dispatch({ type: SIGN_UP }))
 }
 
+const setPrefName= name => dispatch => {
+  dispatch({ type: SET_NAME, payload: name })
+}
+
 const unsetRegister = dispatch => dispatch({type: REGISTER_COMPLETED })
 
 export const actions = {
@@ -168,4 +184,5 @@ export const actions = {
   signOut,
   signUp,
   unsetRegister,
+  setPrefName
 }
