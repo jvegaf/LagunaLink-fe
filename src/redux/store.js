@@ -2,10 +2,12 @@ import {createStore, combineReducers, compose, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import user from './user'
 import student from './student'
+import company from './company'
 
 const rootReducer = combineReducers({
   user,
-  student
+  student,
+  company
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
