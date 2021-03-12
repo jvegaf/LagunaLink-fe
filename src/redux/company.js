@@ -2,15 +2,7 @@ import { apiProvider } from '../services/api/api-provider'
 import { actions as userActions } from './user'
 
 const initialState = {
-  profile: {
-    id: '',
-    name: '',
-    description: '',
-    address: '',
-    postalCode: '',
-    region: '',
-    city: '',
-  },
+  profile: null,
   isBusy: false,
   taskError: null,
 }
@@ -53,18 +45,13 @@ const currentCompany = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        profile: action.payload.company,
+        profile: action.payload,
       }
 
     case COMPANY_REGISTER_COMPLETE:
       return {
         ...state,
         isBusy: false,
-        profile: {
-          name: action.payload.name,
-          surname: action.payload.surname,
-          lastname: action.payload.lastname,
-        },
       }
 
     case SET_ERROR:
@@ -90,8 +77,8 @@ const getProfile = (userId, token) => dispatch => {
   apiProvider
     .getSingle('companies', userId, token)
     .then(res => {
-      dispatch(userActions.setPrefName(res.data.name))
-      dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data })})
+      dispatch(userActions.setPrefName(res.data.company.name))
+      dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data.company })})
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 

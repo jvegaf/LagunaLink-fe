@@ -2,15 +2,7 @@ import { apiProvider } from '../services/api/api-provider'
 import { actions as userActions } from './user'
 
 const initialState = {
-  profile: {
-    id: '',
-    name: '',
-    surname: '',
-    lastname: '',
-    qualification: null,
-    languages: [],
-    jobExperiences: [],
-  },
+  profile: null,
   isBusy: false,
   taskError: null,
 }
@@ -84,11 +76,6 @@ const currentStudent = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        profile: {
-          name: action.payload.name,
-          surname: action.payload.surname,
-          lastname: action.payload.lastname,
-        },
       }
 
     case ADD_QUALIFICATION_COMPLETE:
