@@ -3,13 +3,14 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import MenuIcon from '@material-ui/icons/Menu'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import TopBar from '../components/header/TopBar'
 import NavBar from '../components/nav/index'
-import { config } from './dashboard/config'
-import { Content, Footer, Header, Nav, Root } from './dashboard'
-import studentNavConf from '../config/student/nav'
 import companyNavConf from '../config/company/nav'
-import { useSelector } from 'react-redux'
+import studentNavConf from '../config/student/nav'
+import { ProfileView } from '../views/backoffice/ProfileView'
+import { Content, Footer, Header, Nav, Root } from './dashboard'
+import { config } from './dashboard/config'
 
 export const DashBoard = () => {
 
@@ -43,7 +44,7 @@ export const DashBoard = () => {
       >
         <NavBar user={navUser} config={navConf}/>
       </Nav>
-      <Content>{/* content goes here */}</Content>
+      <Content><ProfileView /></Content>
       <Footer>{/* footer goes here */}</Footer>
     </Root>
   )

@@ -2,7 +2,13 @@ import { apiProvider } from '../services/api/api-provider'
 import { actions as userActions } from './user'
 
 const initialState = {
-  profile: null,
+  id: '',
+  name: '',
+  surname: '',
+  lastname: '',
+  qualification: '',
+  languages: [],
+  jobExperiences: [],
   isBusy: false,
   taskError: null,
 }
@@ -69,47 +75,50 @@ const currentStudent = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        profile: action.payload
+        id: action.payload.id,
+        name: action.payload.name,
+        surname: action.payload.surname,
+        lastname: action.payload.lastname,
+        qualification: action.payload.qualification,
+        languages: action.payload.languages,
+        jobExperiences: action.payload.job_experiences,
       }
 
     case STUDENT_REGISTER_COMPLETE:
       return {
         ...state,
         isBusy: false,
+        name: action.payload.name,
+        surname: action.payload.surname,
+        lastname: action.payload.lastname
       }
 
     case ADD_QUALIFICATION_COMPLETE:
       return {
         ...state,
         isBusy: false,
-        profile: {
-          qualification: action.payload
-        }
+        qualification: action.payload
       }
 
     case ADD_LANGUAGE_COMPLETE:
       return {
         ...state,
         isBusy: false,
-        profile: {
-          languages: action.payload
-        }
+        languages: action.payload,
       }
 
     case ADD_JOB_EXPERIENCE_COMPLETE:
       return {
         ...state,
         isBusy: false,
-        profile: {
-          jobExperiences: action.payload
-        }
+        jobExperiences: action.payload
       }
 
     case SET_ERROR:
       return {
         ...state,
         isBusy: false,
-        taskError: action.payload
+        taskError: action.payload,
       }
 
     default:
@@ -127,10 +136,11 @@ const getProfile = (userId, token) => dispatch => {
   dispatch({ type: GET_PROFILE })
   apiProvider
     .getSingle('students', userId, token)
-    .then(res =>{
+    .then(res => {
       const prefName = `${res.data.student.name} ${res.data.student.surname}`
       dispatch(userActions.setPrefName(prefName))
-      dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data.student })})
+      dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data.student })
+    })
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
@@ -138,9 +148,10 @@ const registerStudent = (data, token) => dispatch => {
   dispatch({ type: STUDENT_REGISTER })
   apiProvider
     .post('/students', data, token)
-    .then(() =>{ 
-      userActions.unsetRegister() 
-      dispatch({ type: STUDENT_REGISTER_COMPLETE, payload: data })})
+    .then(() => {
+      userActions.unsetRegister()
+      dispatch({ type: STUDENT_REGISTER_COMPLETE, payload: data })
+    })
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
@@ -160,20 +171,20 @@ const addQualification = (userId, data, token) => dispatch => {
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
-const addLanguage = (userId, data, token) => (dispatch, getState ) => {
+const addLanguage = (userId, data, token) => (dispatch, getState) => {
   dispatch({ type: ADD_LANGUAGE })
   const { profile } = getState().student
-  const langs = [...profile.languages, data ]
+  const langs = [...profile.languages, data]
   apiProvider
     .put('students', userId, { languages: langs }, token)
     .then(() => dispatch({ type: ADD_LANGUAGE_COMPLETE, payload: langs }))
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
-const addJobExperience = (userId, data, token) => (dispatch, getState ) => {
+const addJobExperience = (userId, data, token) => (dispatch, getState) => {
   dispatch({ type: ADD_JOB_EXPERIENCE })
   const { profile } = getState().student
-  const jobEx = [...profile.jobExperiences, data ]
+  const jobEx = [...profile.jobExperiences, data]
   apiProvider
     .put('students', userId, { job_experiences: jobEx }, token)
     .then(() => dispatch({ type: ADD_JOB_EXPERIENCE_COMPLETE, payload: jobEx }))

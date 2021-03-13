@@ -1,6 +1,5 @@
 import { Avatar, Box, Divider, List, makeStyles, Toolbar, Typography } from '@material-ui/core'
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import NavItem from './NavItem'
 
 
@@ -12,9 +11,9 @@ import NavItem from './NavItem'
 
 const useStyles = makeStyles(() => ({
   avatar: {
-    cursor: 'pointer',
     width: 64,
     height: 64,
+    marginBottom: 10
   },
 }))
 
@@ -26,7 +25,7 @@ const NavBar = ({ user, config}) => {
       <Toolbar />
       <Divider />
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
-        <Avatar className={classes.avatar} component={RouterLink} src={user.avatar} to="/app/account" />
+        <Avatar className={classes.avatar} src={user.avatar} />
         <Typography className={classes.name} color="textPrimary" variant="h5">
           {user.name}
         </Typography>

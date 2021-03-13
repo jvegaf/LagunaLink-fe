@@ -2,9 +2,9 @@
 import { Button, Link, makeStyles, Paper, Typography } from '@material-ui/core'
 import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { EmailInput } from '../form/EmailInput'
-import { PasswordInput } from '../form/PasswordInput'
-import { RoleSelectInput } from '../form/RoleSelectInput'
+import { EmailInput } from '../form/__shared__/EmailInput'
+import { PasswordInput } from '../form/__shared__/PasswordInput'
+import { RoleSelectInput } from '../form/__shared__/RoleSelectInput'
 import { Title } from '../shared/Title'
 
 const useStyles = makeStyles(theme => ({

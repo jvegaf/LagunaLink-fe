@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export const TextInput = ({ name, label }) => {
+export const TextInput = ({ name, label, defaultValue }) => {
   const { register } = useFormContext()
   const classes = useStyles()
   return (

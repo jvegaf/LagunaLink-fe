@@ -18,7 +18,8 @@
     "no-debugger": "off",
     "react/react-in-jsx-scope": "off",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "off"
+    "react-hooks/exhaustive-deps": "off",
+    "no-undef": "error"
   },
   "settings": {
     "react": {

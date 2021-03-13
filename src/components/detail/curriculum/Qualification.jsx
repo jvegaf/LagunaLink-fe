@@ -3,7 +3,7 @@ import { Title } from '../../shared/Title'
 import { MDBBtn } from 'mdbreact'
 import { FormProvider, useForm } from 'react-hook-form'
 import { TextInput } from '../../form/TextInput'
-import { DateInput } from '../../form/DateInput'
+import { DateInput } from '../../form/__shared__/DateInput'
 import { makeStyles, Paper } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
