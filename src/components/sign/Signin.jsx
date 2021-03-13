@@ -11,8 +11,8 @@ import { Title } from '../shared/Title'
 
 const useStyles = makeStyles(theme => ({
     root: {
-      padding: '2em'
-
+      padding: '2em',
+      width: '100%'
     },
     button: {
       paddingLeft: '4em',

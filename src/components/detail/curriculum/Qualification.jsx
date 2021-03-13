@@ -3,7 +3,6 @@ import { Title } from '../../shared/Title'
 import { MDBBtn } from 'mdbreact'
 import { FormProvider, useForm } from 'react-hook-form'
 import { TextInput } from '../../form/TextInput'
-import { useSnackbar } from 'notistack'
 import { DateInput } from '../../form/DateInput'
 import { makeStyles, Paper } from '@material-ui/core'
 
@@ -19,17 +18,17 @@ export const Qualification = () => {
   const methods = useForm({
     // defaultValues: qualification
   })
-  const {enqueueSnackbar} = useSnackbar()
+  // const {enqueueSnackbar} = useSnackbar()
 
   const onSubmit = data => {
-    updateStudent(data).then(status => {
-      if (status !== 200) {
-        enqueueSnackbar('No se han podido guardar los cambios', {variant: 'error'})
-        return
-      }
-      enqueueSnackbar('Cambios guardados con exito', {variant: 'success'})
-      // preloadedValues = data
-    })
+    // updateStudent(data).then(status => {
+    //   if (status !== 200) {
+    //     enqueueSnackbar('No se han podido guardar los cambios', {variant: 'error'})
+    //     return
+    //   }
+    //   enqueueSnackbar('Cambios guardados con exito', {variant: 'success'})
+    //   // preloadedValues = data
+    // })
   }
 
   return (

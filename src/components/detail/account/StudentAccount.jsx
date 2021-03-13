@@ -5,7 +5,6 @@ import { MDBBtn } from 'mdbreact'
 import { FormProvider, useForm } from 'react-hook-form'
 import { EmailInput } from '../../form/EmailInput'
 import { TextInput } from '../../form/TextInput'
-import { useSnackbar } from 'notistack'
 import { makeStyles, Paper } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
@@ -21,17 +20,17 @@ export const StudentAccount = () => {
   const methods = useForm({
     // defaultValues: preloadedValues
   })
-  const {enqueueSnackbar} = useSnackbar()
+  // const {enqueueSnackbar} = useSnackbar()
 
   const onSubmit = data => {
-    updateStudent(data).then(status => {
-      if (status !== 200) {
-        enqueueSnackbar('No se han podido guardar los cambios', {variant: 'error'})
-        return
-      }
-      enqueueSnackbar('Cambios guardados con exito', {variant: 'success'})
-      getStudentProfile()
-    })
+    // updateStudent(data).then(status => {
+    //   if (status !== 200) {
+    //     enqueueSnackbar('No se han podido guardar los cambios', {variant: 'error'})
+    //     return
+    //   }
+    //   enqueueSnackbar('Cambios guardados con exito', {variant: 'success'})
+    //   getStudentProfile()
+    // })
   }
 
   return (

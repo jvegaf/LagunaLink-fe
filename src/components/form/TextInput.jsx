@@ -5,6 +5,7 @@ import { makeStyles, TextField } from '@material-ui/core'
 const useStyles = makeStyles(theme => ({
   formControl: {
     margin: theme.spacing(2),
+    width: '90%'
   },
 }))
 
