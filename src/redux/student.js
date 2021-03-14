@@ -1,8 +1,9 @@
 import { apiProvider } from '../services/api/api-provider'
 import { actions as userActions } from './user'
 
-const initialState = {
+const initialStudentState = {
   id: '',
+  email: '',
   name: '',
   surname: '',
   lastname: '',
@@ -30,10 +31,10 @@ const SET_ERROR = 'SET_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
 
 // reducers
-const currentStudent = (state = initialState, action) => {
+const currentStudent = (state = initialStudentState, action) => {
   switch (action.type) {
     case SIGN_OUT:
-      return initialState
+      return initialStudentState
 
     case STUDENT_REGISTER:
       return {
@@ -51,6 +52,7 @@ const currentStudent = (state = initialState, action) => {
       return {
         ...state,
         isBusy: true,
+        email: action.payload
       }
 
     case ADD_LANGUAGE:
@@ -90,14 +92,14 @@ const currentStudent = (state = initialState, action) => {
         isBusy: false,
         name: action.payload.name,
         surname: action.payload.surname,
-        lastname: action.payload.lastname
+        lastname: action.payload.lastname,
       }
 
     case ADD_QUALIFICATION_COMPLETE:
       return {
         ...state,
         isBusy: false,
-        qualification: action.payload
+        qualification: action.payload,
       }
 
     case ADD_LANGUAGE_COMPLETE:
@@ -111,7 +113,7 @@ const currentStudent = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        jobExperiences: action.payload
+        jobExperiences: action.payload,
       }
 
     case SET_ERROR:
@@ -132,8 +134,8 @@ export default currentStudent
 
 const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
-const getProfile = (userId, token) => dispatch => {
-  dispatch({ type: GET_PROFILE })
+const getProfile = (userId, token, email) => dispatch => {
+  dispatch({ type: GET_PROFILE, payload: email})
   apiProvider
     .getSingle('students', userId, token)
     .then(res => {

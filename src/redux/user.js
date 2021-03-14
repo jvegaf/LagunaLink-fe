@@ -52,7 +52,6 @@ const currentUser = (state = initialState, action) => {
         ...state,
         userId: action.payload.user_id,
         token: action.payload.access_token,
-        email: action.payload.email,
         role: action.payload.user_role,
         isSignedIn: true,
         isFetching: false,
@@ -139,14 +138,14 @@ const signIn = data => dispatch => {
       }
       if (response.status === STATUS_OK) {
         if (response.data.user_role === ROLE_STUDENT) {
-          dispatch(studentActions.getProfile(response.data.user_id, response.data.access_token))
+          dispatch(studentActions.getProfile(response.data.user_id, response.data.access_token, data.email))
         }
         if (response.data.user_role === ROLE_COMPANY) {
-         dispatch(companyActions.getProfile(response.data.user_id, response.data.access_token))
+         dispatch(companyActions.getProfile(response.data.user_id, response.data.access_token, data.email))
         }
         dispatch({
           type: SIGNIN_SUCCESS,
-          payload: response.data,
+          payload: {...response.data, email: data.email },
         })
       }
     })

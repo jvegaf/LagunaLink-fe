@@ -3,6 +3,7 @@ import { actions as userActions } from './user'
 
 const initialState = {
   profile: null,
+  email: '', 
   isBusy: false,
   taskError: null,
 }
@@ -39,6 +40,7 @@ const currentCompany = (state = initialState, action) => {
       return {
         ...state,
         isBusy: true,
+        email: action.payload
       }
 
     case GET_PROFILE_COMPLETE:
@@ -72,8 +74,8 @@ export default currentCompany
 
 const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
-const getProfile = (userId, token) => dispatch => {
-  dispatch({ type: GET_PROFILE })
+const getProfile = (userId, token, email) => dispatch => {
+  dispatch({ type: GET_PROFILE,  payload: email })
   apiProvider
     .getSingle('companies', userId, token)
     .then(res => {

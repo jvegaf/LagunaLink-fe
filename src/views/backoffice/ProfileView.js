@@ -17,10 +17,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const ProfileView = () => {
-  const {user, student} = useSelector(state => ({
-    user: state.user,
-    student: state.student,
-  }), shallowEqual)
+  const user = useSelector(state => state.user)
+  const student = useSelector(state => state.student)
   const classes = useStyles()
 
   return (
@@ -30,7 +28,7 @@ export const ProfileView = () => {
           <Profile name={user.prefName} role={'Estudiante'} />
         </Grid>
         <Grid item lg={8} md={6} xs={12}>
-          <StudentAccount name={student.name} surname={student.surname} />
+          {student && (<StudentAccount {...student} />)}
         </Grid>
       </Grid>
     </Container>
