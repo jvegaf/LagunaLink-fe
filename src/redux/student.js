@@ -7,7 +7,11 @@ const initialStudentState = {
   name: '',
   surname: '',
   lastname: '',
-  qualification: '',
+  qualification: {
+    title: '',
+    start_date: '',
+    end_date: '',
+  },
   languages: [],
   jobExperiences: [],
   isBusy: false,

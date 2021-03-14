@@ -3,9 +3,10 @@
 import { Container, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React from 'react'
-import { shallowEqual, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Profile from '../../components/detail/account/Profile'
-import { StudentAccount } from '../../components/detail/account/StudentAccount'
+import { Qualification } from '../../components/detail/student/curriculum/Qualification'
+import { StudentAccount } from '../../components/detail/student/StudentAccount'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,6 +20,7 @@ const useStyles = makeStyles(theme => ({
 export const ProfileView = () => {
   const user = useSelector(state => state.user)
   const student = useSelector(state => state.student)
+  const qualification = useSelector(state=> state.student.qualification)
   const classes = useStyles()
 
   return (
@@ -28,7 +30,10 @@ export const ProfileView = () => {
           <Profile name={user.prefName} role={'Estudiante'} />
         </Grid>
         <Grid item lg={8} md={6} xs={12}>
-          {student && (<StudentAccount {...student} />)}
+          <StudentAccount {...student} />
+        </Grid>
+        <Grid item lg={8} md={6} xs={12}>
+          <Qualification {...qualification} />
         </Grid>
       </Grid>
     </Container>
