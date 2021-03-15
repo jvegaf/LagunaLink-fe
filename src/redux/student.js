@@ -12,8 +12,8 @@ const initialStudentState = {
     start_date: '',
     end_date: '',
   },
-  languages: [],
-  jobExperiences: [],
+  languages: null,
+  jobExperiences: null,
   isBusy: false,
   taskError: null,
 }

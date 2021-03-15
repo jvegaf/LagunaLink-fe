@@ -6,7 +6,9 @@ const user = {
 }
 
 const useStyles = makeStyles(() => ({
-  root: {},
+  root: {
+    minWidth: 300
+  },
   avatar: {
     height: 100,
     width: 100,

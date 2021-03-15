@@ -81,8 +81,8 @@ const QualificationForm = props => {
               helperText={touched.end_date && errors.end_date}
             />
           </Grid>
-          <Grid item xs={12} className={classes.center}>
-            <Button color="primary" hidden={!dirty} className={classes.button} variant="contained" type="submit">
+          <Grid item xs={12} hidden={!dirty} className={classes.center}>
+            <Button color="primary" className={classes.button} variant="contained" type="submit">
               Guardar 
             </Button>
           </Grid>
