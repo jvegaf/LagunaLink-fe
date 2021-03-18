@@ -2,17 +2,17 @@ import {
   Avatar,
   Box,
   Button,
-  ButtonBase,
+
   Card,
   CardActions,
   CardContent,
   Divider,
   makeStyles,
-  Typography,
+  Typography
 } from '@material-ui/core'
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { apiProvider } from '../../../services/api/api-provider'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { actions } from '../../../redux/user'
 import '../../shared/styles.css'
 
 const useStyles = makeStyles(theme => ({
@@ -28,60 +28,39 @@ const useStyles = makeStyles(theme => ({
   input: {
     display: 'none',
   },
+  button: {
+    flexGrow: 1
+  },
   actions: {
-    width: '100%',
+    flexGrow: 1
   },
 }))
 
-const Profile = ({ prefName, role, avatar }) => {
+const Profile = ({role, prefName, avatar, isBusy}) => {
   const classes = useStyles()
-  const [busy, setBusy] = useState(false)
-
-  const user = useSelector(state => state.user)
+  const dispatch = useDispatch()
   const userRole = role === 'ROLE_STUDENT' ? 'Estudiante' : 'Empresa'
-  const toggleBusy = () => setBusy(!busy)
+  const [file, setFile] = useState('')
 
-  const handleChange = e => {
-    const file = e.target.files[0]
-    toggleBusy()
-    const formData = new FormData()
-    const element = 'image'
-    formData.append(element, file)
-    apiProvider
-      .upload(user.userId, formData, user.token)
-      .then(res => {
-        if (res.status === 200) {
-          toggleBusy()
-        }
-      })
-      .catch(e => {
-        toggleBusy()
-        console.log({ e })
-      })
+
+  useEffect(() => {
+    if (file !== '') {
+      dispatch(actions.uploadAvatar(file))
+    }
+  }, [file])
+  
+  const handleChange = e => setFile(e.target.files[0])
+  
+  const remove = () => {
+    dispatch(actions.deleteAvatar())
   }
 
-  const deleteAvatar = () => {
-    toggleBusy()
-    apiProvider.removeAvatar(user.userId, user.token)
-    .then(res => {
-      if (res.status === 200) {
-        toggleBusy()
-      }
-    })}
 
   return (
     <Card className={classes.root}>
       <CardContent>
         <Box alignItems="center" display="flex" flexDirection="column">
-          <ButtonBase
-            disabled={busy}
-            onClick={deleteAvatar}
-            style={{
-              width: avatar.width,
-            }}
-          >
-            <Avatar className={classes.avatar} src={avatar} />
-          </ButtonBase>
+          <Avatar className={classes.avatar} src={avatar} />
           <Typography color="textPrimary" gutterBottom variant="h3">
             {prefName}
           </Typography>
@@ -95,10 +74,13 @@ const Profile = ({ prefName, role, avatar }) => {
       <CardActions>
         <input accept="image/*" className={classes.input} onChange={handleChange} id="button-file" type="file" />
         <label className={classes.actions} htmlFor="button-file">
-          <Button variant="text" color="primary" component="span" disabled={busy} fullWidth>
+          <Button variant="text" color="primary" component="span" disabled={isBusy}  className={classes.button}>
             Subir Imagen
           </Button>
         </label>
+        <Button variant="text" color="primary" onClick={remove} hidden={avatar === ''} component="span" disabled={isBusy} className={classes.button}>
+          Eliminar
+        </Button>
       </CardActions>
     </Card>
   )

@@ -1,12 +1,12 @@
 import { apiProvider } from '../services/api/api-provider'
-import { actions as studentActions } from './student'
 import { actions as companyActions } from './company'
+import { actions as studentActions } from './student'
 
 const initialState = {
   token: '',
   userId: '',
   email: '',
-  isFetching: false,
+  isBusy: false,
   role: '',
   needStudentRegister: false,
   needCompanyRegister: false,
@@ -36,6 +36,10 @@ const INACTIVE_ERROR = 'INACTIVE_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
 const SIGN_UP = 'SIGN_UP'
 const SET_NAME = 'SET_NAME'
+const AVATAR_UPLOAD = 'AVATAR_UPLOAD'
+const AVATAR_UPLOADED = 'AVATAR_UPLOADED'
+const AVATAR_DELETE = 'AVATAR_DELETE'
+const AVATAR_DELETED = 'AVATAR_DELETED'
 
 // reducers
 const currentUser = (state = initialState, action) => {
@@ -43,7 +47,21 @@ const currentUser = (state = initialState, action) => {
     case SIGNIN:
       return {
         ...state,
-        isFetching: true,
+        isBusy: true,
+        signinError: null,
+      }
+
+    case AVATAR_UPLOAD:
+      return {
+        ...state,
+        isBusy: true,
+        signinError: null,
+      }
+
+    case AVATAR_DELETE:
+      return {
+        ...state,
+        isBusy: true,
         signinError: null,
       }
 
@@ -55,13 +73,27 @@ const currentUser = (state = initialState, action) => {
         role: action.payload.user_role,
         avatar: action.payload.avatar,
         isSignedIn: true,
-        isFetching: false,
+        isBusy: false,
+      }
+
+    case AVATAR_UPLOADED:
+      return {
+        ...state,
+        avatar: action.payload,
+        isBusy: false,
+      }
+
+    case AVATAR_DELETED:
+      return {
+        ...state,
+        avatar: '',
+        isBusy: false,
       }
 
     case SIGNIN_ERROR:
       return {
         ...state,
-        isFetching: false,
+        isBusy: false,
         signinError: action.payload.err,
       }
 
@@ -76,7 +108,7 @@ const currentUser = (state = initialState, action) => {
         email: action.payload.email,
         role: action.payload.user_role,
         isSignedIn: true,
-        isFetching: false,
+        isBusy: false,
         needStudentRegister: true,
       }
     case COMPANY_REGISTER:
@@ -87,7 +119,7 @@ const currentUser = (state = initialState, action) => {
         email: action.payload.email,
         role: action.payload.user_role,
         isSignedIn: true,
-        isFetching: false,
+        isBusy: false,
         needCompanyRegister: true,
       }
 
@@ -107,7 +139,7 @@ const currentUser = (state = initialState, action) => {
     case INACTIVE_ERROR:
       return {
         ...state,
-        isFetching: false,
+        isBusy: false,
         inactiveError: action.payload.error,
       }
 
@@ -145,7 +177,9 @@ const signIn = data => dispatch => {
           dispatch(companyActions.getProfile(response.data.user_id, response.data.access_token, data.email))
         }
 
-        if(response.data.avatar !== "") { response.data.avatar = `https://lagunalink-be.herokuapp.com/${response.data.avatar}` }
+        if (response.data.avatar !== '') {
+          response.data.avatar = `https://lagunalink-be.herokuapp.com/${response.data.avatar}`
+        }
 
         dispatch({
           type: SIGNIN_SUCCESS,
@@ -182,11 +216,45 @@ const setPrefName = name => dispatch => {
 
 const unsetRegister = dispatch => dispatch({ type: REGISTER_COMPLETED })
 
+const uploadAvatar = file => (dispatch, getState) => {
+  dispatch({ type: AVATAR_UPLOAD })
+  const { token, userId } = getState().user
+
+  const formData = new FormData()
+  formData.append('image', file)
+  apiProvider
+    .upload(userId, formData, token)
+    .then(res => {
+      if (res.status === 200) {
+        dispatch({ type: AVATAR_UPLOADED, payload: res.data.avatar })
+      }
+    })
+    .catch(e => {
+      // TODO: dispath con error
+      console.log({ e })
+    })
+}
+
+const deleteAvatar = dispatch => (dispatch, getState) => {
+  dispatch({ type: AVATAR_DELETE })
+  const { token, userId } = getState().user
+
+  apiProvider.removeAvatar(userId, token).then(res => {
+    if (res.status === 200) {
+      dispatch({type: AVATAR_DELETED})
+    }
+  }).catch(e => {
+    console.log({ e })
+    dispatch({type: AVATAR_DELETED})
+  })
+}
 
 export const actions = {
   signIn,
   signOut,
   signUp,
   unsetRegister,
-  setPrefName
+  setPrefName,
+  uploadAvatar,
+  deleteAvatar,
 }
