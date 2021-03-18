@@ -226,7 +226,8 @@ const uploadAvatar = file => (dispatch, getState) => {
     .upload(userId, formData, token)
     .then(res => {
       if (res.status === 200) {
-        dispatch({ type: AVATAR_UPLOADED, payload: res.data.avatar })
+        const avatarPath = `https://lagunalink-be.herokuapp.com/${res.data.avatar}`
+        dispatch({ type: AVATAR_UPLOADED, payload: avatarPath })
       }
     })
     .catch(e => {
@@ -256,5 +257,5 @@ export const actions = {
   unsetRegister,
   setPrefName,
   uploadAvatar,
-  deleteAvatar,
+  deleteAvatar
 }

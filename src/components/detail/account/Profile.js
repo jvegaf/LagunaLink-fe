@@ -1,16 +1,5 @@
-import {
-  Avatar,
-  Box,
-  Button,
-
-  Card,
-  CardActions,
-  CardContent,
-  Divider,
-  makeStyles,
-  Typography
-} from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, makeStyles, Typography } from '@material-ui/core'
+import React from 'react'
 import { useDispatch } from 'react-redux'
 import { actions } from '../../../redux/user'
 import '../../shared/styles.css'
@@ -29,32 +18,17 @@ const useStyles = makeStyles(theme => ({
     display: 'none',
   },
   button: {
-    flexGrow: 1
+    width: '50%',
   },
   actions: {
-    flexGrow: 1
+    width: '100%',
   },
 }))
 
-const Profile = ({role, prefName, avatar, isBusy}) => {
+const Profile = ({ role, prefName, avatar, isBusy }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const userRole = role === 'ROLE_STUDENT' ? 'Estudiante' : 'Empresa'
-  const [file, setFile] = useState('')
-
-
-  useEffect(() => {
-    if (file !== '') {
-      dispatch(actions.uploadAvatar(file))
-    }
-  }, [file])
-  
-  const handleChange = e => setFile(e.target.files[0])
-  
-  const remove = () => {
-    dispatch(actions.deleteAvatar())
-  }
-
 
   return (
     <Card className={classes.root}>
@@ -72,15 +46,21 @@ const Profile = ({role, prefName, avatar, isBusy}) => {
       </CardContent>
       <Divider />
       <CardActions>
-        <input accept="image/*" className={classes.input} onChange={handleChange} id="button-file" type="file" />
+        <input accept="image/*" className={classes.input} onChange={(e) => dispatch(actions.uploadAvatar(e.target.files[0]))} id="button-file" type="file" />
         <label className={classes.actions} htmlFor="button-file">
-          <Button variant="text" color="primary" component="span" disabled={isBusy}  className={classes.button}>
+          <Button variant="text" color="primary" component="span" disabled={isBusy} className={classes.button}>
             Subir Imagen
           </Button>
+          <Button
+            variant="text"
+            color="primary"
+            onClick={() => dispatch(actions.deleteAvatar())}
+            disabled={avatar === '' || isBusy}
+            className={classes.button}
+          >
+            Eliminar
+          </Button>
         </label>
-        <Button variant="text" color="primary" onClick={remove} hidden={avatar === ''} component="span" disabled={isBusy} className={classes.button}>
-          Eliminar
-        </Button>
       </CardActions>
     </Card>
   )
