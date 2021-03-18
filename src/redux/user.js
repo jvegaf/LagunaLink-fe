@@ -14,7 +14,7 @@ const initialState = {
   inactiveError: null,
   signinError: null,
   prefName: '',
-  avatar: '/static/images/avatars/avatar_5.png'
+  avatar: '',
 }
 
 // const types
@@ -53,6 +53,7 @@ const currentUser = (state = initialState, action) => {
         userId: action.payload.user_id,
         token: action.payload.access_token,
         role: action.payload.user_role,
+        avatar: action.payload.avatar,
         isSignedIn: true,
         isFetching: false,
       }
@@ -94,13 +95,13 @@ const currentUser = (state = initialState, action) => {
       return {
         ...state,
         needCompanyRegister: false,
-        needStudentRegister: false
+        needStudentRegister: false,
       }
 
     case SET_NAME:
       return {
         ...state,
-        prefName: action.payload
+        prefName: action.payload,
       }
 
     case INACTIVE_ERROR:
@@ -141,11 +142,14 @@ const signIn = data => dispatch => {
           dispatch(studentActions.getProfile(response.data.user_id, response.data.access_token, data.email))
         }
         if (response.data.user_role === ROLE_COMPANY) {
-         dispatch(companyActions.getProfile(response.data.user_id, response.data.access_token, data.email))
+          dispatch(companyActions.getProfile(response.data.user_id, response.data.access_token, data.email))
         }
+
+        if(response.data.avatar !== "") { response.data.avatar = `https://lagunalink-be.herokuapp.com/${response.data.avatar}` }
+
         dispatch({
           type: SIGNIN_SUCCESS,
-          payload: {...response.data, email: data.email },
+          payload: { ...response.data, email: data.email },
         })
       }
     })
@@ -172,11 +176,12 @@ const signUp = data => dispatch => {
     .then(dispatch({ type: SIGN_UP }))
 }
 
-const setPrefName= name => dispatch => {
+const setPrefName = name => dispatch => {
   dispatch({ type: SET_NAME, payload: name })
 }
 
-const unsetRegister = dispatch => dispatch({type: REGISTER_COMPLETED })
+const unsetRegister = dispatch => dispatch({ type: REGISTER_COMPLETED })
+
 
 export const actions = {
   signIn,

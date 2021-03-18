@@ -1,44 +1,104 @@
-import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, makeStyles, Typography } from '@material-ui/core'
-import React from 'react'
+import {
+  Avatar,
+  Box,
+  Button,
+  ButtonBase,
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  makeStyles,
+  Typography,
+} from '@material-ui/core'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { apiProvider } from '../../../services/api/api-provider'
+import '../../shared/styles.css'
 
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png'
-}
-
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    minWidth: 300
+    minWidth: 300,
   },
   avatar: {
     height: 100,
     width: 100,
-    marginBottom: 10
+    marginBottom: 10,
+    opacity: 100,
+  },
+  input: {
+    display: 'none',
+  },
+  actions: {
+    width: '100%',
   },
 }))
 
-const Profile = ({ name, role }) => {
+const Profile = ({ prefName, role, avatar }) => {
   const classes = useStyles()
+  const [busy, setBusy] = useState(false)
+
+  const user = useSelector(state => state.user)
+  const userRole = role === 'ROLE_STUDENT' ? 'Estudiante' : 'Empresa'
+  const toggleBusy = () => setBusy(!busy)
+
+  const handleChange = e => {
+    const file = e.target.files[0]
+    toggleBusy()
+    const formData = new FormData()
+    const element = 'image'
+    formData.append(element, file)
+    apiProvider
+      .upload(user.userId, formData, user.token)
+      .then(res => {
+        if (res.status === 200) {
+          toggleBusy()
+        }
+      })
+      .catch(e => {
+        toggleBusy()
+        console.log({ e })
+      })
+  }
+
+  const deleteAvatar = () => {
+    toggleBusy()
+    apiProvider.removeAvatar(user.userId, user.token)
+    .then(res => {
+      if (res.status === 200) {
+        toggleBusy()
+      }
+    })}
 
   return (
-    <Card className={classes.root} >
+    <Card className={classes.root}>
       <CardContent>
         <Box alignItems="center" display="flex" flexDirection="column">
-          <Avatar className={classes.avatar} src={user.avatar} />
+          <ButtonBase
+            disabled={busy}
+            onClick={deleteAvatar}
+            style={{
+              width: avatar.width,
+            }}
+          >
+            <Avatar className={classes.avatar} src={avatar} />
+          </ButtonBase>
           <Typography color="textPrimary" gutterBottom variant="h3">
-            {name}
+            {prefName}
           </Typography>
           <Typography color="textSecondary" variant="body1">
-            {`${role}`}
+            {`${userRole}`}
           </Typography>
-          <Typography className={classes.dateText} color="textSecondary" variant="body1">
-          </Typography>
+          <Typography className={classes.dateText} color="textSecondary" variant="body1"></Typography>
         </Box>
       </CardContent>
       <Divider />
       <CardActions>
-        <Button color="primary" fullWidth variant="text">
-          Subir Foto
-        </Button>
+        <input accept="image/*" className={classes.input} onChange={handleChange} id="button-file" type="file" />
+        <label className={classes.actions} htmlFor="button-file">
+          <Button variant="text" color="primary" component="span" disabled={busy} fullWidth>
+            Subir Imagen
+          </Button>
+        </label>
       </CardActions>
     </Card>
   )

@@ -27,7 +27,7 @@ export const ProfileView = () => {
   return (
     <Grid container className={classes.root} spacing={3}>
       <Grid item>
-        <Profile name={user.prefName} role={'Estudiante'} />
+        <Profile {...user} />
       </Grid>
       <Grid item>
         <StudentAccount {...student} />

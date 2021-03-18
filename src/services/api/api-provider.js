@@ -21,6 +21,7 @@ const post = (resource, model, accessToken) => {
 }
 
 const put = (resource, id, model, accessToken) => {
+  console.log({resource, id, model, accessToken})
   axios.defaults.headers.common.Authorization = accessToken
   return axios.put(`${BASE_URL}/${resource}/${id}`, model).then(handleResponse).catch(handleError)
 }
@@ -30,10 +31,26 @@ const remove = (resource, id, accessToken) => {
   return axios.delete(`${BASE_URL}/${resource}`, id).then(handleResponse).catch(handleError)
 }
 
+
+const upload = (id, model, accessToken) => {
+  axios.defaults.headers.common.Authorization = accessToken
+  axios.defaults.headers.put['Content-Type'] = 'multipart/form-data'
+  return axios.put(`${BASE_URL}/user/${id}/avatar`, model).then(handleResponse).catch(handleError)
+}
+
+
+const removeAvatar = (id, accessToken) => {
+  axios.defaults.headers.common.Authorization = accessToken
+  return axios.delete(`${BASE_URL}/user/${id}/avatar`).then(handleResponse).catch(handleError)
+}
+
+
 export const apiProvider = {
   getAll,
   getSingle,
   post,
   put,
   remove,
+  upload,
+  removeAvatar
 }
