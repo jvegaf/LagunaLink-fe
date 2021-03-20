@@ -8,6 +8,8 @@ import Profile from '../../components/detail/account/Profile'
 import Languages from '../../components/detail/student/curriculum/Languages'
 import { Qualification } from '../../components/detail/student/curriculum/Qualification'
 import { StudentAccount } from '../../components/detail/student/StudentAccount'
+import { FormDialog } from '../../components/dialog/FormDialog'
+import { LanguageForm } from '../../components/form/student/language'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,7 +29,6 @@ export const ProfileView = () => {
   const user = useSelector(state => state.user)
   const student = useSelector(state => state.student)
   const qualification = useSelector(state => state.student.qualification)
-  const languages = useSelector(state => state.student.languages)
   const classes = useStyles()
 
   return (
@@ -44,7 +45,7 @@ export const ProfileView = () => {
             <Qualification {...qualification} />
           </Grid>
           <Grid item className={classes.gridItem}>
-            <Languages languages={languages} />
+            <Languages {...student} />
           </Grid>
         </Grid>
       </Grid>

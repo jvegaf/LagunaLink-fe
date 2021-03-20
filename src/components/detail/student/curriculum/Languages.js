@@ -17,11 +17,13 @@ import { Add, Delete, Edit } from '@material-ui/icons'
 import { Rating } from '@material-ui/lab'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useDispatch } from 'react-redux'
 import { v4 as uuid } from 'uuid'
 import { actions } from '../../../../redux/student'
+import { FormDialog } from '../../../dialog/FormDialog'
+import { LanguageForm } from '../../../form/student/language'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -46,6 +48,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 const LanguagesWidget = ({ className, ...rest }) => {
+  const [dialog, setDialog] = useState(false)
   const classes = useStyles()
   const dispatch = useDispatch()
   const langs = rest.languages;
@@ -56,8 +59,26 @@ const handleDelete = (lang) =>{
   dispatch(actions.updateStudent({languages: langsUpd}))
 }
 
+const hideDialog = () => setDialog(false)
+
+const hideDiag = {
+  hide: hideDialog
+}
+
+const addLangprops = {
+  title: 'Nuevo Idioma',
+  body: <LanguageForm {...hideDiag} />,
+  cb: hideDialog
+}
+
+
+const handleAdd = () => {
+  setDialog(true)
+}
+
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
+      {dialog &&  <FormDialog {...addLangprops} />}
       <CardHeader title="Idiomas" />
       <Divider />
       <PerfectScrollbar>
@@ -97,7 +118,7 @@ const handleDelete = (lang) =>{
         </Box>
       </PerfectScrollbar>
       <Box display="flex" justifyContent="flex-end" p={2}>
-        <Button color="primary" endIcon={<Add />} size="small" variant="text">
+        <Button color="primary" endIcon={<Add />} onClick={handleAdd} size="small" variant="text">
           Agregar Idioma
         </Button>
       </Box>

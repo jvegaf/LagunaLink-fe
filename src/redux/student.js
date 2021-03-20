@@ -14,6 +14,7 @@ const initialStudentState = {
   jobExperiences: null,
   isBusy: false,
   taskError: null,
+  addLanguage: false
 }
 
 // const types
@@ -23,12 +24,6 @@ const GET_PROFILE = 'GET_PROFILE'
 const GET_PROFILE_COMPLETE = 'GET_PROFILE_COMPLETE'
 const STUDENT_UPDATE = 'STUDENT_UPDATE'
 const STUDENT_UPDATE_COMPLETE = 'STUDENT_UPDATE_COMPLETE'
-const ADD_LANGUAGE = 'ADD_LANGUAGE'
-const ADD_LANGUAGE_COMPLETE = 'ADD_LANGUAGE_COMPLETE'
-const ADD_QUALIFICATION = 'ADD_QUALIFICATION'
-const ADD_QUALIFICATION_COMPLETE = 'ADD_QUALIFICATION_COMPLETE'
-const ADD_JOB_EXPERIENCE = 'ADD_JOB_EXPERIENCE'
-const ADD_JOB_EXPERIENCE_COMPLETE = 'ADD_JOB_EXPERIENCE_COMPLETE'
 const SET_ERROR = 'SET_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
 
@@ -56,24 +51,6 @@ const currentStudent = (state = initialStudentState, action) => {
         isBusy: true
       }
 
-    case ADD_LANGUAGE:
-      return {
-        ...state,
-        isBusy: true,
-      }
-
-    case ADD_JOB_EXPERIENCE:
-      return {
-        ...state,
-        isBusy: true,
-      }
-
-    case ADD_QUALIFICATION:
-      return {
-        ...state,
-        isBusy: true,
-      }
-
     case GET_PROFILE_COMPLETE:
       return {
         ...state,
@@ -93,27 +70,6 @@ const currentStudent = (state = initialStudentState, action) => {
         name: action.payload.name,
         surname: action.payload.surname,
         lastname: action.payload.lastname,
-      }
-
-    case ADD_QUALIFICATION_COMPLETE:
-      return {
-        ...state,
-        isBusy: false,
-        qualification: action.payload,
-      }
-
-    case ADD_LANGUAGE_COMPLETE:
-      return {
-        ...state,
-        isBusy: false,
-        languages: action.payload,
-      }
-
-    case ADD_JOB_EXPERIENCE_COMPLETE:
-      return {
-        ...state,
-        isBusy: false,
-        jobExperiences: action.payload,
       }
 
     case STUDENT_UPDATE_COMPLETE:
@@ -183,43 +139,9 @@ const updateStudent = data => (dispatch, getState) => {
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
-const addQualification = data => (dispatch, getState) => {
-  const { userId, token } = getState().user
-  dispatch({ type: ADD_QUALIFICATION })
-  apiProvider
-    .put('students', userId, { qualification: data }, token)
-    .then(() => dispatch({ type: ADD_QUALIFICATION_COMPLETE, payload: data }))
-    .catch(e => dispatch({ type: SET_ERROR, payload: e }))
-}
-
-const addLanguage = data => (dispatch, getState) => {
-  dispatch({ type: ADD_LANGUAGE })
-  const  { userId, token } = getState().user
-  const { profile } = getState().student
-  const langs = [...profile.languages, data]
-  apiProvider
-    .put('students', userId, { languages: langs }, token)
-    .then(() => dispatch({ type: ADD_LANGUAGE_COMPLETE, payload: langs }))
-    .catch(e => dispatch({ type: SET_ERROR, payload: e }))
-}
-
-const addJobExperience = data => (dispatch, getState) => {
-  dispatch({ type: ADD_JOB_EXPERIENCE })
-  const { userId, token } = getState().user
-  const { profile } = getState().student
-  const jobEx = [...profile.jobExperiences, data]
-  apiProvider
-    .put('students', userId, { job_experiences: jobEx }, token)
-    .then(() => dispatch({ type: ADD_JOB_EXPERIENCE_COMPLETE, payload: jobEx }))
-    .catch(e => dispatch({ type: SET_ERROR, payload: e }))
-}
-
 export const actions = {
   signOut,
   getProfile,
   registerStudent,
-  updateStudent,
-  addQualification,
-  addLanguage,
-  addJobExperience,
+  updateStudent
 }

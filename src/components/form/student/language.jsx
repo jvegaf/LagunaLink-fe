@@ -1,13 +1,16 @@
-import React from 'react'
-import { withFormik } from 'formik'
-import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Box, Grid, makeStyles, Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import { Box, Grid, makeStyles, Typography } from '@material-ui/core'
 import { Rating } from '@material-ui/lab'
+import React from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import * as yup from 'yup'
+import { actions } from '../../../redux/student'
 
-const validationSchema = yup.object({
-  name: yup.string().required('Language name is required'),
+const schema = yup.object().shape({
+  name: yup.string().required(),
 })
 
 const useStyles = makeStyles(theme => ({
@@ -17,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   center: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-between',
     marginTop: theme.spacing(3),
   },
   button: {
@@ -26,54 +29,88 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const LanguageForm = props => {
+export const LanguageForm = props => {
+  const student = useSelector(state => state.student)
   const classes = useStyles()
+  const { control, handleSubmit, errors, formState, reset } = useForm({
+    resolver: yupResolver(schema),
+  })
+  const dispatch = useDispatch()
 
-  const { values, handleChange, handleSubmit, touched, errors, dirty } = props
+  const hide = () => props.hide()
+
+  const onSubmit = data => {
+    const langs = student.languages
+    langs.push(data)
+    dispatch(actions.updateStudent({ languages: langs }))
+    reset()
+    hide()
+  }
 
   return (
     <div>
-      <form className={classes.root} onSubmit={handleSubmit}>
+      <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
+            <Controller
+              as={TextField}
               className={classes.formControl}
-              id="name"
-              name="name"
-              label="Idioma"
-              value={values.name}
-              size="small"
+              defaultValue=""
               variant="outlined"
-              onChange={handleChange}
-              error={touched.name && Boolean(errors.name)}
-              helperText={touched.name && errors.name}
+              size="small"
+              label="Idioma"
+              name="name"
+              control={control}
+              error={Boolean(errors.name)}
+              fullWidth
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <Box component="fieldset" mb={3} borderColor="transparent">
               <Typography component="legend">Nivel Oral</Typography>
-              <Rating
+              <Controller
+                control={control}
+                render={({ onChange, onBlur, value }) => (
+                  <Rating onChange={value => onChange(value)} value={value} onBlur={onBlur} />
+                )}
                 name="speak"
-                value={values.speak}
-                onChange={handleChange}
+                rules={{ required: true }}
+                defaultValue=""
               />
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
             <Box component="fieldset" mb={3} borderColor="transparent">
               <Typography component="legend">Nivel Escrito</Typography>
-              <Rating
+              <Controller
+                control={control}
+                render={({ onChange, onBlur, value }) => (
+                  <Rating onChange={value => onChange(value)} value={value} onBlur={onBlur} />
+                )}
                 name="write"
-                value={values.write}
-                onChange={handleChange}
+                rules={{ required: true }}
+                defaultValue=""
               />
             </Box>
           </Grid>
-          
+
           <Grid item xs={12} className={classes.center}>
-            <Button color="primary" hidden={!dirty} className={classes.button} variant="contained" type="submit">
+            <Button
+              color="primary"
+              disabled={!formState.isDirty}
+              className={classes.button}
+              variant="contained"
+              type="submit"
+            >
               Guardar
+            </Button>
+            <Button
+              color="primary"
+              className={classes.button}
+              variant="contained"
+              onClick={hide}
+            >
+              Cancelar
             </Button>
           </Grid>
         </Grid>
@@ -81,16 +118,3 @@ const LanguageForm = props => {
     </div>
   )
 }
-
-export default withFormik({
-  enableReinitialize: true,
-  mapPropsToValues: props => ({
-    name: props.name || '',
-    speak: props.speak || 0,
-    write: props.write || 0,
-  }),
-  validationSchema: validationSchema,
-  handleSubmit: values => {
-    alert(JSON.stringify(values, null, 2))
-  },
-})(LanguageForm)

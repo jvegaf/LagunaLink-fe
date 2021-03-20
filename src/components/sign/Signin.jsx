@@ -4,9 +4,9 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { actions } from '../../redux/user'
+import { AlertDialog } from '../dialog/AlertDialog'
 import { EmailInput } from '../form/__shared__/EmailInput'
 import { PasswordInput } from '../form/__shared__/PasswordInput'
-import { ModalView } from '../modal/ModalView'
 import { Title } from '../shared/Title'
 
 const useStyles = makeStyles(theme => ({
@@ -46,7 +46,7 @@ export const SignInComponent = () => {
 
   return (
     <Paper elevation={3} className={classes.root}>
-      {modal.open && <ModalView open={modal.open} body={modal.body}/>}
+      {modal.open && <AlertDialog body={modal.body}/>}
       <Title content="Iniciar Sesion"/>
       <FormProvider {...methods} >
         <form onSubmit={methods.handleSubmit(onSubmit)}>

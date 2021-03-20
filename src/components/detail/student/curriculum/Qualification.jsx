@@ -16,4 +16,4 @@ export const Qualification = (props) => {
       <QualificationForm {...props} />
     </Card>
   )
-  }
+}
