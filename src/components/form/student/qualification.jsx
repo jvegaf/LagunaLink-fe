@@ -1,12 +1,15 @@
-import React from 'react'
-import { withFormik } from 'formik'
-import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Grid, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import { Grid, makeStyles } from '@material-ui/core'
+import React, { useEffect } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import * as yup from 'yup'
+import { actions } from '../../../redux/student'
 
-const validationSchema = yup.object({
-  title: yup.string('Enter your Qualification').required('Qualification is required')
+const schema = yup.object().shape({
+  title: yup.string().required()
 })
 
 const useStyles = makeStyles(theme => ({
@@ -25,64 +28,45 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const QualificationForm = props => {
+export const QualificationForm = props => {
   const classes = useStyles()
 
-  const { values, handleChange, handleSubmit, touched, errors, dirty } = props
+  const { control, handleSubmit, setValue, errors, formState, reset } = useForm({
+    resolver: yupResolver(schema),
+  })
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (props) {
+      setValue('title', props.title)
+      setValue('start_date', props.start_date)
+      setValue('end_date', props.end_date)
+    }
+  }, [props])
+
+  const onSubmit = data => {
+    dispatch(actions.updateStudent({qualification: data}))
+    reset()
+  }
 
   return (
     <div>
-      <form className={classes.root} onSubmit={handleSubmit}>
+      <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              className={classes.formControl}
-              id="title"
-              name="title"
-              label="Titulacion"
-              value={values.title}
-              size="small"
-              variant="outlined"
-              onChange={handleChange}
-              error={touched.title && Boolean(errors.title)}
-              helperText={touched.title && errors.title}
-            />
+            <Controller as={TextField} className={classes.formControl} defaultValue="" variant="outlined" size="small" label="Titulacion" name="title" 
+              control={control} error={Boolean(errors.title)} fullWidth/>
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              id="start_date"
-              type="month"
-              name="start_date"
-              label="Comienzo"
-              size="small"
-              value={values.start_date}
-              className={classes.formControl}
-              variant="outlined"
-              onChange={handleChange}
-              error={touched.start_date && Boolean(errors.start_date)}
-              helperText={touched.start_date && errors.start_date}
-            />
+          <Controller as={TextField} className={classes.formControl} defaultValue="" type="month" variant="outlined" size="small" label="Comienzo" name="start_date" 
+            control={control} error={Boolean(errors.start_date)} fullWidth/>
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              id="end_date"
-              name="end_date"
-              label="Terminacion"
-              type="month"
-              size="small"
-              value={values.end_date}
-              variant="outlined"
-              className={classes.formControl}
-              onChange={handleChange}
-              error={touched.end_date && Boolean(errors.end_date)}
-              helperText={touched.end_date && errors.end_date}
-            />
+          <Controller as={TextField} className={classes.formControl} defaultValue="" type="month" variant="outlined" size="small" label="Finalizacion" name="end_date" 
+            control={control} error={Boolean(errors.end_date)} fullWidth/>
           </Grid>
-          <Grid item xs={12} hidden={!dirty} className={classes.center}>
-            <Button color="primary" className={classes.button} variant="contained" type="submit">
+          <Grid item xs={12} hidden={!formState.isDirty}>
+            <Button color="primary" className={classes.button} disabled={props.isBusy} variant="text" type="submit" fullWidth>
               Guardar 
             </Button>
           </Grid>
@@ -91,16 +75,3 @@ const QualificationForm = props => {
     </div>
   )
 }
-
-export default withFormik({
-  enableReinitialize: true,
-  mapPropsToValues: props => ({
-    title: props.title || '',
-    start_date: (props.start_date).substr(0,7) || '',
-    end_date: (props.end_date).substr(0,7) || '',
-  }),
-  validationSchema: validationSchema,
-  handleSubmit: values => {
-    alert(JSON.stringify(values, null, 2))
-  },
-})(QualificationForm)

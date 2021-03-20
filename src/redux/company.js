@@ -80,8 +80,9 @@ const getProfile = (userId, token, email) => dispatch => {
     .getSingle('companies', userId, token)
     .then(res => {
       dispatch(userActions.setPrefName(res.data.company.name))
-      dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data.company })})
-    .catch(e => dispatch({ type: SET_ERROR, payload: e }))
+      dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data.company })
+      dispatch(userActions.fetchCompleted())
+    }).catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
 const registerCompany = (data, token) => dispatch => {

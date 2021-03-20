@@ -1,19 +1,21 @@
 import React from 'react'
-import RegisterFormik from '../../form/student/register'
 import Card from '../../shared/Card'
 import { makeStyles } from '@material-ui/core'
+import { StudentForm } from '../../form/student/register'
 
 const useStyles = makeStyles(() => ({
   root: {
-    width: 600
+    width: '100%'
   },
 }))
 
-export const StudentAccount = (props) => {
+export const StudentAccount = ({student, email}) => {
   const classes = useStyles()
+  const props = {...student, email: email}
+
   return (
     <Card className={classes.root} title="Perfil">
-      <RegisterFormik {...props} />
+      <StudentForm {...props} />
     </Card>
   )
 }

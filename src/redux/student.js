@@ -2,8 +2,6 @@ import { apiProvider } from '../services/api/api-provider'
 import { actions as userActions } from './user'
 
 const initialStudentState = {
-  id: '',
-  email: '',
   name: '',
   surname: '',
   lastname: '',
@@ -55,8 +53,7 @@ const currentStudent = (state = initialStudentState, action) => {
     case GET_PROFILE:
       return {
         ...state,
-        isBusy: true,
-        email: action.payload
+        isBusy: true
       }
 
     case ADD_LANGUAGE:
@@ -81,7 +78,6 @@ const currentStudent = (state = initialStudentState, action) => {
       return {
         ...state,
         isBusy: false,
-        id: action.payload.id,
         name: action.payload.name,
         surname: action.payload.surname,
         lastname: action.payload.lastname,
@@ -120,6 +116,18 @@ const currentStudent = (state = initialStudentState, action) => {
         jobExperiences: action.payload,
       }
 
+    case STUDENT_UPDATE_COMPLETE:
+      return {
+        ...state,
+        name: action.payload.name,
+        surname: action.payload.surname,
+        lastname: action.payload.lastname,
+        qualification: action.payload.qualification,
+        languages: action.payload.languages,
+        jobExperiences: action.payload.job_experiences,
+        isBusy: false
+      }
+
     case SET_ERROR:
       return {
         ...state,
@@ -138,8 +146,8 @@ export default currentStudent
 
 const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
-const getProfile = (userId, token, email) => dispatch => {
-  dispatch({ type: GET_PROFILE, payload: email})
+const getProfile = (userId, token) => dispatch => {
+  dispatch({ type: GET_PROFILE})
   apiProvider
     .getSingle('students', userId, token)
     .then(res => {
@@ -161,15 +169,22 @@ const registerStudent = (data, token) => dispatch => {
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
-const updateStudent = (userId, data, token) => dispatch => {
+const updateStudent = data => (dispatch, getState) => {
+  const { userId, token } = getState().user
   dispatch({ type: STUDENT_UPDATE })
   apiProvider
     .put('students', userId, data, token)
-    .then(() => dispatch({ type: STUDENT_UPDATE_COMPLETE }))
+    .then((res) => {
+      if (res.status === 200) {
+        console.log(res.data)
+        dispatch({ type: STUDENT_UPDATE_COMPLETE, payload: res.data.student })
+      }
+    })
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
-const addQualification = (userId, data, token) => dispatch => {
+const addQualification = data => (dispatch, getState) => {
+  const { userId, token } = getState().user
   dispatch({ type: ADD_QUALIFICATION })
   apiProvider
     .put('students', userId, { qualification: data }, token)
@@ -177,8 +192,9 @@ const addQualification = (userId, data, token) => dispatch => {
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
-const addLanguage = (userId, data, token) => (dispatch, getState) => {
+const addLanguage = data => (dispatch, getState) => {
   dispatch({ type: ADD_LANGUAGE })
+  const  { userId, token } = getState().user
   const { profile } = getState().student
   const langs = [...profile.languages, data]
   apiProvider
@@ -187,8 +203,9 @@ const addLanguage = (userId, data, token) => (dispatch, getState) => {
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
-const addJobExperience = (userId, data, token) => (dispatch, getState) => {
+const addJobExperience = data => (dispatch, getState) => {
   dispatch({ type: ADD_JOB_EXPERIENCE })
+  const { userId, token } = getState().user
   const { profile } = getState().student
   const jobEx = [...profile.jobExperiences, data]
   apiProvider

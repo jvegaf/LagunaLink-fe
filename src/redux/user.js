@@ -40,6 +40,8 @@ const AVATAR_UPLOAD = 'AVATAR_UPLOAD'
 const AVATAR_UPLOADED = 'AVATAR_UPLOADED'
 const AVATAR_DELETE = 'AVATAR_DELETE'
 const AVATAR_DELETED = 'AVATAR_DELETED'
+const UPDATE = 'UPDATE'
+const UPDATED = 'UPDATED'
 
 // reducers
 const currentUser = (state = initialState, action) => {
@@ -65,10 +67,20 @@ const currentUser = (state = initialState, action) => {
         signinError: null,
       }
 
+      case UPDATE:
+      return {
+        ...state,
+        isBusy: true,
+        signinError: null,
+      }
+
+      
+
     case SIGNIN_SUCCESS:
       return {
         ...state,
         userId: action.payload.user_id,
+        email: action.payload.email,
         token: action.payload.access_token,
         role: action.payload.user_role,
         avatar: action.payload.avatar,
@@ -141,6 +153,12 @@ const currentUser = (state = initialState, action) => {
         ...state,
         isBusy: false,
         inactiveError: action.payload.error,
+      }
+
+    case UPDATED:
+      return {
+        ...state,
+        isBusy: false,
       }
 
     default:
@@ -246,14 +264,27 @@ const deleteAvatar = dispatch => (dispatch, getState) => {
     }
   }).catch(e => {
     console.log({ e })
-    dispatch({type: AVATAR_DELETED})
   })
 }
+
+const update = data => (dispatch, getState) => {
+  dispatch({type: UPDATE })
+  const { token, userId } = getState().user
+  apiProvider.put('user',userId, data, token)
+  .then(res => {
+    if (res.status === 200) dispatch({type: UPDATED, payload: res.data.user})
+  }).catch(e => {
+    console.log({ e })
+  })
+}
+
+
 
 export const actions = {
   signIn,
   signOut,
   signUp,
+  update,
   unsetRegister,
   setPrefName,
   uploadAvatar,

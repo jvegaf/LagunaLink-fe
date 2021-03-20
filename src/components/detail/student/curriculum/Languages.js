@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Box,
   Button,
@@ -16,12 +17,16 @@ import { Add, Delete, Edit } from '@material-ui/icons'
 import { Rating } from '@material-ui/lab'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useEffect } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import { useDispatch } from 'react-redux'
 import { v4 as uuid } from 'uuid'
+import { actions } from '../../../../redux/student'
 
 const useStyles = makeStyles(() => ({
-  root: {},
+  root: {
+    width: '100%'
+  },
   cell: {
     padding: '4px',
   },
@@ -34,19 +39,29 @@ const useStyles = makeStyles(() => ({
   rate: {
     padding: '4px',
     lineHeight: '0.9rem'
+  },
+  box: {
+    paddingLeft: '20px'
   }
 }))
 
 const LanguagesWidget = ({ className, ...rest }) => {
   const classes = useStyles()
-  const langs = rest.languages
+  const dispatch = useDispatch()
+  const langs = rest.languages;
+  
+const handleDelete = (lang) =>{
+  const langsUpd = langs.filter(language => language !== lang)
+  console.log({langs: langs, lang: lang, langsUpd: langsUpd})
+  dispatch(actions.updateStudent({languages: langsUpd}))
+}
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardHeader title="Idiomas" />
       <Divider />
       <PerfectScrollbar>
-        <Box minWidth={550}>
+        <Box className={classes.box} minWidth={550}>
           <Table>
             <TableHead>
               <TableRow>
@@ -71,7 +86,7 @@ const LanguagesWidget = ({ className, ...rest }) => {
                       <IconButton aria-label="edit" >
                         <Edit />
                       </IconButton>
-                      <IconButton aria-label="remove" >
+                      <IconButton aria-label="remove" onClick={() => handleDelete(lang)} >
                         <Delete />
                       </IconButton>
                     </TableCell>

@@ -1,26 +1,26 @@
-import React from 'react'
-import { withFormik } from 'formik'
-import * as yup from 'yup'
+/* eslint-disable no-unused-vars */
+import { Grid, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import { Grid, makeStyles } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup'
+import { useDispatch } from 'react-redux'
+import { actions } from '../../../redux/student'
 
-const validationSchema = yup.object({
-  name: yup.string('Enter your name').required('Name is required'),
-  surname: yup.string('Enter your surname').required('Surname is required'),
-  lastname: yup.string('Enter your lastname').required('lastname is required'),
-  email: yup.string('Enter your email').required('Email is required'),
+// eslint-disable-next-line no-unused-vars
+const schema = yup.object().shape({
+  name: yup.string().required(),
+  surname: yup.string().required(),
+  lastname: yup.string().required()
 })
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(3),
-  },
-  center: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    marginTop: theme.spacing(3)
+    paddingTop: theme.spacing(3),
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
   },
   button: {
     paddingLeft: theme.spacing(5),
@@ -28,78 +28,51 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const RegisterForm = props => {
-  const classes = useStyles()
 
-  const { values, handleChange, handleSubmit, touched, errors, dirty } = props
+export const StudentForm = props => {
+  const classes = useStyles()
+  const { control, handleSubmit, setValue, errors, formState, reset } = useForm({
+    resolver: yupResolver(schema),
+  })
+  const dispatch = useDispatch()
+
+  
+  useEffect(() => {
+    if (props) {
+      setValue('email', props.email)
+      setValue('name', props.name)
+      setValue('surname', props.surname)
+      setValue('lastname', props.lastname)
+    }
+  }, [props])
+
+  const onSubmit = data => {
+    dispatch(actions.updateStudent(data))
+    reset()
+  };
 
   return (
     <div>
-      <form className={classes.root} onSubmit={handleSubmit}>
+      <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              className={classes.formControl}
-              id="email"
-              name="email"
-              label="Correo Electronico"
-              value={values.email}
-              size="small"
-              inputProps={{ readOnly: true }}
-              variant="outlined"
-              onChange={handleChange}
-              error={touched.email && Boolean(errors.email)}
-              helperText={touched.name && errors.name}
-            />
+            <TextField className={classes.formControl} size="small" variant="outlined" label="Correo Electronico" inputProps={{ readOnly: true }} name="email"  value={props.email} fullWidth/>
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              className={classes.formControl}
-              id="name"
-              name="name"
-              label="Nombre"
-              value={values.name}
-              size="small"
-              variant="outlined"
-              onChange={handleChange}
-              error={touched.name && Boolean(errors.name)}
-              helperText={touched.name && errors.name}
-            />
+            <Controller as={TextField} className={classes.formControl} defaultValue="" variant="outlined" size="small" label="Nombre" name="name" 
+            control={control} error={Boolean(errors.name)} fullWidth/>
+          </Grid>
+          
+          <Grid item xs={12} md={6}>
+            <Controller as={TextField} className={classes.formControl} variant="outlined" defaultValue="" size="small" label="Primer Apellido" name="surname" error={Boolean(errors.surname)}
+              control={control} fullWidth/>
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              id="surname"
-              name="surname"
-              label="Primer Apellido"
-              size="small"
-              value={values.surname}
-              className={classes.formControl}
-              variant="outlined"
-              onChange={handleChange}
-              error={touched.surname && Boolean(errors.surname)}
-              helperText={touched.surname && errors.surname}
-            />
+            <Controller as={TextField} className={classes.formControl} variant="outlined" size="small" defaultValue="" label="Segundo Apellido" name="lastname" error={Boolean(errors.lastname)}
+              control={control} fullWidth/>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              id="lastname"
-              name="lastname"
-              label="Segundo Apellido"
-              size="small"
-              value={values.lastname}
-              variant="outlined"
-              className={classes.formControl}
-              onChange={handleChange}
-              error={touched.lastname && Boolean(errors.lastname)}
-              helperText={touched.lastname && errors.lastname}
-            />
-          </Grid>
-          <Grid item xs={12} hidden={!dirty} className={classes.center}>
-            <Button color="primary" className={classes.button} variant="contained" type="submit">
+          <Grid item xs={12} hidden={!formState.isDirty}>
+            <Button color="primary" className={classes.button} disabled={props.isBusy} variant="text" type="submit" fullWidth>
               Guardar 
             </Button>
           </Grid>
@@ -108,17 +81,3 @@ const RegisterForm = props => {
     </div>
   )
 }
-
-export default withFormik({
-  enableReinitialize: true,
-  mapPropsToValues: props => ({
-    email: props.email || '',
-    name: props.name || '',
-    surname: props.surname || '',
-    lastname: props.lastname || '',
-  }),
-  validationSchema: validationSchema,
-  handleSubmit: values => {
-    alert(JSON.stringify(values, null, 2))
-  },
-})(RegisterForm)

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 // @ts-nocheck
-import { Grid } from '@material-ui/core'
+import { Container, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React from 'react'
 import { useSelector } from 'react-redux'
@@ -15,6 +15,12 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: theme.spacing(6),
   },
+  gridContainer: {
+    paddingTop: theme.spacing(3)
+  },
+  gridItem: {
+    flexGrow: 1
+  }
 }))
 
 export const ProfileView = () => {
@@ -25,19 +31,23 @@ export const ProfileView = () => {
   const classes = useStyles()
 
   return (
-    <Grid container className={classes.root} spacing={3}>
-      <Grid item>
-        <Profile {...user} />
+    <Container maxWidth="lg">
+      <Grid container className={classes.gridContainer} spacing={3}>
+        <Grid item lg={4} md={6} xs={12}>
+          <Profile {...user} />
+        </Grid>
+        <Grid item container direction="column" spacing={3} xl={6} lg={8} md={6} xs={12}>
+          <Grid item className={classes.gridItem} >
+            <StudentAccount student={student} email={user.email} />
+          </Grid>
+          <Grid item className={classes.gridItem}>
+            <Qualification {...qualification} />
+          </Grid>
+          <Grid item className={classes.gridItem}>
+            <Languages languages={languages} />
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid item>
-        <StudentAccount {...student} />
-      </Grid>
-      <Grid item>
-        <Qualification {...qualification} />
-      </Grid>
-      <Grid item>
-        <Languages languages={languages}/>
-      </Grid>
-    </Grid>
+    </Container>
   )
 }
