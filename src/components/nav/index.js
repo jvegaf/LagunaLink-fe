@@ -3,11 +3,6 @@ import React from 'react'
 import NavItem from './NavItem'
 
 
-// const user = {
-//   avatar: '/static/images/avatars/avatar_5.png',
-//   role: 'Estudiante',
-//   name: 'Manuel Bravo',
-// }
 
 const useStyles = makeStyles(() => ({
   avatar: {
@@ -27,7 +22,7 @@ const NavBar = ({ user, config}) => {
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Avatar className={classes.avatar} src={user.avatar} />
         <Typography className={classes.name} color="textPrimary" variant="h5">
-          {user.name}
+          {user.prefName}
         </Typography>
         <Typography color="textSecondary" variant="body2">
           {config.role}
@@ -37,7 +32,7 @@ const NavBar = ({ user, config}) => {
       <Box p={2}>
         <List>
           {config.items.map(item => (
-            <NavItem href={item.href} key={item.title} title={item.title} icon={item.icon} />
+            <NavItem href={item.href} key={item.index} selected={user.navIndex === item.index} title={item.title} icon={item.icon} />
           ))}
         </List>
       </Box>

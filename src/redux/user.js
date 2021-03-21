@@ -15,6 +15,7 @@ const initialState = {
   signinError: null,
   prefName: '',
   avatar: '',
+  navIndex: 1
 }
 
 // const types

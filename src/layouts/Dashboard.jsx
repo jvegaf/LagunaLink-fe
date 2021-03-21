@@ -11,15 +11,13 @@ import studentNavConf from '../config/student/nav'
 import { ProfileView } from '../views/backoffice/ProfileView'
 import { Content, Footer, Header, Nav, Root } from './dashboard'
 import { config } from './dashboard/config'
+import { JobExperiencesView } from '../views/backoffice/JobExperiencesView'
 
 export const DashBoard = () => {
 
   const user = useSelector(state => state.user)
   const navConf = user.role === 'ROLE_STUDENT' ? studentNavConf : companyNavConf
-  const navUser = {
-    name: user.prefName,
-    avatar: user.avatar
-  }
+  const navUser = {...user}
 
   return (
     <Root config={config} style={{ minHeight: '100vh' }}>
@@ -45,7 +43,7 @@ export const DashBoard = () => {
         <NavBar user={navUser} config={navConf}/>
       </Nav>
       <Content><ProfileView /></Content>
-      <Footer>{/* footer goes here */}</Footer>
+      {/* <Footer>footer goes here</Footer> */}
     </Root>
   )
 }

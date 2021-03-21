@@ -30,8 +30,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const LanguageForm = props => {
-  const student = useSelector(state => state.student)
   const classes = useStyles()
+  const student = useSelector(state => state.student)
   const { control, handleSubmit, errors, formState, reset } = useForm({
     resolver: yupResolver(schema),
   })
@@ -75,7 +75,7 @@ export const LanguageForm = props => {
                 )}
                 name="speak"
                 rules={{ required: true }}
-                defaultValue=""
+                defaultValue={0}
               />
             </Box>
           </Grid>
@@ -89,7 +89,7 @@ export const LanguageForm = props => {
                 )}
                 name="write"
                 rules={{ required: true }}
-                defaultValue=""
+                defaultValue={0}
               />
             </Box>
           </Grid>

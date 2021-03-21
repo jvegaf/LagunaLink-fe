@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   Box,
   Button,
@@ -14,16 +13,12 @@ import {
   TableRow
 } from '@material-ui/core'
 import { Add, Delete, Edit } from '@material-ui/icons'
-import { Rating } from '@material-ui/lab'
-import clsx from 'clsx'
-import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useDispatch } from 'react-redux'
 import { v4 as uuid } from 'uuid'
 import { actions } from '../../../../redux/student'
-import { FormDialog } from '../../../dialog/FormDialog'
-import { LanguageForm } from '../../../form/student/language'
+import { JobExpDialog } from './JobExpDialog'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -38,37 +33,25 @@ const useStyles = makeStyles(() => ({
   head: {
     background: '#f5f5f5',
   },
-  rate: {
-    padding: '4px',
-    lineHeight: '0.9rem'
-  },
   box: {
     paddingLeft: '20px'
   }
 }))
 
-const LanguagesWidget = ({ className, ...rest }) => {
+const JobExperiencesWidget = props => {
   const [dialog, setDialog] = useState(false)
   const classes = useStyles()
   const dispatch = useDispatch()
-  const langs = rest.languages;
+  const jobs = props.jobExperiences
   
-const handleDelete = (lang) =>{
-  const langsUpd = langs.filter(language => language !== lang)
-  dispatch(actions.updateStudent({languages: langsUpd}))
+const handleDelete = (job) =>{
+  const jobsUpd = jobs.filter(jobExp => jobExp !== job)
+  dispatch(actions.updateStudent({job_experiences: jobsUpd}))
 }
 
 const hideDialog = () => setDialog(false)
 
-const hideDiag = {
-  hide: hideDialog
-}
 
-const addLangprops = {
-  title: 'Nuevo Idioma',
-  body: <LanguageForm {...hideDiag} />,
-  cb: hideDialog
-}
 
 
 const handleAdd = () => {
@@ -76,37 +59,35 @@ const handleAdd = () => {
 }
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest}>
-      {dialog &&  <FormDialog {...addLangprops} />}
-      <CardHeader title="Idiomas" />
+    <Card className={classes.root}>
+      {dialog &&  <JobExpDialog closeIt={hideDialog} />}
+      <CardHeader title="Experiencia Laboral" />
       <Divider />
       <PerfectScrollbar>
         <Box className={classes.box} minWidth={550}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell className={classes.cell}>Idioma</TableCell>
-                <TableCell className={classes.cell}>Nivel Oral</TableCell>
-                <TableCell className={classes.cell}>Nivel Escrito</TableCell>
+                <TableCell className={classes.cell}>Empresa</TableCell>
+                <TableCell className={classes.cell}>Posicion</TableCell>
+                <TableCell className={classes.cell}>Comienzo</TableCell>
+                <TableCell className={classes.cell}>Finalizacion</TableCell>
                 <TableCell className={classes.cell}></TableCell>
               </TableRow>
             </TableHead>
             <TableBody >
-              {langs !== null &&
-                langs.map(lang => (
+              {jobs !== null &&
+                jobs.map(job => (
                   <TableRow hover key={uuid()}>
-                    <TableCell className={classes.cell}>{lang.name}</TableCell>
-                    <TableCell className={classes.rate}>
-                      <Rating value={lang.speak} readOnly />
-                    </TableCell>
-                    <TableCell className={classes.rate}>
-                      <Rating value={lang.write} readOnly />
-                    </TableCell>
+                    <TableCell className={classes.cell}>{job.company}</TableCell>
+                    <TableCell className={classes.cell}>{job.position}</TableCell>
+                    <TableCell className={classes.cell}>{job.start_date}</TableCell>
+                    <TableCell className={classes.cell}>{job.end_date}</TableCell>
                     <TableCell className={classes.cell}>
                       <IconButton aria-label="edit" >
                         <Edit />
                       </IconButton>
-                      <IconButton aria-label="remove" onClick={() => handleDelete(lang)} >
+                      <IconButton aria-label="remove" onClick={() => handleDelete(job)} >
                         <Delete />
                       </IconButton>
                     </TableCell>
@@ -118,15 +99,11 @@ const handleAdd = () => {
       </PerfectScrollbar>
       <Box display="flex" justifyContent="flex-end" p={2}>
         <Button color="primary" endIcon={<Add />} onClick={handleAdd} size="small" variant="text">
-          Agregar Idioma
+          Agregar experiencia laboral
         </Button>
       </Box>
     </Card>
   )
 }
 
-LanguagesWidget.propTypes = {
-  className: PropTypes.string,
-}
-
-export default LanguagesWidget
+export default JobExperiencesWidget

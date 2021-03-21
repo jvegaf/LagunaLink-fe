@@ -3,9 +3,6 @@ import { makeStyles } from '@material-ui/styles'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import Profile from '../../components/detail/account/Profile'
-import Languages from '../../components/detail/student/curriculum/Languages'
-import { Qualification } from '../../components/detail/student/curriculum/Qualification'
-import { StudentAccount } from '../../components/detail/student/StudentAccount'
 import JobExperiencesWidget from '../../components/detail/student/jobExp/JobExperiencesWidget'
 
 const useStyles = makeStyles(theme => ({
@@ -22,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const ProfileView = () => {
+export const JobExperiencesView = () => {
   const user = useSelector(state => state.user)
   const student = useSelector(state => state.student)
   const classes = useStyles()
@@ -34,15 +31,6 @@ export const ProfileView = () => {
           <Profile {...user} />
         </Grid>
         <Grid item container direction="column" spacing={3} xl={6} lg={8} md={6} xs={12}>
-          <Grid item className={classes.gridItem} >
-            <StudentAccount student={student} email={user.email} />
-          </Grid>
-          <Grid item className={classes.gridItem}>
-            <Qualification {...student.qualification} />
-          </Grid>
-          <Grid item className={classes.gridItem}>
-            <Languages {...student} />
-          </Grid>
           <Grid item className={classes.gridItem}>
             <JobExperiencesWidget {...student} />
           </Grid>

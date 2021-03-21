@@ -45,6 +45,7 @@ const NavItem = ({
   href,
   icon: Icon,
   title,
+  selected,
   ...rest
 }) => {
   const classes = useStyles();
@@ -52,6 +53,7 @@ const NavItem = ({
   return (
     <ListItem
       className={clsx(classes.item, className)}
+      selected={selected}
       disableGutters
       {...rest}
     >
