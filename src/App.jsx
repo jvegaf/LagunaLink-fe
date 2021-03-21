@@ -1,27 +1,16 @@
-import { UserContextProvider } from './context/UserContext'
-import { StudentContextProvider } from './context/StudentContext'
-import { CompanyContextProvider } from './context/CompanyContext'
-import { SnackbarProvider } from 'notistack'
-import { Slide } from '@material-ui/core'
+import { Provider } from 'react-redux'
+import generateStore from './redux/store'
 import Router from './router/router'
 
 function App() {
+  
+  const store = generateStore()
+  
   return (
-    <SnackbarProvider
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      TransitionComponent={Slide}
-    >
-      <UserContextProvider>
-        <StudentContextProvider>
-          <CompanyContextProvider>
-            <Router />
-          </CompanyContextProvider>
-        </StudentContextProvider>
-      </UserContextProvider>
-    </SnackbarProvider>
+    <Provider store={store}>
+      <Router />
+    </Provider>
+    
   )
 }
 

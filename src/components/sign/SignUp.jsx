@@ -1,82 +1,78 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
-import { useUser } from '../../hooks/useUser'
-import { ModalView } from '../modal/ModalView'
-import {
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBBtn,
-  MDBNavLink,
-  MDBCard,
-  MDBCardBody,
-} from 'mdbreact'
-import { Title } from '../shared/Title'
-import { RoleSelectInput } from '../form/RoleSelectInput'
-import { EmailInput } from '../form/EmailInput'
-import { PasswordInput } from '../form/PasswordInput'
+import { Button, Link, makeStyles, Paper, Typography } from '@material-ui/core'
+import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { EmailInput } from '../form/__shared__/EmailInput'
+import { PasswordInput } from '../form/__shared__/PasswordInput'
+import { RoleSelectInput } from '../form/__shared__/RoleSelectInput'
+import { Title } from '../shared/Title'
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: '2em',
+    width: '100%'
+  },
+  button: {
+    paddingLeft: '4em',
+    paddingRight: '4em',
+    marginTop: '2em',
+    marginBottom: '2em'
+  }
+}
+))
 
 export const SignUp = () => {
-  const { setStatus, signUp } = useUser()
   const methods = useForm()
-  const [modal, setModal] = useState({
-    open: false,
-    body: '',
-    redirect: undefined,
-  })
+  const classes = useStyles()
 
   const onSubmit = data => {
-    setModal({ open: false, body: '', redirect: undefined })
-    setStatus(0)
-    signUp(data)
-      .then(status => {
-        if (status === 201) {
-          setModal({
-            open: true,
-            body: 'Email de confirmacion enviado. Mira en tu buzon',
-            redirect: '/signin',
-          })
-        }
+    // signUp(data)
+    //   .then(status => {
+    //     if (status === 201) {
+    //       setModal({
+    //         open: true,
+    //         body: 'Email de confirmacion enviado. Mira en tu buzon',
+    //         redirect: '/signin',
+    //       })
+    //     }
 
-        if (status === 430) {
-          setModal({
-            open: true,
-            body: 'El Email ya estaba registrado. Ingresa en tu cuenta',
-            redirect: '/signin',
-          })
-        }
-      })
-      .catch(e => console.log(e))
+    //     if (status === 430) {
+    //       setModal({
+    //         open: true,
+    //         body: 'El Email ya estaba registrado. Ingresa en tu cuenta',
+    //         redirect: '/signin',
+    //       })
+    //     }
+    //   })
+    //   .catch(e => console.log(e))
   }
 
   return (
-    <MDBContainer>
-      <MDBRow className="justify-content-center">
-        <MDBCol md="8" sm="12">
-          <MDBCard className="p-4">
-            <MDBCardBody>
-              {modal.open && <ModalView open={modal.open} body={modal.body} redirect={modal.redirect} />}
-              <Title content="Registro" />
-              <FormProvider {...methods} >
-                <form onSubmit={methods.handleSubmit(onSubmit)}>
-                  <div className="text-center">
-                    <RoleSelectInput></RoleSelectInput>
-                    <EmailInput />
-                    <PasswordInput />
-                    <MDBBtn type="submit" color="default">
-                      Registrar
-                    </MDBBtn>
-                  </div>
-                </form>
-              </FormProvider>
-              <MDBNavLink to="/signin" className="mt-5 text-center">
-                ¿Ya tienes una cuenta? Ingresa
-              </MDBNavLink>
-            </MDBCardBody>
-          </MDBCard>
-        </MDBCol>
-      </MDBRow>
-    </MDBContainer>
+    <Paper elevation={3} className={classes.root}>
+      <Title content="Registro"/>
+      <FormProvider {...methods} >
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <div className="col">
+            <div className="row justify-content-center">
+              <RoleSelectInput />
+            </div>
+            <div className="row justify-content-center">
+              <EmailInput/> 
+            </div>
+            <div className="row justify-content-center">
+              <PasswordInput/>
+            </div>
+            <div className="row justify-content-center">
+              <Button color={'primary'} className={classes.button} variant={'contained'} type={'submit'}>Crear Cuenta</Button>
+            </div>
+          </div>
+        </form>
+      </FormProvider>
+      <div className={'justify-content-end mt-4'}>
+        <Typography align={'right'}>
+        ¿Ya tienes una cuenta? <Link href={'/signin'}>Ingresa</Link>
+        </Typography>
+      </div>
+    </Paper>
   )
 }

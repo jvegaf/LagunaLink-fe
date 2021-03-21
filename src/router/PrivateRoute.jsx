@@ -1,14 +1,14 @@
 import React from 'react'
-import { useUser } from '../hooks/useUser'
+import { useSelector } from 'react-redux'
 import { Redirect, Route } from 'react-router-dom'
 
 
 export function PrivateRoute({ children, ...rest }) {
-  const { isSigned } = useUser()
+  const isSignedIn = useSelector(state => state.user.isSignedIn)
   return (
     <Route {...rest} render={({ location }) =>
-        isSigned ? (children) :
-        (<Redirect to={{ pathname: '/login', state: { from: location } }} />)
+        isSignedIn ? (children) :
+        (<Redirect to={{ pathname: '/signin', state: { from: location } }} />)
       }
     />
   )

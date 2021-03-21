@@ -1,17 +1,18 @@
-import { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import { useUser } from '../../hooks/useUser'
-import { ModalView } from '../modal/ModalView'
-import { Title } from '../shared/Title'
-import { FormProvider, useForm } from 'react-hook-form'
-import { EmailInput } from '../form/EmailInput'
-import { PasswordInput } from '../form/PasswordInput'
 import { Button, Link, makeStyles, Paper, Typography } from '@material-ui/core'
+import { useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import { actions } from '../../redux/user'
+import { AlertDialog } from '../dialog/AlertDialog'
+import { EmailInput } from '../form/__shared__/EmailInput'
+import { PasswordInput } from '../form/__shared__/PasswordInput'
+import { Title } from '../shared/Title'
 
 const useStyles = makeStyles(theme => ({
     root: {
-      padding: '2em'
-
+      padding: '2em',
+      width: '100%'
     },
     button: {
       paddingLeft: '4em',
@@ -23,9 +24,11 @@ const useStyles = makeStyles(theme => ({
 ))
 
 export const SignInComponent = () => {
+  const needStudentRegister = useSelector(state => state.user.needStudentRegister)
+  const needCompanyRegister = useSelector(state => state.user.needCompanyRegister)
+  const isSignedIn = useSelector(state => state.user.isSignedIn)
+  const dispatch = useDispatch()
   const classes = useStyles()
-  const history = useHistory()
-  const {status, setStatus, signIn} = useUser()
   const methods = useForm()
   const [modal, setModal] = useState({
     open: false,
@@ -33,37 +36,17 @@ export const SignInComponent = () => {
   })
 
   const onSubmit = data => {
-    setStatus(0)
     setModal({open: false, body: ''})
-    signIn(data)
+    dispatch(actions.signIn(data))
   }
 
-  useEffect(() => {
-    switch (status) {
-      case 200:
-        history.push('/main')
-        break
-      case 230:
-        history.push('/register/student')
-        break
-      case 231:
-        history.push('/register/company')
-        break
-      case 400:
-        setModal({open: true, body: 'Correo o Contraseña erroneo'})
-        break
-      case 450:
-        setModal({
-          open: true,
-          body: 'Necesitas verificar tu cuenta antes de ingresar'
-        })
-        break
-    }
-  }, [history, status, setModal])
+  if (needStudentRegister) return <Redirect to="/register/student"/>
+  if (needCompanyRegister) return <Redirect to="/register/company"/>
+  if (isSignedIn) return <Redirect to="/app"/>
 
   return (
     <Paper elevation={3} className={classes.root}>
-      {modal.open && <ModalView open={modal.open} body={modal.body}/>}
+      {modal.open && <AlertDialog body={modal.body}/>}
       <Title content="Iniciar Sesion"/>
       <FormProvider {...methods} >
         <form onSubmit={methods.handleSubmit(onSubmit)}>

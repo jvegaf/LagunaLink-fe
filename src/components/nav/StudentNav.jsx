@@ -2,12 +2,11 @@ import React, { useState } from 'react'
 import { LinkAvatar } from '../shared/LinkAvatar'
 import './../shared/styles.css'
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, makeStyles, Typography } from '@material-ui/core'
-import { useStudent } from '../../hooks/useStudent'
 import { School, Language, Work, Assignment } from '@material-ui/icons'
 
 const drawerWidth = 240
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: 'flex'
   },
@@ -27,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const StudentNav = ({change}) => {
   const classes = useStyles()
-  const { name } = useStudent()
   const [selIndex, setSelIndex] = useState(0)
   const handleListItemClick = (event, index) => {
     setSelIndex(index)
@@ -53,7 +51,7 @@ export const StudentNav = ({change}) => {
               </div>
               <div className="row justify-content-center m-3">
                 <Typography variant={'h4'}>
-                  {name}
+                  {/* {name} */}
                 </Typography>
               </div>
             </div>
