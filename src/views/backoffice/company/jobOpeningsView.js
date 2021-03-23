@@ -22,7 +22,8 @@ const useStyles = makeStyles(theme => ({
 export const JobOpeningsView = () => {
   const company = useSelector(state => state.company)
   const classes = useStyles()
-  const jobOpen = company.own_job_openings[0]
+  const jobs = company.own_job_openings
+  const jobOpen = jobs !== undefined ? jobs.slice(-1)[0] : undefined
 
   return (
     <Container maxWidth="lg">

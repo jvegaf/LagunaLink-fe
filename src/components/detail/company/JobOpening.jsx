@@ -9,11 +9,11 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export const JobOpening = ({createdAt, ...rest}) => {
+export const JobOpening = ({position, createdAt, ...rest}) => {
   const classes = useStyles()
 
   return (
-    <Card className={classes.root} title={`Oferta creada el ${createdAt}`}>
+    <Card className={classes.root} title={`${position} creada el ${createdAt}`}>
       <JobOpeningForm {...rest} />
     </Card>
   )

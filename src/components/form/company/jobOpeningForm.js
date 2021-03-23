@@ -51,7 +51,7 @@ export const JobOpeningForm = props => {
   return (
   <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
     <Grid container spacing={2}>
-      <Grid item xs={12}>
+      <Grid item xs={12} hidden={!props.newJob}>
         <Controller
           as={TextField}
           defaultValue=""

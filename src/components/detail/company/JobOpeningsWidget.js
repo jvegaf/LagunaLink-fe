@@ -31,9 +31,7 @@ const useStyles = makeStyles(() => ({
   head: {
     background: '#f5f5f5',
   },
-  box: {
-    paddingLeft: '20px',
-  },
+  box: {},
 }))
 
 export const JobOpeningsWidget = props => {
@@ -64,7 +62,7 @@ export const JobOpeningsWidget = props => {
       <CardHeader title="Ofertas Publicadas" />
       <Divider />
       <PerfectScrollbar>
-        <Box className={classes.box} minWidth={550}>
+        <Box className={classes.box} minWidth={500}>
           <Table>
             <TableHead>
               <TableRow>
