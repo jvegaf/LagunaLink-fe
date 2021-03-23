@@ -10,14 +10,12 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
+  TableRow
 } from '@material-ui/core'
 import { Add, Delete, Visibility } from '@material-ui/icons'
 import React, { useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import { useDispatch } from 'react-redux'
 import { v4 as uuid } from 'uuid'
-import { actions } from '../../../redux/user'
 import { JobOpenDialog } from './JobOpenDialog'
 
 const useStyles = makeStyles(() => ({
@@ -41,10 +39,8 @@ const useStyles = makeStyles(() => ({
 export const JobOpeningsWidget = props => {
   const [dialogShow, setDialogShow] = useState(false)
   const classes = useStyles()
-  const dispatch = useDispatch()
   const jobs = props.own_job_openings
   const hideDialog = () => {
-    dispatch(actions.deselectJobOpen())
     setDialogShow(false)
   }
 
@@ -54,7 +50,6 @@ export const JobOpeningsWidget = props => {
   }
 
   const handleView = job => {
-    dispatch(actions.selectJobOpen(job))
     setDialogShow(true)
   }
 

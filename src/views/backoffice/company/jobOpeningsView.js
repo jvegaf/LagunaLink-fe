@@ -2,8 +2,8 @@ import { Container, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Profile } from '../../../components/detail/account/Profile'
-import { CompanyAccount } from '../../../components/detail/company/CompanyAccount'
+import { JobOpening } from '../../../components/detail/company/JobOpening'
+import { JobOpeningsWidget } from '../../../components/detail/company/JobOpeningsWidget'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,20 +19,20 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export const CompanyProfileView = () => {
-  const user = useSelector(state => state.user)
+export const JobOpeningsView = () => {
   const company = useSelector(state => state.company)
   const classes = useStyles()
+  const jobOpen = company.own_job_openings[0]
 
   return (
     <Container maxWidth="lg">
       <Grid container className={classes.gridContainer} spacing={3}>
         <Grid item lg={4} md={6} xs={12}>
-          <Profile {...user} />
+          <JobOpeningsWidget {...company} />
         </Grid>
         <Grid item container direction="column" spacing={3} xl={6} lg={8} md={6} xs={12}>
           <Grid item className={classes.gridItem}>
-            <CompanyAccount company={company} email={user.email} />
+            {jobOpen === undefined ? (<span>No tienes ofertas creadas</span>) : (<JobOpening {...jobOpen} />)}
           </Grid>
         </Grid>
       </Grid>

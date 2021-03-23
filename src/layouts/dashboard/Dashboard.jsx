@@ -12,6 +12,7 @@ import { StudentProfileView } from '../../views/backoffice/student/ProfileView'
 import { DashboardView } from '../../views/dashboard/DashboardView'
 import { config } from './config'
 import { CompanyProfileView } from '../../views/backoffice/company/ProfileView'
+import { JobOpeningsView } from '../../views/backoffice/company/jobOpeningsView'
 
 export const DashBoard = ({ reqView }) => {
   const user = useSelector(state => state.user)
@@ -57,5 +58,7 @@ const checkRequest = (reqView, role) => {
       return <DashboardView />
     case 'profile':
       return profileView(role)
+    case 'jobOpenings':
+      return <JobOpeningsView />
   }
 }
