@@ -14,17 +14,17 @@ const companyNavConf = {
       title: 'Inicio',
     },
     {
-      href: '/app/account',
+      href: '/app/profile',
       icon: UserIcon,
       title: 'Perfil',
     },
     {
-      href: '/app/account',
+      href: '/app/job_openings',
       icon: UserIcon,
       title: 'Ofertas Publicadas',
     },
     {
-      href: '/register',
+      href: '/app/job_openings/create',
       icon: UserPlusIcon,
       title: 'Crear Oferta ',
     },

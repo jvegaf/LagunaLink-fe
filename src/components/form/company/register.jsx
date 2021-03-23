@@ -6,12 +6,14 @@ import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
-import { actions } from '../../../redux/student'
+import { actions } from '../../../redux/company'
 
 const schema = yup.object().shape({
   name: yup.string().required(),
-  surname: yup.string().required(),
-  lastname: yup.string().required()
+  description: yup.string().required(),
+  address: yup.string().required(),
+  region: yup.string().required(),
+  city: yup.string().required(),
 })
 
 const useStyles = makeStyles(theme => ({
@@ -27,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-export const StudentForm = props => {
+export const CompanyForm = props => {
   const classes = useStyles()
   const { control, handleSubmit, setValue, errors, formState, reset } = useForm({
     resolver: yupResolver(schema),
@@ -39,13 +41,16 @@ export const StudentForm = props => {
     if (!props.newRegistry) {
       setValue('email', props.email)
       setValue('name', props.name)
-      setValue('surname', props.surname)
-      setValue('lastname', props.lastname)
+      setValue('description', props.description)
+      setValue('address', props.address)
+      setValue('postalCode', props.postalCode)
+      setValue('region', props.region)
+      setValue('city', props.city)
     }
   }, [props])
 
   const onSubmit = data => {
-    const action = props.newRegistry === true ? actions.registerStudent() : actions.updateStudent() 
+    const action = props.newRegistry === true ? actions.registerCompany() : actions.updateCompany() 
     dispatch(action(data))
     reset()
   };
@@ -61,14 +66,25 @@ export const StudentForm = props => {
             <Controller as={TextField} className={classes.formControl} defaultValue="" variant="outlined" size="small" label="Nombre" name="name" 
             control={control} error={Boolean(errors.name)} fullWidth/>
           </Grid>
-          
-          <Grid item xs={12} md={6}>
-            <Controller as={TextField} className={classes.formControl} variant="outlined" defaultValue="" size="small" label="Primer Apellido" name="surname" error={Boolean(errors.surname)}
-              control={control} fullWidth />
+          <Grid item xs={12}>
+            <Controller as={TextField} multiline rows={4} rowsMax={4} className={classes.formControl} variant="outlined" defaultValue="" size="small" label="Descripcion" name="description" error={Boolean(errors.description)}
+              control={control} fullWidth/>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <Controller as={TextField} className={classes.formControl} variant="outlined" size="small" defaultValue="" label="Segundo Apellido" name="lastname" error={Boolean(errors.lastname)}
-              control={control} fullWidth />
+          <Grid item xs={12}>
+            <Controller as={TextField} className={classes.formControl} variant="outlined" defaultValue="" size="small" label="Direccion" name="address" error={Boolean(errors.address)}
+              control={control} fullWidth/>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Controller as={TextField} className={classes.formControl} variant="outlined" defaultValue="" size="small" label="Codigo Postal" name="postalCode" error={Boolean(errors.postalCode)}
+              control={control} fullWidth/>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Controller as={TextField} className={classes.formControl} variant="outlined" defaultValue="" size="small" label="Provincia" name="region" error={Boolean(errors.region)}
+              control={control} fullWidth/>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Controller as={TextField} className={classes.formControl} variant="outlined" defaultValue="" size="small" 
+            label="Poblacion" name="city" error={Boolean(errors.city)} control={control} fullWidth/>
           </Grid>
           <Grid item xs={12} hidden={!formState.isDirty && !props.newRegistry}>
             <Button color="primary" className={classes.button} disabled={props.isBusy} variant="text" type="submit" fullWidth>

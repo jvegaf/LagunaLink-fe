@@ -13,9 +13,9 @@ const initialState = {
   isSignedIn: false,
   inactiveError: null,
   signinError: null,
+  avatarDeleteError: null,
   prefName: '',
-  avatar: '',
-  navIndex: 1
+  avatar: ''
 }
 
 // const types
@@ -41,6 +41,7 @@ const AVATAR_UPLOAD = 'AVATAR_UPLOAD'
 const AVATAR_UPLOADED = 'AVATAR_UPLOADED'
 const AVATAR_DELETE = 'AVATAR_DELETE'
 const AVATAR_DELETED = 'AVATAR_DELETED'
+const AVATAR_DELETE_ERROR = 'AVATAR_DELETED_ERROR'
 const UPDATE = 'UPDATE'
 const UPDATED = 'UPDATED'
 
@@ -66,16 +67,15 @@ const currentUser = (state = initialState, action) => {
         ...state,
         isBusy: true,
         signinError: null,
+        avatarDeleteError: null,
       }
 
-      case UPDATE:
+    case UPDATE:
       return {
         ...state,
         isBusy: true,
         signinError: null,
       }
-
-      
 
     case SIGNIN_SUCCESS:
       return {
@@ -101,6 +101,14 @@ const currentUser = (state = initialState, action) => {
         ...state,
         avatar: '',
         isBusy: false,
+      }
+
+    case AVATAR_DELETE_ERROR:
+      return {
+        ...state,
+        avatar: '',
+        isBusy: false,
+        avatarDeleteError: true
       }
 
     case SIGNIN_ERROR:
@@ -174,7 +182,7 @@ export default currentUser
 const signIn = data => dispatch => {
   dispatch({ type: SIGNIN })
   apiProvider
-    .post('/auth/signin', data)
+    .post('auth/signin', data)
     .then(response => {
       if (response.status === STUDENT_NEW) {
         dispatch({ type: STUDENT_REGISTER })
@@ -190,10 +198,10 @@ const signIn = data => dispatch => {
       }
       if (response.status === STATUS_OK) {
         if (response.data.user_role === ROLE_STUDENT) {
-          dispatch(studentActions.getProfile(response.data.user_id, response.data.access_token, data.email))
+          dispatch(studentActions.getProfile(response.data.user_id, response.data.access_token))
         }
         if (response.data.user_role === ROLE_COMPANY) {
-          dispatch(companyActions.getProfile(response.data.user_id, response.data.access_token, data.email))
+          dispatch(companyActions.getProfile(response.data.user_id, response.data.access_token))
         }
 
         if (response.data.avatar !== '') {
@@ -222,7 +230,7 @@ const signOut = () => dispatch => {
 
 const signUp = data => dispatch => {
   apiProvider
-    .post('/auth/signup', data)
+    .post('auth/signup', data)
     .catch(e => {
       console.log({ e })
     })
@@ -265,6 +273,7 @@ const deleteAvatar = dispatch => (dispatch, getState) => {
     }
   }).catch(e => {
     console.log({ e })
+    dispatch({type: AVATAR_DELETE_ERROR})
   })
 }
 
@@ -278,6 +287,8 @@ const update = data => (dispatch, getState) => {
     console.log({ e })
   })
 }
+
+
 
 
 

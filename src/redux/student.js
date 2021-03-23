@@ -13,8 +13,7 @@ const initialStudentState = {
   languages: null,
   jobExperiences: null,
   isBusy: false,
-  taskError: null,
-  addLanguage: false
+  taskError: null
 }
 
 // const types
@@ -114,10 +113,11 @@ const getProfile = (userId, token) => dispatch => {
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
-const registerStudent = (data, token) => dispatch => {
+const registerStudent = data => (dispatch, getState) => {
+  const { token } = getState().user
   dispatch({ type: STUDENT_REGISTER })
   apiProvider
-    .post('/students', data, token)
+    .post('students', data, token)
     .then(() => {
       userActions.unsetRegister()
       dispatch({ type: STUDENT_REGISTER_COMPLETE, payload: data })

@@ -1,4 +1,5 @@
-import { Button, Link, makeStyles, Paper, Typography } from '@material-ui/core'
+import { Button, CircularProgress, Link, makeStyles, Paper, Typography } from '@material-ui/core'
+import { green } from '@material-ui/core/colors'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,7 +20,25 @@ const useStyles = makeStyles(theme => ({
       paddingRight: '4em',
       marginTop: '2em',
       marginBottom: '2em'
-    }
+    },
+    wrapper: {
+      margin: theme.spacing(1),
+      position: 'relative',
+    },
+    buttonSuccess: {
+      backgroundColor: green[500],
+      '&:hover': {
+        backgroundColor: green[700],
+      },
+    },
+    buttonProgress: {
+      color: green[500],
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      marginTop: -12,
+      marginLeft: -12,
+    },
   }
 ))
 
@@ -27,6 +46,7 @@ export const SignInComponent = () => {
   const needStudentRegister = useSelector(state => state.user.needStudentRegister)
   const needCompanyRegister = useSelector(state => state.user.needCompanyRegister)
   const isSignedIn = useSelector(state => state.user.isSignedIn)
+  const isBusy = useSelector(state => state.user.isBusy)
   const dispatch = useDispatch()
   const classes = useStyles()
   const methods = useForm()
@@ -42,7 +62,7 @@ export const SignInComponent = () => {
 
   if (needStudentRegister) return <Redirect to="/register/student"/>
   if (needCompanyRegister) return <Redirect to="/register/company"/>
-  if (isSignedIn) return <Redirect to="/app"/>
+  if (isSignedIn) return <Redirect to="/"/>
 
   return (
     <Paper elevation={3} className={classes.root}>
@@ -58,7 +78,11 @@ export const SignInComponent = () => {
               <PasswordInput/>
             </div>
             <div className="row justify-content-center">
-              <Button color={'primary'} className={classes.button} variant={'contained'} type={'submit'}>Entrar</Button>
+              <div className={classes.wrapper}>
+                <Button color="primary" className={classes.button} disabled={isBusy}
+                variant="contained" type="submit">Entrar</Button>
+                 {isBusy && <CircularProgress size={24} className={classes.buttonProgress} />}
+              </div>
             </div>
           </div>
         </form>

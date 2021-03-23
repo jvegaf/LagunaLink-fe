@@ -9,25 +9,21 @@ const studentNavConf = {
   role: 'Estudiante',
   items: [
     {
-      index: 0,
       href: '/app/dashboard',
       icon: BarChartIcon,
       title: 'Inicio',
     },
     {
-      index: 1,
-      href: '/app/account',
+      href: '/app/profile',
       icon: UserIcon,
       title: 'Perfil',
     },
     {
-      index: 2,
-      href: '/register',
+      href: '/app/enrollments',
       icon: UserPlusIcon,
       title: 'Ofertas Aplicadas',
     },
     {
-      index: 3,
       href: '/app/settings',
       icon: SettingsIcon,
       title: 'Configuracion',

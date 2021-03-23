@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
-import { DashBoard } from '../layouts/Dashboard'
+import { DashBoard } from '../layouts/dashboard/Dashboard'
 import { Main } from '../layouts/main/Main'
 import { PrivateRoute } from './PrivateRoute'
 
@@ -15,18 +15,18 @@ export default function Router() {
           exact
           path="/"
           render={() => {
-            return isSignedIn ? <Redirect to="/app" /> : <Redirect to="/signin" />
+            return isSignedIn ? <Redirect to="/app/dashboard" /> : <Redirect to="/signin" />
           }}
         />
         <Route path="/signin"><Main reqView={'signin'} /></Route>
         <Route path="/signup"><Main reqView={'signup'} /></Route>
-        {/* <Route path="/signin" component={SignInPage} />
-        <Route path="/signup" component={SignUpPage} />
-        <Route path="/register/:accountType" component={RegisterPage} /> */}
-        {/* <Route path="/auth/confirmed" component={ConfirmedPage} /> */}
-        <PrivateRoute path="/app">
-          <DashBoard />
-        </PrivateRoute>
+        <Route path="/register/student"><Main reqView={'studentRegistry'} /></Route>
+        <Route path="/register/company"><Main reqView={'companyRegistry'} /></Route>
+        <Route path="/auth/confirmed"><Main reqView={'confirmed'} /></Route>
+        <PrivateRoute exact path="/app"><DashBoard reqView={'dashboard'}/></PrivateRoute>
+        <PrivateRoute path="/app/dashboard"><DashBoard reqView={'dashboard'}/></PrivateRoute>
+        <PrivateRoute path="/app/profile"><DashBoard reqView={'profile'}/></PrivateRoute>
+        <PrivateRoute path="/app/enrollments"><DashBoard reqView={'enrollments'}/></PrivateRoute>
       </Switch>
     </BrowserRouter>
   )

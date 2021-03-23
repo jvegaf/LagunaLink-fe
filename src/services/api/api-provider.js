@@ -17,7 +17,7 @@ const post = (resource, model, accessToken) => {
   if (accessToken !== undefined) {
     axios.defaults.headers.common.Authorization = accessToken
   }
-  return axios.post(`${BASE_URL}${resource}`, model).then(handleResponse).catch(handleError)
+  return axios.post(`${BASE_URL}/${resource}`, model).then(handleResponse).catch(handleError)
 }
 
 const put = (resource, id, model, accessToken) => {

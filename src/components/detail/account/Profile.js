@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Profile = ({ role, prefName, avatar, isBusy }) => {
+export const Profile = ({ role, prefName, avatar, isBusy }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const userRole = role === 'ROLE_STUDENT' ? 'Estudiante' : 'Empresa'
@@ -65,5 +65,3 @@ const Profile = ({ role, prefName, avatar, isBusy }) => {
     </Card>
   )
 }
-
-export default Profile

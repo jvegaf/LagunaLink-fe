@@ -1,9 +1,11 @@
 // @ts-nocheck
 import { makeStyles } from '@material-ui/core'
 import React from 'react'
+import { StudentRegisterView } from '../../views/register/StudentRegisterView'
 import { SignInView } from '../../views/sign/SigninView'
 import { SignUpView } from '../../views/sign/SignupView'
 import TopBar from './TopBar'
+import { CompanyRegisterView } from '../../views/register/CompanyRegisterView'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -54,6 +56,11 @@ const checkRequest = reqView => {
       return <SignInView />
     case 'signup':
       return <SignUpView />
-
+    case 'studentRegistry':
+      return <StudentRegisterView />
+    case 'companyRegistry':
+      return <CompanyRegisterView />
+    case 'confirmed':
+      return <SignInView />
   }
 }

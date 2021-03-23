@@ -2,8 +2,13 @@ import { apiProvider } from '../services/api/api-provider'
 import { actions as userActions } from './user'
 
 const initialState = {
-  profile: null,
-  email: '', 
+  name: '',
+  description: '',
+  address: '',
+  postalCode: '',
+  region: '',
+  city: '',
+  own_job_openings: null, 
   isBusy: false,
   taskError: null,
 }
@@ -13,6 +18,9 @@ const COMPANY_REGISTER = 'COMPANY_REGISTER'
 const COMPANY_REGISTER_COMPLETE = 'COMPANY_REGISTER_COMPLETE'
 const GET_PROFILE = 'GET_PROFILE'
 const GET_PROFILE_COMPLETE = 'GET_PROFILE_COMPLETE'
+const ADD_JOB_OPENING = 'ADD_JOB_OPENING'
+const ADD_JOB_OPENING_COMPLETE = 'ADD_JOB_OPENING_COMPLETE'
+const ADD_JOB_OPENING_ERROR = 'ADD_JOB_OPENING_ERROR'
 const COMPANY_UPDATE = 'COMPANY_UPDATE'
 const COMPANY_UPDATE_COMPLETE = 'COMPANY_UPDATE_COMPLETE'
 const SET_ERROR = 'SET_ERROR'
@@ -40,14 +48,40 @@ const currentCompany = (state = initialState, action) => {
       return {
         ...state,
         isBusy: true,
-        email: action.payload
       }
 
     case GET_PROFILE_COMPLETE:
       return {
         ...state,
         isBusy: false,
-        profile: action.payload,
+        name: action.payload.name,
+        description: action.payload.description,
+        address: action.payload.address,
+        postalCode: action.payload.postalCode,
+        own_job_openings: action.payload.job_openings,
+        region: action.payload.region,
+        city: action.payload.city
+      }
+
+    case ADD_JOB_OPENING:
+      return {
+        ...state,
+        taskError: null,
+        isBusy: true
+      }
+
+    case ADD_JOB_OPENING_COMPLETE:
+      return {
+        ...state,
+        isBusy: false,
+        own_job_openings: action.payload
+      }
+
+    case ADD_JOB_OPENING_ERROR:
+      return {
+        ...state,
+        isBusy: false,
+        taskError: true
       }
 
     case COMPANY_REGISTER_COMPLETE:
@@ -74,8 +108,8 @@ export default currentCompany
 
 const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
-const getProfile = (userId, token, email) => dispatch => {
-  dispatch({ type: GET_PROFILE,  payload: email })
+const getProfile = (userId, token) => dispatch => {
+  dispatch({ type: GET_PROFILE })
   apiProvider
     .getSingle('companies', userId, token)
     .then(res => {
@@ -88,7 +122,7 @@ const getProfile = (userId, token, email) => dispatch => {
 const registerCompany = (data, token) => dispatch => {
   dispatch({ type: COMPANY_REGISTER })
   apiProvider
-    .post('/companies', data, token)
+    .post('companies', data, token)
     .then(() =>{ 
       userActions.unsetRegister()
       dispatch({ type: COMPANY_REGISTER_COMPLETE, payload: data })})
@@ -101,11 +135,23 @@ const updateCompany = (userId, data, token) => dispatch => {
     .put('companies', userId, data, token)
     .then(() => dispatch({ type: COMPANY_UPDATE_COMPLETE }))
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
+
+}
+
+const addJobOpening = data => (dispatch, getState) => {
+  const {userId, token} = getState().user
+  const model = {...data, company: userId}
+  dispatch({ type: ADD_JOB_OPENING})
+  apiProvider
+    .post('job_openings', model, token)
+    .then((res) => dispatch({ type: ADD_JOB_OPENING_COMPLETE, payload: res.data.job_openings}))
+    .catch(e => dispatch({ type: ADD_JOB_OPENING_ERROR }))
 }
 
 export const actions = {
   signOut,
   getProfile,
   registerCompany,
-  updateCompany
+  updateCompany,
+  addJobOpening
 }

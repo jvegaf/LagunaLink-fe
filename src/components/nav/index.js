@@ -32,7 +32,7 @@ const NavBar = ({ user, config}) => {
       <Box p={2}>
         <List>
           {config.items.map(item => (
-            <NavItem href={item.href} key={item.index} selected={user.navIndex === item.index} title={item.title} icon={item.icon} />
+            <NavItem href={item.href} key={item.title} title={item.title} icon={item.icon} />
           ))}
         </List>
       </Box>
