@@ -17,6 +17,7 @@ import React, { useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { v4 as uuid } from 'uuid'
 import { JobOpenDialog } from './JobOpenDialog'
+import { dateFormatter } from './../../../services/date/dateFormatter'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -79,7 +80,7 @@ export const JobOpeningsWidget = props => {
                   <TableRow hover key={uuid()}>
                     <TableCell className={classes.cell}>{++index}</TableCell>
                     <TableCell className={classes.cell}>{job.position}</TableCell>
-                    <TableCell className={classes.cell}>{job.createdAt}</TableCell>
+                    <TableCell className={classes.cell}>{dateFormatter(job.createdAt)}</TableCell>
                     <TableCell className={classes.cell}>{0}</TableCell>
                     <TableCell className={classes.cell}>
                       <IconButton aria-label="detail" onClick={() => handleView(job)}>
