@@ -24,7 +24,7 @@ export const JobOpeningsView = () => {
   const classes = useStyles()
   const jobs = company.own_job_openings
   const [jobIndex, setJobIndex] = useState(0)
-  const jobOpen = jobs !== undefined ? jobs[0] : undefined
+  const jobOpen = jobs !== undefined ? jobs[jobIndex] : undefined
   const handleChange = idx => setJobIndex(idx)
   const widgetProps = {...company, idx: jobIndex, changeIdx: handleChange}
 

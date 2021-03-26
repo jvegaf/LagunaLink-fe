@@ -35,6 +35,7 @@ const useStyles = makeStyles(() => ({
 export const JobOpeningsWidget = props => {
   const [dialogShow, setDialogShow] = useState(false)
   const classes = useStyles()
+  const { idx, changeIdx } = props
   const jobs = props.own_job_openings
   const hideDialog = () => {
     setDialogShow(false)
@@ -45,8 +46,8 @@ export const JobOpeningsWidget = props => {
     // dispatch(actions.updateStudent({job_experiences: jobsUpd}))
   }
 
-  const handleChange = idx => {
-    setJobIndex(idx)
+  const handleChange = indx => {
+    changeIdx(indx)
   }
 
   const handleView = job => {
@@ -68,7 +69,7 @@ export const JobOpeningsWidget = props => {
           <List>
             {jobs !== undefined &&
               jobs.map((job, index) => (
-                <JobItem key={uuid()} job={job} index={index} selectedIdx={jobIndex} changeIdx={handleChange} />
+                <JobItem key={uuid()} job={job} index={index} selectedIdx={idx} changeIdx={handleChange} />
               ))}
           </List>
         </Box>
