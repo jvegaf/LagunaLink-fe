@@ -2,7 +2,6 @@ import {
   BarChart as BarChartIcon,
   Settings as SettingsIcon,
   User as UserIcon,
-  UserPlus as UserPlusIcon
 } from 'react-feather'
 
 const companyNavConf = {
@@ -22,11 +21,6 @@ const companyNavConf = {
       href: '/app/job_openings',
       icon: UserIcon,
       title: 'Ofertas Publicadas',
-    },
-    {
-      href: '/app/job_openings/create',
-      icon: UserPlusIcon,
-      title: 'Crear Oferta ',
     },
     {
       href: '/app/settings',

@@ -67,7 +67,7 @@ export const CompanyForm = props => {
             control={control} error={Boolean(errors.name)} fullWidth/>
           </Grid>
           <Grid item xs={12}>
-            <Controller as={TextField} multiline rows={4} rowsMax={4} className={classes.formControl} variant="outlined" defaultValue="" size="small" label="Descripcion" name="description" error={Boolean(errors.description)}
+            <Controller as={TextField} multiline className={classes.formControl} variant="outlined" defaultValue="" size="small" label="Descripcion" name="description" error={Boolean(errors.description)}
               control={control} fullWidth/>
           </Grid>
           <Grid item xs={12}>

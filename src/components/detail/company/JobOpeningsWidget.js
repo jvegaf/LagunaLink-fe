@@ -29,7 +29,9 @@ const useStyles = makeStyles(() => ({
   head: {
     background: '#f5f5f5',
   },
-  box: {},
+  box: {
+    width: '100%'
+  },
 }))
 
 export const JobOpeningsWidget = props => {
