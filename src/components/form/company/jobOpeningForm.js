@@ -31,7 +31,6 @@ export const JobOpeningForm = props => {
 
   useEffect(() => {
     if(!props.newJob) {
-      setValue('position', props.position)
       setValue('description', props.description)
       setValue('responsibilities', props.responsibilities)
       setValue('conditions', props.conditions)
@@ -42,6 +41,7 @@ export const JobOpeningForm = props => {
 
 
   const onSubmit = data => {
+    if (!props.newJob){ return }
     dispatch(actions.addJobOpening(data))
     reset()
     hide()
@@ -50,7 +50,7 @@ export const JobOpeningForm = props => {
   
   return (
   <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
-    <Grid container spacing={2}>
+    <Grid container spacing={3}>
       <Grid item xs={12} hidden={!props.newJob}>
         <Controller
           as={TextField}
@@ -71,8 +71,6 @@ export const JobOpeningForm = props => {
           variant="outlined"
           size="small"
           multiline
-          rows={4}
-          rowsMax={4}
           label="Descripcion"
           name="description"
           control={control}
@@ -90,8 +88,6 @@ export const JobOpeningForm = props => {
           label="Responsabilidades"
           name="responsibilities"
           multiline
-          rows={4}
-          rowsMax={4}
           error={Boolean(errors.responsibilities)}
           control={control}
           fullWidth
@@ -104,8 +100,6 @@ export const JobOpeningForm = props => {
           variant="outlined"
           size="small"
           multiline
-          rows={4}
-          rowsMax={4}
           label="Condiciones"
           name="conditions"
           control={control}
