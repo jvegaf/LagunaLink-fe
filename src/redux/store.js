@@ -3,11 +3,13 @@ import thunk from 'redux-thunk'
 import user from './user'
 import student from './student'
 import company from './company'
+import shared from './shared'
 
 const rootReducer = combineReducers({
   user,
   student,
-  company
+  company,
+  shared
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

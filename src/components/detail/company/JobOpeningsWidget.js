@@ -38,7 +38,7 @@ export const JobOpeningsWidget = props => {
   const [dialogShow, setDialogShow] = useState(false)
   const classes = useStyles()
   const { idx, changeIdx } = props
-  const jobs = props.own_job_openings
+  const jobs = props.ownJobOpenings
   const hideDialog = () => {
     setDialogShow(false)
   }

@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 export const JobOpeningsView = () => {
   const company = useSelector(state => state.company)
   const classes = useStyles()
-  const jobs = company.own_job_openings
+  const jobs = company.ownJobOpenings
   const [jobIndex, setJobIndex] = useState(0)
   const jobOpen = jobs !== undefined ? jobs[jobIndex] : undefined
   const handleChange = idx => setJobIndex(idx)

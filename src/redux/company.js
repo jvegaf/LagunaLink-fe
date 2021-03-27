@@ -8,7 +8,7 @@ const initialState = {
   postalCode: '',
   region: '',
   city: '',
-  own_job_openings: null, 
+  ownJobOpenings: [], 
   isBusy: false,
   taskError: null,
 }
@@ -58,7 +58,7 @@ const currentCompany = (state = initialState, action) => {
         description: action.payload.description,
         address: action.payload.address,
         postalCode: action.payload.postalCode,
-        own_job_openings: action.payload.job_openings,
+        ownJobOpenings: action.payload.job_openings,
         region: action.payload.region,
         city: action.payload.city
       }
@@ -74,7 +74,7 @@ const currentCompany = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        own_job_openings: action.payload
+        ownJobOpenings: action.payload
       }
 
     case ADD_JOB_OPENING_ERROR:
@@ -140,11 +140,14 @@ const updateCompany = (userId, data, token) => dispatch => {
 
 const addJobOpening = data => (dispatch, getState) => {
   const {userId, token} = getState().user
+  const { ownJobOpenings } = getState().company
   const model = {...data, company: userId}
   dispatch({ type: ADD_JOB_OPENING})
   apiProvider
     .post('job_openings', model, token)
-    .then((res) => dispatch({ type: ADD_JOB_OPENING_COMPLETE, payload: res.data.job_openings}))
+    .then((res) => {
+      ownJobOpenings.push(res.data.job_opening)
+      dispatch({ type: ADD_JOB_OPENING_COMPLETE, payload: ownJobOpenings })})
     .catch(e => dispatch({ type: ADD_JOB_OPENING_ERROR }))
 }
 

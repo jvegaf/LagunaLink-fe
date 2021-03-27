@@ -1,6 +1,7 @@
 import { apiProvider } from '../services/api/api-provider'
 import { actions as companyActions } from './company'
 import { actions as studentActions } from './student'
+import { actions as sharedActions } from './shared'
 
 const initialState = {
   token: '',
@@ -197,6 +198,8 @@ const signIn = data => dispatch => {
         dispatch({ type: INACTIVE_ERROR, payload: { message: 'Necesitas verificar tu cuenta antes de ingresar' } })
       }
       if (response.status === STATUS_OK) {
+        dispatch(sharedActions.fetchAllJobOpen(response.data.access_token))
+        
         if (response.data.user_role === ROLE_STUDENT) {
           dispatch(studentActions.getProfile(response.data.user_id, response.data.access_token))
         }
