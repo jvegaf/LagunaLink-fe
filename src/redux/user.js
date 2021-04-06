@@ -198,8 +198,9 @@ const signIn = data => dispatch => {
         dispatch({ type: INACTIVE_ERROR, payload: { message: 'Necesitas verificar tu cuenta antes de ingresar' } })
       }
       if (response.status === STATUS_OK) {
+        dispatch(sharedActions.fetchAllCompanies(response.data.access_token))
         dispatch(sharedActions.fetchAllJobOpen(response.data.access_token))
-        
+
         if (response.data.user_role === ROLE_STUDENT) {
           dispatch(studentActions.getProfile(response.data.user_id, response.data.access_token))
         }
