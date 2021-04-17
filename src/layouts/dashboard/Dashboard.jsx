@@ -13,12 +13,15 @@ import { DashboardView } from '../../views/dashboard/DashboardView'
 import { config } from './config'
 import { CompanyProfileView } from '../../views/backoffice/company/ProfileView'
 import { JobOpeningsView } from '../../views/backoffice/company/jobOpeningsView'
+import { JobOpeningDetailView } from '../../views/jobOpening/JobOpeningDetailView'
+import { useParams } from 'react-router-dom'
 
-export const DashBoard = ({ reqView }) => {
+export const DashBoard = props => {
+  const { id } = useParams();
   const user = useSelector(state => state.user)
   const navUser = { ...user }
   const navConf = conf(user.role)
-  const view = checkRequest(reqView, user.role)
+  const view = checkRequest({...props, role: user.role, detailId: id})
   
   return (
     <Root config={config} style={{ minHeight: '100vh' }}>
@@ -52,13 +55,15 @@ const conf = role => role === 'ROLE_STUDENT' ? studentNavConf : companyNavConf
 
 const profileView = role => role === 'ROLE_STUDENT' ? <StudentProfileView /> : <CompanyProfileView />
 
-const checkRequest = (reqView, role) => {
-  switch (reqView) {
+const checkRequest = props => {
+  switch (props.reqView) {
     case 'dashboard':
       return <DashboardView />
     case 'profile':
-      return profileView(role)
+      return profileView(props.role)
     case 'jobOpenings':
       return <JobOpeningsView />
+    case 'jobOpeningDetail':
+      return <JobOpeningDetailView {...props}/>
   }
 }

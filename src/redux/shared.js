@@ -7,7 +7,7 @@ const initialState = {
   isBusy: false,
   taskError: false,
   jobsFetched: false,
-  companiesFetched: false,
+  companiesFetched: false
 }
 
 // const types
@@ -18,6 +18,7 @@ const FETCH_JOBS_COMPLETE = 'FETCH_JOBS_COMPLETE'
 const FETCH_COMPANIES_COMPLETE = 'FETCH_COMPANIES_COMPLETE'
 const COMPANIES_UPDATED = 'COMPANIES_UPDATED'
 const FETCH_ERROR = 'FETCH_ERROR'
+
 
 // reducers
 const currentApp = (state = initialState, action) => {
@@ -94,7 +95,6 @@ const fetchAllCompanies = token => (dispatch, getState) => {
         const avatarId = await getCompanyAvatar(company.id, token)
         company.avatar = `${backendBaseURL}/${avatarId}`
       }
-      debugger
       dispatch({ type: FETCH_COMPANIES_COMPLETE, payload: companies })
     })
     .catch(e => dispatch({ type: FETCH_ERROR }))

@@ -33,7 +33,7 @@ export const JobOpenDialog = ({ closeIt }) => {
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">{`Oferta de Trabajo`} </DialogTitle>
       <DialogContent className={classes.content}>
-        <JobOpeningForm hide={hide} newJob={true} />
+        <JobOpeningForm hide={hide} viewer={false} />
       </DialogContent>
     </Dialog>
   )

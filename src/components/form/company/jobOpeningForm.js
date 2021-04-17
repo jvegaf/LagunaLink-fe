@@ -30,7 +30,9 @@ export const JobOpeningForm = props => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if(!props.newJob) {
+    if(props.viewer === true) {
+      setValue('company', props.companyName)
+      setValue('position', props.position)
       setValue('description', props.description)
       setValue('responsibilities', props.responsibilities)
       setValue('conditions', props.conditions)
@@ -51,7 +53,19 @@ export const JobOpeningForm = props => {
   return (
   <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
     <Grid container spacing={3}>
-      <Grid item xs={12} hidden={!props.newJob}>
+      <Grid item xs={12} hidden={!props.viewer}>
+        <Controller
+          as={TextField}
+          defaultValue=""
+          size="small"
+          label="Empresa"
+          name="company"
+          control={control}
+          fullWidth
+          aria-readonly
+        />
+      </Grid>
+      <Grid item xs={12}>
         <Controller
           as={TextField}
           defaultValue=""
@@ -62,6 +76,7 @@ export const JobOpeningForm = props => {
           control={control}
           error={Boolean(errors.position)}
           fullWidth
+          aria-readonly={props.viewer}
         />
       </Grid>
       <Grid item xs={12}>
@@ -76,9 +91,9 @@ export const JobOpeningForm = props => {
           control={control}
           error={Boolean(errors.description)}
           fullWidth
+          aria-readonly={props.viewer}
         />
       </Grid>
-
       <Grid item xs={12}>
         <Controller
           as={TextField}
@@ -91,6 +106,7 @@ export const JobOpeningForm = props => {
           error={Boolean(errors.responsibilities)}
           control={control}
           fullWidth
+          aria-readonly={props.viewer}
         />
       </Grid>
       <Grid item xs={12}>
@@ -105,6 +121,7 @@ export const JobOpeningForm = props => {
           control={control}
           error={Boolean(errors.conditions)}
           fullWidth
+          aria-readonly={props.viewer}
         />
       </Grid>
       <Grid item xs={12} md={6}>
@@ -118,6 +135,7 @@ export const JobOpeningForm = props => {
           control={control}
           error={Boolean(errors.qualification)}
           fullWidth
+          aria-readonly={props.viewer}
         />
       </Grid>
       <Grid item xs={12} md={6}>
@@ -131,9 +149,10 @@ export const JobOpeningForm = props => {
           control={control}
           error={Boolean(errors.prevExperience)}
           fullWidth
+          aria-readonly={props.viewer}
         />
       </Grid>
-      <Grid item xs={12} container hidden={!props.newJob} justify={'space-around'}>
+      <Grid item xs={12} container hidden={props.viewer} justify={'space-around'}>
         <Button color="primary" variant="text" onClick={props.hide}>
           Cancelar
         </Button>
