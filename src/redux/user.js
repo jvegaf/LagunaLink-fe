@@ -12,8 +12,10 @@ const initialState = {
   needStudentRegister: false,
   needCompanyRegister: false,
   isSignedIn: false,
-  inactiveError: null,
+  isSignedUp: false,
+  inactiveError: false,
   signinError: null,
+  prevRegisteredError: false,
   avatarDeleteError: null,
   prefName: '',
   avatar: ''
@@ -30,13 +32,15 @@ const USER_INACTIVE = 450
 
 const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS'
 const SIGNIN = 'SIGNIN'
-const STUDENT_REGISTER = 'STUDENT_REGISTER'
-const COMPANY_REGISTER = 'COMPANY_REGISTER'
+const STUDENT_REGISTER_NEEDED = 'STUDENT_REGISTER_NEEDED'
+const COMPANY_REGISTER_NEEDED = 'COMPANY_REGISTER_NEEDED'
 const REGISTER_COMPLETED = 'REGISTER_COMPLETED'
 const SIGNIN_ERROR = 'SIGNIN_ERROR'
 const INACTIVE_ERROR = 'INACTIVE_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
 const SIGN_UP = 'SIGN_UP'
+const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS'
+const PREVIOUSLY_REGISTERED_ERROR = 'PREVIOUSLY_REGISTERED_ERROR'
 const SET_NAME = 'SET_NAME'
 const AVATAR_UPLOAD = 'AVATAR_UPLOAD'
 const AVATAR_UPLOADED = 'AVATAR_UPLOADED'
@@ -47,13 +51,22 @@ const UPDATE = 'UPDATE'
 const UPDATED = 'UPDATED'
 
 // reducers
-const currentUser = (state = initialState, action) => {
+const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case SIGNIN:
       return {
         ...state,
         isBusy: true,
-        signinError: null,
+        signinError: false,
+        inactiveError: false,
+
+      }
+
+    case SIGN_UP:
+      return {
+        ...state,
+        isBusy: true,
+        sigupError: null,
       }
 
     case AVATAR_UPLOAD:
@@ -90,6 +103,13 @@ const currentUser = (state = initialState, action) => {
         isBusy: false,
       }
 
+    case SIGN_UP_SUCCESS:
+      return {
+        ...state,
+        isSignedUp: true,
+        isBusy: false,
+      }
+
     case AVATAR_UPLOADED:
       return {
         ...state,
@@ -116,31 +136,37 @@ const currentUser = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        signinError: action.payload.err,
+        signinError: true,
+      }
+
+
+    case PREVIOUSLY_REGISTERED_ERROR:
+      return {
+        ...state,
+        isBusy: false,
+        prevRegisteredError: true,
       }
 
     case SIGN_OUT:
       return initialState
 
-    case STUDENT_REGISTER:
+    case STUDENT_REGISTER_NEEDED:
       return {
         ...state,
         userId: action.payload.user_id,
         token: action.payload.access_token,
         email: action.payload.email,
         role: action.payload.user_role,
-        isSignedIn: true,
         isBusy: false,
         needStudentRegister: true,
       }
-    case COMPANY_REGISTER:
+    case COMPANY_REGISTER_NEEDED:
       return {
         ...state,
         userId: action.payload.user_id,
         token: action.payload.access_token,
         email: action.payload.email,
         role: action.payload.user_role,
-        isSignedIn: true,
         isBusy: false,
         needCompanyRegister: true,
       }
@@ -162,7 +188,7 @@ const currentUser = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        inactiveError: action.payload.error,
+        inactiveError: true,
       }
 
     case UPDATED:
@@ -176,7 +202,7 @@ const currentUser = (state = initialState, action) => {
   }
 }
 
-export default currentUser
+export default userReducer
 
 // actions
 
@@ -186,26 +212,20 @@ const signIn = data => dispatch => {
     .post('auth/signin', data)
     .then(response => {
       if (response.status === STUDENT_NEW) {
-        dispatch({ type: STUDENT_REGISTER })
+        dispatch({ type: STUDENT_REGISTER_NEEDED, payload: response.data })
       }
       if (response.status === COMPANY_NEW) {
-        dispatch({ type: COMPANY_REGISTER })
-      }
-      if (response.status === BAD_REQUEST) {
-        dispatch({ type: SIGNIN_ERROR, payload: { message: 'Correo o Contraseña erroneo' } })
-      }
-      if (response.status === USER_INACTIVE) {
-        dispatch({ type: INACTIVE_ERROR, payload: { message: 'Necesitas verificar tu cuenta antes de ingresar' } })
+        dispatch({ type: COMPANY_REGISTER_NEEDED, payload: response.data })
       }
       if (response.status === STATUS_OK) {
         dispatch(sharedActions.fetchAllCompanies(response.data.access_token))
         dispatch(sharedActions.fetchAllJobOpen(response.data.access_token))
 
         if (response.data.user_role === ROLE_STUDENT) {
-          dispatch(studentActions.getProfile(response.data.user_id, response.data.access_token))
+          dispatch(studentActions.getProfile(response.data.userId, response.data.access_token))
         }
         if (response.data.user_role === ROLE_COMPANY) {
-          dispatch(companyActions.getProfile(response.data.user_id, response.data.access_token))
+          dispatch(companyActions.getProfile(response.data.userId, response.data.access_token))
         }
 
         if (response.data.avatar !== '') {
@@ -218,11 +238,14 @@ const signIn = data => dispatch => {
         })
       }
     })
-    .catch(err => {
-      dispatch({
-        type: SIGNIN_ERROR,
-        payload: { err },
-      })
+    .catch(e => {
+      console.log({e})
+      if (e.response.status === BAD_REQUEST) {
+        dispatch({ type: SIGNIN_ERROR })
+      }
+      if (e.response.status === USER_INACTIVE) {
+        dispatch({ type: INACTIVE_ERROR })
+      }
     })
 }
 
@@ -233,12 +256,18 @@ const signOut = () => dispatch => {
 }
 
 const signUp = data => dispatch => {
+  dispatch({type: SIGN_UP})
   apiProvider
     .post('auth/signup', data)
-    .catch(e => {
-      console.log({ e })
+    .then(response=>{
+      if (response.status === 201){
+        dispatch({type: SIGN_UP_SUCCESS})
+      }
     })
-    .then(dispatch({ type: SIGN_UP }))
+    .catch(e => {
+      if(e.response.status === 430)
+      dispatch({type: PREVIOUSLY_REGISTERED_ERROR, payload: e.message})
+    })
 }
 
 const setPrefName = name => dispatch => {

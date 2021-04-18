@@ -13,6 +13,7 @@ const initialStudentState = {
   languages: null,
   jobExperiences: null,
   isBusy: false,
+  registered: false,
   taskError: null
 }
 
@@ -27,7 +28,7 @@ const SET_ERROR = 'SET_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
 
 // reducers
-const currentStudent = (state = initialStudentState, action) => {
+const studentReducer = (state = initialStudentState, action) => {
   switch (action.type) {
     case SIGN_OUT:
       return initialStudentState
@@ -69,6 +70,7 @@ const currentStudent = (state = initialStudentState, action) => {
         name: action.payload.name,
         surname: action.payload.surname,
         lastname: action.payload.lastname,
+        registered: true
       }
 
     case STUDENT_UPDATE_COMPLETE:
@@ -95,7 +97,7 @@ const currentStudent = (state = initialStudentState, action) => {
   }
 }
 
-export default currentStudent
+export default studentReducer
 
 // actions
 
@@ -132,7 +134,6 @@ const updateStudent = data => (dispatch, getState) => {
     .put('students', userId, data, token)
     .then((res) => {
       if (res.status === 200) {
-        console.log(res.data)
         dispatch({ type: STUDENT_UPDATE_COMPLETE, payload: res.data.student })
       }
     })

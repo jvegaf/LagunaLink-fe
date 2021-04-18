@@ -1,15 +1,15 @@
 import {createStore, combineReducers, compose, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
-import user from './user'
-import student from './student'
-import company from './company'
-import shared from './shared'
+import userReducer from './user'
+import studentReducer from './student'
+import companyReducer from './company'
+import sharedReducer from './shared'
 
 const rootReducer = combineReducers({
-  user,
-  student,
-  company,
-  shared
+  user: userReducer,
+  student: studentReducer,
+  company: companyReducer,
+  shared: sharedReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

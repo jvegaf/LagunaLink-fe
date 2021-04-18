@@ -4,7 +4,8 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 import * as yup from 'yup'
 import { actions } from '../../../redux/student'
 
@@ -28,12 +29,20 @@ const useStyles = makeStyles(theme => ({
 
 
 export const StudentForm = props => {
+  const history = useHistory();
   const classes = useStyles()
+  const registered = useSelector(state => state.student.registered)
   const { control, handleSubmit, setValue, errors, formState, reset } = useForm({
     resolver: yupResolver(schema),
   })
   const dispatch = useDispatch()
 
+
+  useEffect(() => {
+    if(registered === true) {
+      history.push('/app/dashboard')
+    }
+  }, [registered])
   
   useEffect(() => {
     if (!props.newRegistry) {
@@ -45,8 +54,10 @@ export const StudentForm = props => {
   }, [props])
 
   const onSubmit = data => {
-    const action = props.newRegistry === true ? actions.registerStudent() : actions.updateStudent() 
-    dispatch(action(data))
+    if (props.newRegistry){
+      dispatch(actions.registerStudent(data))
+    }
+    // const action = props.newRegistry === true ? actions.registerStudent() : actions.updateStudent() 
     reset()
   };
 

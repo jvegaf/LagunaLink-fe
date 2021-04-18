@@ -1,11 +1,11 @@
 import { Button, CircularProgress, Link, makeStyles, Paper, Typography } from '@material-ui/core'
 import { green } from '@material-ui/core/colors'
-import { useState } from 'react'
+import { useSnackbar } from 'notistack'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { actions } from '../../redux/user'
-import { AlertDialog } from '../dialog/AlertDialog'
 import { EmailInput } from '../form/__shared__/EmailInput'
 import { PasswordInput } from '../form/__shared__/PasswordInput'
 import { Title } from '../shared/Title'
@@ -43,30 +43,54 @@ const useStyles = makeStyles(theme => ({
 ))
 
 export const SignInComponent = () => {
+  const history = useHistory()
+  const { enqueueSnackbar } = useSnackbar()
   const needStudentRegister = useSelector(state => state.user.needStudentRegister)
   const needCompanyRegister = useSelector(state => state.user.needCompanyRegister)
   const isSignedIn = useSelector(state => state.user.isSignedIn)
   const isBusy = useSelector(state => state.user.isBusy)
+  const inactiveError = useSelector(state => state.user.inactiveError)
+  const signinError = useSelector(state => state.user.signinError)
   const dispatch = useDispatch()
   const classes = useStyles()
   const methods = useForm()
-  const [modal, setModal] = useState({
-    open: false,
-    body: ''
-  })
 
   const onSubmit = data => {
-    setModal({open: false, body: ''})
     dispatch(actions.signIn(data))
   }
 
-  if (needStudentRegister) return <Redirect to="/register/student"/>
-  if (needCompanyRegister) return <Redirect to="/register/company"/>
-  if (isSignedIn) return <Redirect to="/"/>
+  useEffect(() => {
+    if(needStudentRegister === true){
+      history.push('/register/student')
+    }
+  }, [needStudentRegister])
+
+  useEffect(() => {
+    if(needCompanyRegister === true){
+      history.push('/register/company')
+    }
+  }, [needCompanyRegister])
+
+  useEffect(() => {
+    if(isSignedIn === true){
+      history.push('/app/dashboard')
+    }
+  }, [isSignedIn])
+
+  useEffect(() => {
+    if(inactiveError === true){
+      enqueueSnackbar('Verificacion de Correo necesaria. Mira en tu buzon de correo', {variant: 'warning'})
+    }
+  }, [inactiveError])
+
+  useEffect(() => {
+    if(signinError === true){
+      enqueueSnackbar('Correo/Contrasena incorrectos', {variant: 'error'})
+    }
+  }, [signinError])
 
   return (
     <Paper elevation={3} className={classes.root}>
-      {modal.open && <AlertDialog body={modal.body}/>}
       <Title content="Iniciar Sesion"/>
       <FormProvider {...methods} >
         <form onSubmit={methods.handleSubmit(onSubmit)}>

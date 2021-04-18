@@ -5,13 +5,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { useHistory } from 'react-router';
 
 export const AlertDialog = props => {
-  const [open, setOpen] = React.useState(true);
+  const {open, title, body, redirect } = props
+  const history = useHistory()
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    history.push(redirect)
+  }
 
   return (
       <Dialog
@@ -20,10 +22,10 @@ export const AlertDialog = props => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {props.body}
+            {body}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

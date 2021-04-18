@@ -21,7 +21,7 @@ const FETCH_ERROR = 'FETCH_ERROR'
 
 
 // reducers
-const currentApp = (state = initialState, action) => {
+const sharedReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_JOB_OPENINGS:
       return {
@@ -72,7 +72,7 @@ const currentApp = (state = initialState, action) => {
   }
 }
 
-export default currentApp
+export default sharedReducer
 
 // actions
 

@@ -8,6 +8,7 @@ const initialState = {
   postalCode: '',
   region: '',
   city: '',
+  registered: false,
   ownJobOpenings: [], 
   isBusy: false,
   taskError: null,
@@ -27,7 +28,7 @@ const SET_ERROR = 'SET_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
 
 // reducers
-const currentCompany = (state = initialState, action) => {
+const companyReducer = (state = initialState, action) => {
   switch (action.type) {
     case SIGN_OUT:
       return initialState
@@ -88,6 +89,7 @@ const currentCompany = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
+        registered: true,
       }
 
     case SET_ERROR:
@@ -102,7 +104,7 @@ const currentCompany = (state = initialState, action) => {
   }
 }
 
-export default currentCompany
+export default companyReducer
 
 // actions
 

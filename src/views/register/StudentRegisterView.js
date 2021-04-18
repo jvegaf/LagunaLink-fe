@@ -21,8 +21,6 @@ export const StudentRegisterView = () => {
   const classes = useStyles()
   const needStudentRegister = useSelector(state => state.user.needStudentRegister)
 
-  // if(!needStudentRegister) return <Redirect to="/"/>
-
   return (
     <Grid container className={classes.root} justify={'center'} >
       <Grid item container alignContent={'center'} lg={5} md={6} sm={8} xs={12}>

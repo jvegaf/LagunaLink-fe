@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 import { actions } from '../../../redux/company'
 
@@ -31,11 +31,17 @@ const useStyles = makeStyles(theme => ({
 
 export const CompanyForm = props => {
   const classes = useStyles()
+  const registered = useSelector(state => state.company.registered)
   const { control, handleSubmit, setValue, errors, formState, reset } = useForm({
     resolver: yupResolver(schema),
   })
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    if(registered === true) {
+      history.push('/app/dashboard')
+    }
+  }, [registered])
   
   useEffect(() => {
     if (!props.newRegistry) {
@@ -50,8 +56,10 @@ export const CompanyForm = props => {
   }, [props])
 
   const onSubmit = data => {
-    const action = props.newRegistry === true ? actions.registerCompany() : actions.updateCompany() 
-    dispatch(action(data))
+    if (props.newRegistry) {
+      dispatch(actions.registerCompany(data))
+    }
+    // const action = props.newRegistry === true ? actions.registerCompany() : actions.updateCompany() 
     reset()
   };
 
