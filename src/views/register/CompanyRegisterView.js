@@ -2,7 +2,7 @@
 // @ts-nocheck
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SignUp } from '../../components/sign/SignUp'
 import { useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
@@ -20,9 +20,14 @@ const useStyles = makeStyles(theme => ({
 
 export const CompanyRegisterView = () => {
   const classes = useStyles()
-  const needCompanyRegister = useSelector(state => state.user.needCompanyRegister)
+  const registered = useSelector(state => state.company.registered)
 
-  // if(!needCompanyRegister) return <Redirect to="/"/>
+  useEffect(() => {
+    if (registered === true){
+      history.push('/app/dashboard')
+    }
+  }, [registered])
+
 
   return (
     <Grid container className={classes.root} justify={'center'} >

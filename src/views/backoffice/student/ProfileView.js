@@ -27,6 +27,8 @@ export const StudentProfileView = () => {
   const student = useSelector(state => state.student)
   const classes = useStyles()
 
+  const props = {...student, email: user.email}
+  // debugger
   return (
     <Container maxWidth="lg">
       <Grid container className={classes.gridContainer} spacing={3}>
@@ -35,16 +37,16 @@ export const StudentProfileView = () => {
         </Grid>
         <Grid item container direction="column" spacing={3} xl={6} lg={8} md={6} xs={12}>
           <Grid item className={classes.gridItem} >
-            <StudentAccount student={student} email={user.email} />
+            <StudentAccount {...props} />
           </Grid>
           <Grid item className={classes.gridItem}>
-            <Qualification {...student.qualification} />
+            <Qualification {...props} />
           </Grid>
           <Grid item className={classes.gridItem}>
-            <LanguagesWidget {...student} />
+            <LanguagesWidget {...props} />
           </Grid>
           <Grid item className={classes.gridItem}>
-            <JobExperiencesWidget {...student} />
+            <JobExperiencesWidget {...props} />
           </Grid>
         </Grid>
       </Grid>

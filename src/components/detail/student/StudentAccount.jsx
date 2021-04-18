@@ -9,9 +9,8 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export const StudentAccount = ({student, email}) => {
+export const StudentAccount = props => {
   const classes = useStyles()
-  const props = {...student, email: email}
 
   return (
     <Card className={classes.root} title="Perfil">

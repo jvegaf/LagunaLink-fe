@@ -1,7 +1,6 @@
 import { apiProvider } from '../services/api/api-provider'
 
 const initialState = {
-  backendBaseURL: 'https://lagunalink-be.herokuapp.com',
   jobOpenings: [],
   companies: [],
   isBusy: false,
@@ -85,15 +84,13 @@ const fetchAllJobOpen = token => dispatch => {
 }
 
 const fetchAllCompanies = token => (dispatch, getState) => {
-  const { backendBaseURL } = getState().shared
   dispatch({ type: FETCH_COMPANIES })
   apiProvider
     .getAll('companies', token)
     .then(async res => {
       const companies = [...res.data.companies];
       for (const company of res.data.companies) {
-        const avatarId = await getCompanyAvatar(company.id, token)
-        company.avatar = `${backendBaseURL}/${avatarId}`
+        company.avatar = await getCompanyAvatar(company.id, token)
       }
       dispatch({ type: FETCH_COMPANIES_COMPLETE, payload: companies })
     })
@@ -104,7 +101,7 @@ const getCompanyAvatar = async (companyId, token) => {
 
   try {
     const response = await apiProvider.getSingle(`user/${companyId}`, 'avatar', token)
-    return response.data.avatarId
+    return response.data.avatarURL
   }catch (e) {
     console.error(e.message)
   }

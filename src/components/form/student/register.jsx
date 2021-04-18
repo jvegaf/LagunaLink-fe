@@ -2,10 +2,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Grid, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
+import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
 import { actions } from '../../../redux/student'
 
@@ -29,35 +28,31 @@ const useStyles = makeStyles(theme => ({
 
 
 export const StudentForm = props => {
-  const history = useHistory();
   const classes = useStyles()
-  const registered = useSelector(state => state.student.registered)
+  const { newRegistry, email, name, surname, lastname } = props
   const { control, handleSubmit, setValue, errors, formState, reset } = useForm({
     resolver: yupResolver(schema),
   })
+  const [isBusy, setIsBusy] = useState(false)
   const dispatch = useDispatch()
-
-
-  useEffect(() => {
-    if(registered === true) {
-      history.push('/app/dashboard')
-    }
-  }, [registered])
   
   useEffect(() => {
-    if (!props.newRegistry) {
-      setValue('email', props.email)
-      setValue('name', props.name)
-      setValue('surname', props.surname)
-      setValue('lastname', props.lastname)
+    if (newRegistry !== true) {
+      setValue('email', email)
+      setValue('name', name)
+      setValue('surname', surname)
+      setValue('lastname', lastname)
     }
-  }, [props])
+  }, [newRegistry])
 
   const onSubmit = data => {
-    if (props.newRegistry){
+    setIsBusy(true)
+    if (newRegistry === true){
       dispatch(actions.registerStudent(data))
+      reset()
+      return
     }
-    // const action = props.newRegistry === true ? actions.registerStudent() : actions.updateStudent() 
+    dispatch(actions.updateStudent(data))
     reset()
   };
 
@@ -65,8 +60,8 @@ export const StudentForm = props => {
     <div>
       <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
-          <Grid item hidden={props.newRegistry} xs={12}>
-            <TextField className={classes.formControl} size="small" variant="outlined" label="Correo Electronico" inputProps={{ readOnly: true }} name="email"  value={props.email} fullWidth/>
+          <Grid item hidden={newRegistry} xs={12}>
+            <TextField className={classes.formControl} size="small" variant="outlined" label="Correo Electronico" inputProps={{ readOnly: true }} name="email"  value={email} fullWidth/>
           </Grid>
           <Grid item xs={12}>
             <Controller as={TextField} className={classes.formControl} defaultValue="" variant="outlined" size="small" label="Nombre" name="name" 
@@ -81,8 +76,8 @@ export const StudentForm = props => {
             <Controller as={TextField} className={classes.formControl} variant="outlined" size="small" defaultValue="" label="Segundo Apellido" name="lastname" error={Boolean(errors.lastname)}
               control={control} fullWidth />
           </Grid>
-          <Grid item xs={12} hidden={!formState.isDirty && !props.newRegistry}>
-            <Button color="primary" className={classes.button} disabled={props.isBusy} variant="text" type="submit" fullWidth>
+          <Grid item xs={12} hidden={!formState.isDirty && newRegistry}>
+            <Button color="primary" className={classes.button} disabled={isBusy} variant="text" type="submit" fullWidth>
               Guardar 
             </Button>
           </Grid>

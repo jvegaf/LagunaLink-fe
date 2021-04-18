@@ -2,9 +2,9 @@
 // @ts-nocheck
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 import { StudentRegister } from '../../components/register/student/StudentRegister'
 
 
@@ -18,8 +18,14 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const StudentRegisterView = () => {
+  const history = useHistory();
   const classes = useStyles()
-  const needStudentRegister = useSelector(state => state.user.needStudentRegister)
+  const registered = useSelector(state => state.student.registered)
+  useEffect(() => {
+    if (registered === true){
+      history.push('/app/dashboard')
+    }
+  }, [registered])
 
   return (
     <Grid container className={classes.root} justify={'center'} >

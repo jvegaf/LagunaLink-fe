@@ -25,7 +25,8 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export const Profile = ({ role, prefName, avatar, isBusy }) => {
+export const Profile = props => {
+  const { role, prefName, avatar, isBusy } = props
   const classes = useStyles()
   const dispatch = useDispatch()
   const userRole = role === 'ROLE_STUDENT' ? 'Estudiante' : 'Empresa'
@@ -39,9 +40,8 @@ export const Profile = ({ role, prefName, avatar, isBusy }) => {
             {prefName}
           </Typography>
           <Typography color="textSecondary" variant="body1">
-            {`${userRole}`}
+            {userRole}
           </Typography>
-          <Typography className={classes.dateText} color="textSecondary" variant="body1"></Typography>
         </Box>
       </CardContent>
       <Divider />

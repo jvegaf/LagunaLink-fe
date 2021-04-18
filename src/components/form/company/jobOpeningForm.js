@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Grid, makeStyles, TextField } from '@material-ui/core'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
@@ -22,25 +22,30 @@ const useStyles = makeStyles(() => ({
 }))
 
 export const JobOpeningForm = props => {
-  const hide = props.hide
+  const { 
+    hide, 
+    companyName, 
+    position, 
+    description, 
+    responsibilities, 
+    conditions, 
+    qualification, 
+    prevExperience,
+    viewer
+  } = props
   const classes = useStyles()
   const { control, handleSubmit, errors, reset, setValue } = useForm({
     resolver: yupResolver(schema),
   })
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    if(props.viewer === true) {
-      setValue('company', props.companyName)
-      setValue('position', props.position)
-      setValue('description', props.description)
-      setValue('responsibilities', props.responsibilities)
-      setValue('conditions', props.conditions)
-      setValue('qualification', props.qualification)
-      setValue('prevExperience', props.prevExperience)
-    }
-  }, [props])
-
+  setValue('company', companyName)
+  setValue('position', position)
+  setValue('description', description)
+  setValue('responsibilities', responsibilities)
+  setValue('conditions', conditions)
+  setValue('qualification', qualification)
+  setValue('prevExperience', prevExperience)
 
   const onSubmit = data => {
     if (!props.newJob){ return }
@@ -53,16 +58,17 @@ export const JobOpeningForm = props => {
   return (
   <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
     <Grid container spacing={3}>
-      <Grid item xs={12} hidden={!props.viewer}>
+      <Grid item xs={12} hidden={true}>
         <Controller
           as={TextField}
+          variant="outlined"
           defaultValue=""
           size="small"
           label="Empresa"
           name="company"
           control={control}
           fullWidth
-          aria-readonly
+          inputProps={{ readOnly: viewer }}
         />
       </Grid>
       <Grid item xs={12}>
@@ -76,7 +82,7 @@ export const JobOpeningForm = props => {
           control={control}
           error={Boolean(errors.position)}
           fullWidth
-          aria-readonly={props.viewer}
+          inputProps={{ readOnly: viewer }}
         />
       </Grid>
       <Grid item xs={12}>
@@ -91,7 +97,7 @@ export const JobOpeningForm = props => {
           control={control}
           error={Boolean(errors.description)}
           fullWidth
-          aria-readonly={props.viewer}
+          inputProps={{ readOnly: viewer }}
         />
       </Grid>
       <Grid item xs={12}>
@@ -106,7 +112,7 @@ export const JobOpeningForm = props => {
           error={Boolean(errors.responsibilities)}
           control={control}
           fullWidth
-          aria-readonly={props.viewer}
+          inputProps={{ readOnly: viewer }}
         />
       </Grid>
       <Grid item xs={12}>
@@ -121,7 +127,7 @@ export const JobOpeningForm = props => {
           control={control}
           error={Boolean(errors.conditions)}
           fullWidth
-          aria-readonly={props.viewer}
+          inputProps={{ readOnly: viewer }}
         />
       </Grid>
       <Grid item xs={12} md={6}>
@@ -135,7 +141,7 @@ export const JobOpeningForm = props => {
           control={control}
           error={Boolean(errors.qualification)}
           fullWidth
-          aria-readonly={props.viewer}
+          inputProps={{ readOnly: viewer }}
         />
       </Grid>
       <Grid item xs={12} md={6}>
@@ -149,10 +155,10 @@ export const JobOpeningForm = props => {
           control={control}
           error={Boolean(errors.prevExperience)}
           fullWidth
-          aria-readonly={props.viewer}
+          inputProps={{ readOnly: viewer }}
         />
       </Grid>
-      <Grid item xs={12} container hidden={props.viewer} justify={'space-around'}>
+      <Grid item xs={12} container hidden={viewer} justify={'space-around'}>
         <Button color="primary" variant="text" onClick={props.hide}>
           Cancelar
         </Button>

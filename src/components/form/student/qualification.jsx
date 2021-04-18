@@ -30,19 +30,19 @@ const useStyles = makeStyles(theme => ({
 
 export const QualificationForm = props => {
   const classes = useStyles()
-
+  const { qualification, isBusy } = props
   const { control, handleSubmit, setValue, errors, formState, reset } = useForm({
     resolver: yupResolver(schema),
   })
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (props) {
-      setValue('title', props.title)
-      setValue('start_date', props.start_date)
-      setValue('end_date', props.end_date)
+    if (qualification) {
+      setValue('title', qualification.title)
+      setValue('start_date', qualification.start_date)
+      setValue('end_date', qualification.end_date)
     }
-  }, [props])
+  }, [qualification])
 
   const onSubmit = data => {
     dispatch(actions.updateStudent({qualification: data}))
@@ -66,7 +66,7 @@ export const QualificationForm = props => {
             control={control} error={Boolean(errors.end_date)} fullWidth/>
           </Grid>
           <Grid item xs={12} hidden={!formState.isDirty}>
-            <Button color="primary" className={classes.button} disabled={props.isBusy} variant="text" type="submit" fullWidth>
+            <Button color="primary" className={classes.button} disabled={isBusy} variant="text" type="submit" fullWidth>
               Guardar 
             </Button>
           </Grid>

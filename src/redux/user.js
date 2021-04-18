@@ -222,14 +222,10 @@ const signIn = data => dispatch => {
         dispatch(sharedActions.fetchAllJobOpen(response.data.access_token))
 
         if (response.data.user_role === ROLE_STUDENT) {
-          dispatch(studentActions.getProfile(response.data.userId, response.data.access_token))
+          dispatch(studentActions.getProfile(response.data.user_id, response.data.access_token))
         }
         if (response.data.user_role === ROLE_COMPANY) {
-          dispatch(companyActions.getProfile(response.data.userId, response.data.access_token))
-        }
-
-        if (response.data.avatar !== '') {
-          response.data.avatar = `https://lagunalink-be.herokuapp.com/${response.data.avatar}`
+          dispatch(companyActions.getProfile(response.data.user_id, response.data.access_token))
         }
 
         dispatch({
@@ -286,7 +282,7 @@ const uploadAvatar = file => (dispatch, getState) => {
     .upload(userId, formData, token)
     .then(res => {
       if (res.status === 200) {
-        const avatarPath = `https://lagunalink-be.herokuapp.com/${res.data.avatar}`
+        const avatarPath = res.data.avatar
         dispatch({ type: AVATAR_UPLOADED, payload: avatarPath })
       }
     })

@@ -1,6 +1,6 @@
 import { Container, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { JobOpening } from '../../../components/detail/company/JobOpening'
 import { JobOpeningsWidget } from '../../../components/detail/company/JobOpeningsWidget'
@@ -24,9 +24,18 @@ export const JobOpeningsView = () => {
   const classes = useStyles()
   const jobs = company.ownJobOpenings
   const [jobIndex, setJobIndex] = useState(0)
-  const jobOpen = jobs !== undefined ? jobs[jobIndex] : undefined
+  const [jobOpen, setJobOpen] = useState(undefined)
+  // const jobOpen = jobs !== undefined ? jobs[jobIndex] : undefined
   const handleChange = idx => setJobIndex(idx)
   const widgetProps = {...company, idx: jobIndex, changeIdx: handleChange}
+
+  useEffect(() => {
+    if (jobs !== undefined) {
+      const job = jobs[jobIndex]
+      const jobProps = {...job, viewer: true}
+      setJobOpen(jobProps)
+    }
+  }, [jobIndex, jobs])
 
   return (
     <Container maxWidth="lg">
