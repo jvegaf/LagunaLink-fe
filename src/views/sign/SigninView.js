@@ -21,6 +21,7 @@ export const SignInView = () => {
     <Grid container className={classes.root} justify={'center'} >
       <Grid item container alignItems={'center'} xl={2} lg={3} md={4} sm={6} xs={12}>
         <SignInComponent />
+        <a href="mailto:manu@me.com">Enviame un correo</a>
       </Grid>
     </Grid>
   )

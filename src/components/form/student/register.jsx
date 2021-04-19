@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Grid, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
@@ -36,14 +36,10 @@ export const StudentForm = props => {
   const [isBusy, setIsBusy] = useState(false)
   const dispatch = useDispatch()
   
-  useEffect(() => {
-    if (newRegistry !== true) {
-      setValue('email', email)
-      setValue('name', name)
-      setValue('surname', surname)
-      setValue('lastname', lastname)
-    }
-  }, [newRegistry])
+  setValue('email', email)
+  setValue('name', name)
+  setValue('surname', surname)
+  setValue('lastname', lastname)
 
   const onSubmit = data => {
     setIsBusy(true)

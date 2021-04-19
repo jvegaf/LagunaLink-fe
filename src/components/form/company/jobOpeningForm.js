@@ -48,7 +48,6 @@ export const JobOpeningForm = props => {
   setValue('prevExperience', prevExperience)
 
   const onSubmit = data => {
-    if (!props.newJob){ return }
     dispatch(actions.addJobOpening(data))
     reset()
     hide()

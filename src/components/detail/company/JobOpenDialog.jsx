@@ -20,9 +20,9 @@ const useStyles = makeStyles(() => ({
 export const JobOpenDialog = ({ closeIt }) => {
   const classes = useStyles()
   const [open, setOpen] = React.useState(true)
-
-
   const hide = () => closeIt()
+
+  const formProps = { hide, viewer: false}
 
   const handleClose = () => {
     setOpen(false)
@@ -33,7 +33,7 @@ export const JobOpenDialog = ({ closeIt }) => {
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">{`Oferta de Trabajo`} </DialogTitle>
       <DialogContent className={classes.content}>
-        <JobOpeningForm hide={hide} viewer={false} />
+        <JobOpeningForm {...formProps} />
       </DialogContent>
     </Dialog>
   )
