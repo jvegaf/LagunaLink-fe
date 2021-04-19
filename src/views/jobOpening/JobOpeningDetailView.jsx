@@ -2,7 +2,7 @@ import { Avatar, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
     flexGrow: 1,
@@ -35,6 +35,11 @@ const useStyles = makeStyles(theme => ({
   },
   subBody: {
     padding: theme.spacing(1)
+  },
+  position: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    color: theme.palette.secondary.main
   }
 }))
 
@@ -65,7 +70,7 @@ export const JobOpeningDetailView = props => {
             <Grid item>
               <Typography variant="h3">{company.name}</Typography>
             </Grid>
-            <Grid item>
+            <Grid item className={styles.position}>
               <Typography variant="h1">{jobOpening.position}</Typography>
             </Grid>
             <Grid item container className={styles.gridSection} >

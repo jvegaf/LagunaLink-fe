@@ -76,7 +76,7 @@ export const StudentForm = props => {
             <Controller as={TextField} className={classes.formControl} variant="outlined" size="small" defaultValue="" label="Segundo Apellido" name="lastname" error={Boolean(errors.lastname)}
               control={control} fullWidth />
           </Grid>
-          <Grid item xs={12} hidden={!formState.isDirty && newRegistry}>
+          <Grid item xs={12} hidden={!formState.isDirty && !newRegistry}>
             <Button color="primary" className={classes.button} disabled={isBusy} variant="text" type="submit" fullWidth>
               Guardar 
             </Button>

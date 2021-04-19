@@ -3,18 +3,18 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import MenuIcon from '@material-ui/icons/Menu'
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { Content, Header, Nav, Root } from '.'
 import TopBar from '../../components/header/TopBar'
 import NavBar from '../../components/nav/index'
 import companyNavConf from '../../config/company/nav'
 import studentNavConf from '../../config/student/nav'
-import { StudentProfileView } from '../../views/backoffice/student/ProfileView'
-import { DashboardView } from '../../views/dashboard/DashboardView'
-import { config } from './config'
-import { CompanyProfileView } from '../../views/backoffice/company/ProfileView'
 import { JobOpeningsView } from '../../views/backoffice/company/jobOpeningsView'
+import { CompanyProfileView } from '../../views/backoffice/company/ProfileView'
+import { StudentProfileView } from '../../views/backoffice/student/ProfileView'
+import { DashboardListView } from '../../views/dashboard/DashboardListView'
 import { JobOpeningDetailView } from '../../views/jobOpening/JobOpeningDetailView'
-import { useParams } from 'react-router-dom'
+import { config } from './config'
 
 export const DashBoard = props => {
   const { id } = useParams();
@@ -58,7 +58,7 @@ const profileView = role => role === 'ROLE_STUDENT' ? <StudentProfileView /> : <
 const checkRequest = props => {
   switch (props.reqView) {
     case 'dashboard':
-      return <DashboardView />
+      return <DashboardListView />
     case 'profile':
       return profileView(props.role)
     case 'jobOpenings':
