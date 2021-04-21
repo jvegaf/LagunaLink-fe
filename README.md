@@ -26,7 +26,6 @@ npm install
 Pero también podemos utilizar los predeterminados del propio NodeJS:
 =======
 La manera mas sencilla es usar los comandos predeterminados del propio NodeJS:
->>>>>>> Stashed changes
  - Lanzamiento en local con NodeJS
 ```
 npm start
