@@ -1,32 +1,40 @@
 #  🎯 LagunaLink Frontend
 
-### Imprescindible:
-- Revisar el estado del Backend.
-- El Backend se puede desplegar localmente o a través del hosting de Heroku: `https://lagunalink-be.herokuapp.com/docs/`
 
-## Preparacion del entorno
+### Requerimientos previos:
 
-1. Clonar el repositorio: `git clone https://github.com/jvegaf/LagunaLink-fe.git` :
-2. Moverse dentro del directorio clonado: `
+Revisar el estado del Backend. Existen dos opciones de consumo del backend.
+- Usar el entorno de producción a traves de la URL [https://lagunalink-be.herokuapp.com](https://lagunalink-be.herokuapp.com)
+- Clonarlo desde [https://github.com/jvegaf/LagunaLink-be](https://github.com/jvegaf/LagunaLink-be) y ejecutarlo localmente.
+
+## Preparacion del entorno 
+
+1. Clonar el repositorio: 
+
+```
+git clone https://github.com/jvegaf/LagunaLink-fe.git
+```
+
+2. Moverse dentro del directorio clonado: 
+
 ```
 cd LagunaLink-fe
 ```
+
 3. Dentro del directorio del proyecto tenemos que resolver las dependencias:
+
 ```
 npm install
 ```
-### Despliegue de la aplicación
 
-#### Local
+## Ejecución de la aplicación
+
+#### Requerimientos
 - Nodejs
-- NPM (Node Package Manager)
+- NPM (Node Package Manager
 
-### Ejecución de la aplicacion
+### Ejecución en local
 
-Pero también podemos utilizar los predeterminados del propio NodeJS:
-=======
-La manera mas sencilla es usar los comandos predeterminados del propio NodeJS:
- - Lanzamiento en local con NodeJS
 ```
 npm start
 ```
