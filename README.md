@@ -23,12 +23,6 @@ npm install
 
 ### Ejecución de la aplicacion
 
-<<<<<<< Updated upstream
-La manera mas sencilla es usar los comandos predeterminados que se incluyen dentro de los *namespaces* de el fichero Makefile:
- - Lanzamiento en local con Makefile
-```
-make start
-```
 Pero también podemos utilizar los predeterminados del propio NodeJS:
 =======
 La manera mas sencilla es usar los comandos predeterminados del propio NodeJS:
