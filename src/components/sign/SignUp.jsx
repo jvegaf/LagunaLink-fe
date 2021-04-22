@@ -9,7 +9,7 @@ import { Title } from '../shared/Title'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '../../redux/user'
 import { green } from '@material-ui/core/colors'
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router-dom'
 import { AlertDialog } from '../dialog/AlertDialog'
 
 const useStyles = makeStyles(theme => ({
