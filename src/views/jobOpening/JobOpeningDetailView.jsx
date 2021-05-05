@@ -46,6 +46,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const JobOpeningDetailView = props => {
+  const { detailId, role } = props
   const styles = useStyles()
   const [modal, setModal] = useState({
     open: false,
@@ -54,31 +55,25 @@ export const JobOpeningDetailView = props => {
     handleCancel: null,
   })
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
   const [jobOpening, setJobOpening] = useState({})
   const [company, setCompany] = useState({})
   const [hideEnroll, setHideEnroll] = useState(true)
   const shared = useSelector(state => state.shared)
-  const enrollments = useSelector(state => state.student.enrollments)
 
   useEffect(() => {
     if (shared !== undefined) {
-      const jobOpening = shared.jobOpenings.find(job => job.id === props.detailId)
+      const jobOpening = shared.jobOpenings.find(job => job.id === detailId)
       const company = shared.companies.find(comp => comp.id === jobOpening.company)
       setJobOpening(jobOpening)
       setCompany(company)
+      const isCompany = role !== 'ROLE_STUDENT'
+      const notEnrollable = isCompany || jobOpening.enrolled
+      setHideEnroll(notEnrollable)
     }
   }, [shared])
 
-  useEffect(() => {
-    if (user.role === 'ROLE_STUDENT') {
-      const result = enrollments.some(x => x.jobOpening === jobOpening.id)
-      setHideEnroll(result)
-    }
-  }, [user, enrollments])
-
   const enrollConfirmed = () => {
-    dispatch(actions.enrollThisJob(props.detailId))
+    dispatch(actions.enrollThisJob(detailId))
     setModal({ open: false })
   }
 

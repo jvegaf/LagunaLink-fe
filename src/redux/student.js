@@ -1,6 +1,7 @@
 import { apiProvider } from '../services/api/api-provider'
 import { actions as userActions } from './user'
 import { dateToISOString } from './../services/date/dateFormatter'
+import { actions as sharedActions } from './shared'
 
 const initialStudentState = {
   name: '',
@@ -228,6 +229,7 @@ const fetchEnrolls = (userId, token) => dispatch => {
   apiProvider.getAll(`students/${userId}/enrollments`, token)
   .then(res => {
     dispatch({ type: GET_ENROLLS_COMPLETE, payload: res.data.enrollments })
+    dispatch(sharedActions.setJobsEnrollable(res.data.enrollments))
   })
   .catch(e =>{ dispatch({type: GET_ENROLLS_ERROR, payload: e})})
 }
