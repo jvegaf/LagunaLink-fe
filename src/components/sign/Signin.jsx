@@ -23,9 +23,9 @@ const useStyles = makeStyles(theme => ({
     wrapper: {
       marginTop: theme.spacing(3),
       marginBottom: theme.spacing(6),
-      // position: 'relative',
+      position: 'relative',
       display: 'flex',
-      justifyContent: 'center'
+      alignContent: 'center'
     },
     buttonSuccess: {
       backgroundColor: green[500],
@@ -41,10 +41,15 @@ const useStyles = makeStyles(theme => ({
       marginTop: -12,
       marginLeft: -12,
     },
+    flexCnt: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: theme.spacing(3)
+    },
     logo: {
       height: '80px',
       width: '80px',
-      marginBottom: theme.spacing(3)
     }
   }
 ))
@@ -98,20 +103,20 @@ export const SignInComponent = () => {
 
   return (
     <Paper elevation={3} className={classes.root}>
-      <Box display="flex" justifyContent="center">
+      <Box className={classes.flexCnt}>
         <Logo className={classes.logo}/>
       </Box>
       <Title content="Iniciar Sesion"/>
       <FormProvider {...methods} >
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Grid container direction="column">
-            <Grid item display="flex" justifyContent="center">
+            <Grid item >
               <EmailInput/>
             </Grid>
-            <Grid item display="flex" justifyContent="center">
+            <Grid item >
               <PasswordInput/>
             </Grid>
-            <Grid item>
+            <Grid item className={classes.flexCnt}>
               <div className={classes.wrapper}>
                 <Button color="primary" className={classes.button} disabled={isBusy}
                 variant="contained" type="submit">Entrar</Button>

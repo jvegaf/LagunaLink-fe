@@ -22,8 +22,9 @@ const initialStudentState = {
 const STUDENT_REGISTER = 'STUDENT_REGISTER'
 const STUDENT_REGISTER_COMPLETE = 'STUDENT_REGISTER_COMPLETE'
 const GET_PROFILE = 'GET_PROFILE'
-const GET_ENROLLS_COMPLETE = 'GET_ENROLLS_COMPLETE'
 const GET_ENROLLS = 'GET_ENROLLS'
+const GET_ENROLLS_ERROR = 'GET_ENROLLS_ERROR'
+const GET_ENROLLS_COMPLETE = 'GET_ENROLLS_COMPLETE'
 const GET_PROFILE_COMPLETE = 'GET_PROFILE_COMPLETE'
 const ENROLL_THIS_JOB = 'ENROLL_THIS_JOB'
 const ENROLL_THIS_JOB_COMPLETE = 'ENROLL_THIS_JOB_COMPLETE'
@@ -73,7 +74,15 @@ const studentReducer = (state = initialStudentState, action) => {
     case GET_ENROLLS:
       return {
         ...state,
+        taskError: null,
         isBusy: true,
+      }
+
+    case GET_ENROLLS_ERROR:
+      return {
+        ...state,
+        isBusy: false,
+        taskError: action.payload,
       }
 
     case GET_ENROLLS_COMPLETE:
@@ -143,16 +152,12 @@ const getProfile = (userId, token) => dispatch => {
     .then(res => {
       const prefName = `${res.data.student.name} ${res.data.student.surname}`
       dispatch(userActions.setPrefName(prefName))
-    })
-    .then(() => {
-      dispatch({type: GET_ENROLLS})
-      apiProvider.getAll(`students/${userId}/enrollments`, token)
-    })
-    .then(res => {
-      dispatch({type: GET_ENROLLS_COMPLETE, payload: res.data.enrollments })
+      dispatch(fetchEnrolls(userId, token))
       dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data.student })
     })
-    .catch(e => dispatch({ type: SET_ERROR, payload: e }))
+    .catch(e => {
+      dispatch({ type: SET_ERROR, payload: e })
+    })
 }
 
 const registerStudent = data => (dispatch, getState) => {
@@ -202,11 +207,23 @@ const unenrollThisJob = enrollId => (dispatch, getState) => {
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
+const fetchEnrolls = (userId, token) => dispatch => {
+  dispatch({ type: GET_ENROLLS })
+  apiProvider.getAll(`students/${userId}/enrollments`, token)
+  .then(res => {
+    dispatch({ type: GET_ENROLLS_COMPLETE, payload: res.data.enrollments })
+  })
+  .catch(e =>{ dispatch({type: GET_ENROLLS_ERROR, payload: e})})
+}
+
+
+
 export const actions = {
   signOut,
   getProfile,
   registerStudent,
   updateStudent,
+  fetchEnrolls,
   enrollThisJob,
-  unenrollThisJob
+  unenrollThisJob,
 }

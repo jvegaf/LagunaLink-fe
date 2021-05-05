@@ -2,7 +2,7 @@ import { Avatar, Button, Grid, makeStyles, Paper, Typography } from '@material-u
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     height: '100%',
     flexGrow: 1,
@@ -16,40 +16,41 @@ const useStyles = makeStyles((theme) => ({
   },
   companyAvatar: {
     width: 150,
-    height: 150
+    height: 150,
   },
   gridBody: {
     paddingTop: theme.spacing(3),
-    paddingLeft: theme.spacing(1)
+    paddingLeft: theme.spacing(1),
   },
   gridSection: {
-    spacing: theme.spacing(2)
+    spacing: theme.spacing(2),
   },
   subSection: {
-    paddingTop: theme.spacing(2)
+    paddingTop: theme.spacing(2),
   },
   preTag: {
     whiteSpace: 'pre-wrap',
     fontFamily: 'Roboto',
-    fontSize: '1em'
+    fontSize: '1em',
   },
   subBody: {
-    padding: theme.spacing(1)
+    padding: theme.spacing(1),
   },
   position: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
-    color: theme.palette.secondary.main
-  }
+    color: theme.palette.secondary.main,
+  },
 }))
 
 export const JobOpeningDetailView = props => {
   const styles = useStyles()
-  const { role } = useSelector(state => state.user)
+  const user = useSelector(state => state.user)
   const [jobOpening, setJobOpening] = useState({})
   const [company, setCompany] = useState({})
-  const [hideEnroll, setHideEnroll] = useState(true);
+  const [hideEnroll, setHideEnroll] = useState(true)
   const shared = useSelector(state => state.shared)
+  const enrollments = useSelector(state => state.student.enrollments)
 
   useEffect(() => {
     if (shared !== undefined) {
@@ -61,13 +62,11 @@ export const JobOpeningDetailView = props => {
   }, [shared])
 
   useEffect(() => {
-    if (role === 'ROLE_STUDENT') {
-      setHideEnroll(false)
+    if (user.role === 'ROLE_STUDENT') {
+      const result = enrollments.some(x => x.jobOpening === jobOpening.id)
+      setHideEnroll(result)
     }
-  }, [role])
-
-
-  
+  }, [user, enrollments])
 
   return (
     <div className={styles.root}>
@@ -76,16 +75,18 @@ export const JobOpeningDetailView = props => {
           <Grid container spacing={2} direction="column" alignItems="center">
             <Grid item>
               <Avatar className={styles.companyAvatar} src={company.avatar} />
-            </Grid> 
+            </Grid>
             <Grid item>
               <Typography variant="h3">{company.name}</Typography>
             </Grid>
             <Grid item className={styles.position}>
               <Typography variant="h1">{jobOpening.position}</Typography>
             </Grid>
-            <Grid item container className={styles.gridSection} >
+            <Grid item container className={styles.gridSection}>
               <Grid item container>
-                <Typography variant="h2" align="left">Descripcion</Typography>
+                <Typography variant="h2" align="left">
+                  Descripcion
+                </Typography>
               </Grid>
               <Grid item className={styles.gridBody}>
                 <pre className={styles.preTag}>{jobOpening.description}</pre>
@@ -93,17 +94,19 @@ export const JobOpeningDetailView = props => {
             </Grid>
             <Grid item container className={styles.gridSection}>
               <Grid item container>
-                <Typography variant="h2" align="left">Responsabilidades</Typography>
+                <Typography variant="h2" align="left">
+                  Responsabilidades
+                </Typography>
               </Grid>
               <Grid item className={styles.gridBody}>
-                <pre className={styles.preTag} >
-                  {jobOpening.responsibilities}
-                </pre>
+                <pre className={styles.preTag}>{jobOpening.responsibilities}</pre>
               </Grid>
             </Grid>
             <Grid item container>
               <Grid item container>
-                <Typography variant="h2" align="left">Condiciones</Typography>
+                <Typography variant="h2" align="left">
+                  Condiciones
+                </Typography>
               </Grid>
               <Grid item className={styles.gridBody}>
                 <pre className={styles.preTag}>{jobOpening.conditions}</pre>
@@ -111,22 +114,30 @@ export const JobOpeningDetailView = props => {
             </Grid>
             <Grid item container>
               <Grid item container direction="column" className={styles.gridSection}>
-                <Typography variant="h2" align="left">Requisitos</Typography>
+                <Typography variant="h2" align="left">
+                  Requisitos
+                </Typography>
                 <Grid item className={styles.subSection}>
-                  <Typography variant="h4" align="left">Titulacion</Typography>
+                  <Typography variant="h4" align="left">
+                    Titulacion
+                  </Typography>
                   <p className={styles.subBody}>{jobOpening.qualification}</p>
                 </Grid>
                 <Grid item className={styles.subSection}>
-                  <Typography variant="h4" align="left">Experiencia previa</Typography>
+                  <Typography variant="h4" align="left">
+                    Experiencia previa
+                  </Typography>
                   <p className={styles.subBody}>{jobOpening.prevExperience}</p>
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item className={styles.gridSection}>
+            {!hideEnroll && (
+              <Grid item className={styles.gridSection}>
                 <Button hidden={hideEnroll} color="primary" variant="contained">
                   Aplicar Oferta
-                </Button> 
-            </Grid>
+                </Button>
+              </Grid>
+            )}
           </Grid>
         </Paper>
       </Grid>

@@ -32,7 +32,6 @@ const remove = (resource, id, accessToken) => {
   return axios.delete(`${BASE_URL}/${resource}`, id).then(handleResponse).catch(handleError)
 }
 
-
 const upload = (id, model, accessToken) => {
   axios.defaults.headers.common.Authorization = accessToken
   axios.defaults.headers.put['Content-Type'] = 'multipart/form-data'
