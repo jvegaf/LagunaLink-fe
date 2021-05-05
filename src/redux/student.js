@@ -1,5 +1,6 @@
 import { apiProvider } from '../services/api/api-provider'
 import { actions as userActions } from './user'
+import { dateToISOString } from './../services/date/dateFormatter'
 
 const initialStudentState = {
   name: '',
@@ -27,6 +28,7 @@ const GET_ENROLLS_ERROR = 'GET_ENROLLS_ERROR'
 const GET_ENROLLS_COMPLETE = 'GET_ENROLLS_COMPLETE'
 const GET_PROFILE_COMPLETE = 'GET_PROFILE_COMPLETE'
 const ENROLL_THIS_JOB = 'ENROLL_THIS_JOB'
+const ENROLL_THIS_JOB_ERROR = 'ENROLL_THIS_JOB_ERROR'
 const ENROLL_THIS_JOB_COMPLETE = 'ENROLL_THIS_JOB_COMPLETE'
 const UNENROLL_THIS_JOB = 'UNENROLL_THIS_JOB'
 const UNENROLL_THIS_JOB_COMPLETE = 'UNENROLL_THIS_JOB_COMPLETE'
@@ -96,6 +98,13 @@ const studentReducer = (state = initialStudentState, action) => {
       return {
         ...state,
         isBusy: true,
+      }
+
+    case ENROLL_THIS_JOB_ERROR:
+      return {
+        ...state,
+        isBusy: false,
+        taskError: action.payload
       }
 
     case ENROLL_THIS_JOB_COMPLETE:
@@ -185,15 +194,22 @@ const updateStudent = data => (dispatch, getState) => {
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
-const enrollThisJob = data => (dispatch, getState) => {
+const enrollThisJob = jobId => (dispatch, getState) => {
   const { userId, token } = getState().user
+  const todayDate = Date.now()
+  const today = dateToISOString(todayDate)
+  const data = {
+    student: userId,
+    jobOpening: jobId,
+    enrollmentDate: today
+  }
   dispatch({ type: ENROLL_THIS_JOB })
   apiProvider
-    .post(`job_openings/${data.jobOpening}/enrollments`, userId, data, token)
+    .post(`job_openings/${jobId}/enrollments`, data, token)
     .then(res => {
       dispatch({ type: ENROLL_THIS_JOB_COMPLETE, payload: res.data.enrollments })
     })
-    .catch(e => dispatch({ type: SET_ERROR, payload: e }))
+    .catch(e => dispatch({ type: ENROLL_THIS_JOB_ERROR, payload: e }))
 }
 
 const unenrollThisJob = enrollId => (dispatch, getState) => {

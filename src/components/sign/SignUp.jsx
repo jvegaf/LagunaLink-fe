@@ -1,16 +1,15 @@
-/* eslint-disable no-unused-vars */
 import { Button, CircularProgress, Link, makeStyles, Paper, Typography } from '@material-ui/core'
+import { green } from '@material-ui/core/colors'
 import React, { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { actions } from '../../redux/user'
+import { AlertDialog } from '../dialog/AlertDialog'
 import { EmailInput } from '../form/__shared__/EmailInput'
 import { PasswordInput } from '../form/__shared__/PasswordInput'
 import { RoleSelectInput } from '../form/__shared__/RoleSelectInput'
 import { Title } from '../shared/Title'
-import { useDispatch, useSelector } from 'react-redux'
-import { actions } from '../../redux/user'
-import { green } from '@material-ui/core/colors'
-import { Redirect } from 'react-router-dom'
-import { AlertDialog } from '../dialog/AlertDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,11 +44,12 @@ const useStyles = makeStyles(theme => ({
 ))
 
 export const SignUp = () => {
+  const history = useHistory();
   const dispatch = useDispatch()
   const [modal, setModal] = useState({
     open: false,
     body: '',
-    redirect: ''
+    handleOK: null
   })
   const methods = useForm()
   const classes = useStyles()
@@ -62,12 +62,14 @@ export const SignUp = () => {
     dispatch(actions.signUp(data))
   }
 
+  const modalRedirect = () => history.push('/signin')
+
   useEffect(() => {
     if(isSignedUp === true){
       setModal({
         open: true,
         body: 'Email de confirmacion enviado. Mira en tu buzon',
-        redirect: '/signin',
+        handleOK: modalRedirect
       })
     }
   }, [isSignedUp])
@@ -77,7 +79,7 @@ export const SignUp = () => {
       setModal({
         open: true,
         body: 'El Email ya estaba registrado anteriormente. Ingresa en tu cuenta',
-        redirect: '/signin',
+        handleOK: modalRedirect
       })
     }
   }, [prevRegisteredError])

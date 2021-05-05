@@ -1,6 +1,8 @@
 import { Avatar, Button, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { actions } from '../../redux/student'
+import { AlertDialog } from './../../components/dialog/AlertDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,6 +47,13 @@ const useStyles = makeStyles(theme => ({
 
 export const JobOpeningDetailView = props => {
   const styles = useStyles()
+  const [modal, setModal] = useState({
+    open: false,
+    body: '',
+    handleOk: null,
+    handleCancel: null,
+  })
+  const dispatch = useDispatch()
   const user = useSelector(state => state.user)
   const [jobOpening, setJobOpening] = useState({})
   const [company, setCompany] = useState({})
@@ -68,9 +77,29 @@ export const JobOpeningDetailView = props => {
     }
   }, [user, enrollments])
 
+  const enrollConfirmed = () => {
+    dispatch(actions.enrollThisJob(props.detailId))
+    setModal({ open: false })
+  }
+
+  const enrollCanceled = () => {
+    setModal({ open: false })
+  }
+
+  const enrollAction = () => {
+    setModal({
+      open: true,
+      title: 'Confirmacion',
+      body: '¿ Quieres aplicar a esta oferta ?',
+      handleOK: enrollConfirmed,
+      handleCancel: enrollCanceled,
+    })
+  }
+
   return (
     <div className={styles.root}>
-      <Grid xl={7} maxWidth="lg">
+      <AlertDialog {...modal} />
+      <Grid xl={7} md={12}>
         <Paper className={styles.container}>
           <Grid container spacing={2} direction="column" alignItems="center">
             <Grid item>
@@ -133,7 +162,7 @@ export const JobOpeningDetailView = props => {
             </Grid>
             {!hideEnroll && (
               <Grid item className={styles.gridSection}>
-                <Button hidden={hideEnroll} color="primary" variant="contained">
+                <Button hidden={hideEnroll} color="primary" variant="contained" onClick={enrollAction}>
                   Aplicar Oferta
                 </Button>
               </Grid>
