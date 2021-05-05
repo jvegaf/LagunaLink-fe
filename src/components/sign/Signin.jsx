@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Link, makeStyles, Paper, Typography } from '@material-ui/core'
+import { Box, Button, CircularProgress, Grid, Link, makeStyles, Paper, Typography } from '@material-ui/core'
 import { green } from '@material-ui/core/colors'
 import { useSnackbar } from 'notistack'
 import { useEffect } from 'react'
@@ -9,6 +9,7 @@ import { actions } from '../../redux/user'
 import { EmailInput } from '../form/__shared__/EmailInput'
 import { PasswordInput } from '../form/__shared__/PasswordInput'
 import { Title } from '../shared/Title'
+import { Logo } from '../logo/Logo'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -18,12 +19,13 @@ const useStyles = makeStyles(theme => ({
     button: {
       paddingLeft: '4em',
       paddingRight: '4em',
-      marginTop: '2em',
-      marginBottom: '2em'
     },
     wrapper: {
-      margin: theme.spacing(1),
-      position: 'relative',
+      marginTop: theme.spacing(3),
+      marginBottom: theme.spacing(6),
+      // position: 'relative',
+      display: 'flex',
+      justifyContent: 'center'
     },
     buttonSuccess: {
       backgroundColor: green[500],
@@ -39,6 +41,11 @@ const useStyles = makeStyles(theme => ({
       marginTop: -12,
       marginLeft: -12,
     },
+    logo: {
+      height: '80px',
+      width: '80px',
+      marginBottom: theme.spacing(3)
+    }
   }
 ))
 
@@ -91,31 +98,34 @@ export const SignInComponent = () => {
 
   return (
     <Paper elevation={3} className={classes.root}>
+      <Box display="flex" justifyContent="center">
+        <Logo className={classes.logo}/>
+      </Box>
       <Title content="Iniciar Sesion"/>
       <FormProvider {...methods} >
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="col">
-            <div className="row justify-content-center">
+          <Grid container direction="column">
+            <Grid item display="flex" justifyContent="center">
               <EmailInput/>
-            </div>
-            <div className="row justify-content-center">
+            </Grid>
+            <Grid item display="flex" justifyContent="center">
               <PasswordInput/>
-            </div>
-            <div className="row justify-content-center">
+            </Grid>
+            <Grid item>
               <div className={classes.wrapper}>
                 <Button color="primary" className={classes.button} disabled={isBusy}
                 variant="contained" type="submit">Entrar</Button>
                  {isBusy && <CircularProgress size={24} className={classes.buttonProgress} />}
               </div>
-            </div>
-          </div>
+            </Grid>
+          </Grid>
         </form>
       </FormProvider>
-      <div className={'justify-content-end mt-4'}>
-        <Typography align={'right'}>
+      <Box>
+        <Typography align={'right'} gutterBottom>
           ¿No tienes una cuenta? <Link href={'/signup'}>Registrate</Link>
         </Typography>
-      </div>
+      </Box>
     </Paper>
   )
 }

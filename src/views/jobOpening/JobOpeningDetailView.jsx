@@ -1,4 +1,4 @@
-import { Avatar, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
+import { Avatar, Button, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -45,8 +45,10 @@ const useStyles = makeStyles((theme) => ({
 
 export const JobOpeningDetailView = props => {
   const styles = useStyles()
+  const { role } = useSelector(state => state.user)
   const [jobOpening, setJobOpening] = useState({})
   const [company, setCompany] = useState({})
+  const [hideEnroll, setHideEnroll] = useState(true);
   const shared = useSelector(state => state.shared)
 
   useEffect(() => {
@@ -57,6 +59,14 @@ export const JobOpeningDetailView = props => {
       setCompany(company)
     }
   }, [shared])
+
+  useEffect(() => {
+    if (role === 'ROLE_STUDENT') {
+      setHideEnroll(false)
+    }
+  }, [role])
+
+
   
 
   return (
@@ -111,6 +121,11 @@ export const JobOpeningDetailView = props => {
                   <p className={styles.subBody}>{jobOpening.prevExperience}</p>
                 </Grid>
               </Grid>
+            </Grid>
+            <Grid item className={styles.gridSection}>
+                <Button hidden={hideEnroll} color="primary" variant="contained">
+                  Aplicar Oferta
+                </Button> 
             </Grid>
           </Grid>
         </Paper>
