@@ -12,6 +12,7 @@ import {
 import { useDynamicAvatarStyles } from '@mui-treasury/styles/avatar/dynamic';
 import { usePopularInfoStyles } from '@mui-treasury/styles/info/popular';
 import { makeStyles } from '@material-ui/core';
+import { dateFormatter } from '../../services/date/dateFormatter'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 export const JobListItem = props => {
   const styles = useStyles()
   const {company, thumbnail, position, createdAt} = props
+  const _createdAt = dateFormatter(createdAt)
   const avatarStyles = useDynamicAvatarStyles({
     height: 56,
     width: 64,
@@ -47,7 +49,7 @@ export const JobListItem = props => {
         <Info className={styles.info} useStyles={usePopularInfoStyles}>
           <InfoSubtitle>{company}</InfoSubtitle>
           <InfoTitle>{position}</InfoTitle>
-          <InfoCaption>{createdAt}</InfoCaption>
+          <InfoCaption>{_createdAt}</InfoCaption>
         </Info>
       </Row>
     </>

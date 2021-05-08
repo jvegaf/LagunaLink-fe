@@ -29,9 +29,8 @@ const put = (resource, id, model, accessToken) => {
 
 const remove = (resource, id, accessToken) => {
   axios.defaults.headers.common.Authorization = accessToken
-  return axios.delete(`${BASE_URL}/${resource}`, id).then(handleResponse).catch(handleError)
+  return axios.delete(`${BASE_URL}/${resource}/${id}`).then(handleResponse).catch(handleError)
 }
-
 
 const upload = (id, model, accessToken) => {
   axios.defaults.headers.common.Authorization = accessToken

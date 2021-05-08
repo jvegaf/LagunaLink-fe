@@ -15,6 +15,7 @@ import { StudentProfileView } from '../../views/backoffice/student/ProfileView'
 import { DashboardListView } from '../../views/dashboard/DashboardListView'
 import { JobOpeningDetailView } from '../../views/jobOpening/JobOpeningDetailView'
 import { config } from './config'
+import { EnrollmentsView } from '../../views/backoffice/student/EnrollmentsView'
 
 export const DashBoard = props => {
   const { id } = useParams();
@@ -65,5 +66,7 @@ const checkRequest = props => {
       return <JobOpeningsView />
     case 'jobOpeningDetail':
       return <JobOpeningDetailView {...props}/>
+    case 'enrollments':
+      return <EnrollmentsView />
   }
 }

@@ -1,7 +1,7 @@
-import { MDBTypography } from 'mdbreact'
+import { Typography } from '@material-ui/core'
 
 export const Title = ({ content }) => (
-  <MDBTypography tag="h2" className="text-center mb-5">
+  <Typography variant="h2" align="center" gutterBottom>
     {content}
-  </MDBTypography>
+  </Typography>
 )

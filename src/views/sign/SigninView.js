@@ -9,19 +9,24 @@ const useStyles = makeStyles(theme => ({
   root: {
     height: '100%',
     flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'center',
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3),
   },
+  child: {
+    display: 'flex',
+    alignItems: 'center'
+  }
 }))
 
 export const SignInView = () => {
   const classes = useStyles()
 
   return (
-    <Grid container className={classes.root} justify={'center'} >
-      <Grid item container alignItems={'center'} xl={2} lg={3} md={4} sm={6} xs={12}>
+    <Grid container className={classes.root} >
+      <Grid item className={classes.child} xl={2} lg={3} md={4} sm={6} xs={12}>
         <SignInComponent />
-        <a href="mailto:manu@me.com">Enviame un correo</a>
       </Grid>
     </Grid>
   )
