@@ -13,25 +13,27 @@ const schema = yup.object().shape({
   conditions: yup.string().required(),
   qualification: yup.string().required(),
   prevExperience: yup.string().required(),
+  hiringDate: yup.string().required(),
 })
 
 const useStyles = makeStyles(() => ({
   root: {
     width: '100%',
-  }
+  },
 }))
 
 export const JobOpeningForm = props => {
-  const { 
-    hide, 
-    companyName, 
-    position, 
-    description, 
-    responsibilities, 
-    conditions, 
-    qualification, 
+  const {
+    hide,
+    companyName,
+    position,
+    description,
+    responsibilities,
+    conditions,
+    qualification,
     prevExperience,
-    viewer
+    hiringDate,
+    viewer,
   } = props
   const classes = useStyles()
   const { control, handleSubmit, errors, reset, setValue } = useForm({
@@ -46,6 +48,7 @@ export const JobOpeningForm = props => {
   setValue('conditions', conditions)
   setValue('qualification', qualification)
   setValue('prevExperience', prevExperience)
+  setValue('hiringDate', hiringDate)
 
   const onSubmit = data => {
     dispatch(actions.addJobOpening(data))
@@ -53,119 +56,133 @@ export const JobOpeningForm = props => {
     hide()
   }
 
-  
   return (
-  <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
-    <Grid container spacing={3}>
-      <Grid item xs={12} hidden={true}>
+    <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} hidden={true}>
+          <Controller
+            as={TextField}
+            variant="outlined"
+            defaultValue=""
+            size="small"
+            label="Empresa"
+            name="company"
+            control={control}
+            fullWidth
+            inputProps={{ readOnly: viewer }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Controller
+            as={TextField}
+            defaultValue=""
+            variant="outlined"
+            size="small"
+            label="Posicion"
+            name="position"
+            control={control}
+            error={Boolean(errors.position)}
+            fullWidth
+            inputProps={{ readOnly: viewer }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Controller
+            as={TextField}
+            defaultValue=""
+            variant="outlined"
+            size="small"
+            multiline
+            label="Descripcion"
+            name="description"
+            control={control}
+            error={Boolean(errors.description)}
+            fullWidth
+            inputProps={{ readOnly: viewer }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Controller
+            as={TextField}
+            variant="outlined"
+            defaultValue=""
+            size="small"
+            label="Responsabilidades"
+            name="responsibilities"
+            multiline
+            error={Boolean(errors.responsibilities)}
+            control={control}
+            fullWidth
+            inputProps={{ readOnly: viewer }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Controller
+            as={TextField}
+            defaultValue=""
+            variant="outlined"
+            size="small"
+            multiline
+            label="Condiciones"
+            name="conditions"
+            control={control}
+            error={Boolean(errors.conditions)}
+            fullWidth
+            inputProps={{ readOnly: viewer }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Controller
+            as={TextField}
+            defaultValue=""
+            variant="outlined"
+            size="small"
+            label="Titulacion requerida"
+            name="qualification"
+            control={control}
+            error={Boolean(errors.qualification)}
+            fullWidth
+            inputProps={{ readOnly: viewer }}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
         <Controller
-          as={TextField}
-          variant="outlined"
-          defaultValue=""
-          size="small"
-          label="Empresa"
-          name="company"
-          control={control}
-          fullWidth
-          inputProps={{ readOnly: viewer }}
-        />
+            as={TextField}
+            defaultValue=""
+            type="date"
+            variant="outlined"
+            size="small"
+            label="Fecha prevista de contratación"
+            name="hiringDate"
+            control={control}
+            error={Boolean(errors.hiringDate)}
+            fullWidth
+            inputProps={{ readOnly: viewer }}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Controller
+            as={TextField}
+            defaultValue=""
+            variant="outlined"
+            size="small"
+            label="Experiencia requerida"
+            name="prevExperience"
+            control={control}
+            error={Boolean(errors.prevExperience)}
+            fullWidth
+            inputProps={{ readOnly: viewer }}
+          />
+        </Grid>
+        <Grid item xs={12} container hidden={viewer} justify={'space-around'}>
+          <Button color="primary" variant="text" onClick={props.hide}>
+            Cancelar
+          </Button>
+          <Button color="primary" variant="text" type="submit">
+            Guardar
+          </Button>
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <Controller
-          as={TextField}
-          defaultValue=""
-          variant="outlined"
-          size="small"
-          label="Posicion"
-          name="position"
-          control={control}
-          error={Boolean(errors.position)}
-          fullWidth
-          inputProps={{ readOnly: viewer }}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Controller
-          as={TextField}
-          defaultValue=""
-          variant="outlined"
-          size="small"
-          multiline
-          label="Descripcion"
-          name="description"
-          control={control}
-          error={Boolean(errors.description)}
-          fullWidth
-          inputProps={{ readOnly: viewer }}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Controller
-          as={TextField}
-          variant="outlined"
-          defaultValue=""
-          size="small"
-          label="Responsabilidades"
-          name="responsibilities"
-          multiline
-          error={Boolean(errors.responsibilities)}
-          control={control}
-          fullWidth
-          inputProps={{ readOnly: viewer }}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Controller
-          as={TextField}
-          defaultValue=""
-          variant="outlined"
-          size="small"
-          multiline
-          label="Condiciones"
-          name="conditions"
-          control={control}
-          error={Boolean(errors.conditions)}
-          fullWidth
-          inputProps={{ readOnly: viewer }}
-        />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Controller
-          as={TextField}
-          defaultValue=""
-          variant="outlined"
-          size="small"
-          label="Titulacion requerida"
-          name="qualification"
-          control={control}
-          error={Boolean(errors.qualification)}
-          fullWidth
-          inputProps={{ readOnly: viewer }}
-        />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Controller
-          as={TextField}
-          defaultValue=""
-          variant="outlined"
-          size="small"
-          label="Experiencia requerida"
-          name="prevExperience"
-          control={control}
-          error={Boolean(errors.prevExperience)}
-          fullWidth
-          inputProps={{ readOnly: viewer }}
-        />
-      </Grid>
-      <Grid item xs={12} container hidden={viewer} justify={'space-around'}>
-        <Button color="primary" variant="text" onClick={props.hide}>
-          Cancelar
-        </Button>
-        <Button color="primary" variant="text" type="submit">
-          Guardar
-        </Button>
-      </Grid>
-    </Grid>
-  </form>
-)
+    </form>
+  )
 }
