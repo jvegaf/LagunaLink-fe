@@ -2,8 +2,9 @@ import { Provider } from 'react-redux'
 import generateStore from './redux/store'
 import Router from './router/router'
 import { SnackbarProvider } from 'notistack';
-import { Slide } from '@material-ui/core';
-
+import { Slide, ThemeProvider } from '@material-ui/core';
+import { ConfirmProvider } from 'material-ui-confirm'
+import theme from './theme/index'
 
 function App() {
   
@@ -11,13 +12,17 @@ function App() {
   
   return (
     <Provider store={store}>
-      <SnackbarProvider anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'center',
-    }}
-    TransitionComponent={Slide} maxSnack={3}>
-        <Router />
-      </SnackbarProvider>
+      <ThemeProvider theme={theme}>
+        <ConfirmProvider>
+          <SnackbarProvider anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+        }}
+        TransitionComponent={Slide} maxSnack={3}>
+            <Router />
+          </SnackbarProvider>
+        </ConfirmProvider>
+      </ThemeProvider>
     </Provider>
   )
 }

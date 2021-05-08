@@ -1,8 +1,9 @@
 import { Avatar, Button, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 import { actions } from '../../redux/student'
-import { AlertDialog } from './../../components/dialog/AlertDialog'
+import { useConfirm } from 'material-ui-confirm'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,14 +47,10 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const JobOpeningDetailView = props => {
+  const history = useHistory()
+  const confirm = useConfirm()
   const { detailId, role } = props
   const styles = useStyles()
-  const [modal, setModal] = useState({
-    open: false,
-    body: '',
-    handleOk: null,
-    handleCancel: null,
-  })
   const dispatch = useDispatch()
   const [jobOpening, setJobOpening] = useState({})
   const [company, setCompany] = useState({})
@@ -72,28 +69,15 @@ export const JobOpeningDetailView = props => {
     }
   }, [shared])
 
-  const enrollConfirmed = () => {
-    dispatch(actions.enrollThisJob(detailId))
-    setModal({ open: false })
-  }
-
-  const enrollCanceled = () => {
-    setModal({ open: false })
-  }
-
   const enrollAction = () => {
-    setModal({
-      open: true,
-      title: 'Confirmacion',
-      body: '¿ Quieres aplicar a esta oferta ?',
-      handleOK: enrollConfirmed,
-      handleCancel: enrollCanceled,
+    confirm({ description: '¿ Quieres aplicar a esta oferta ?' }).then(() => {
+      dispatch(actions.enrollThisJob(detailId))
+      history.goBack()
     })
   }
 
   return (
     <div className={styles.root}>
-      <AlertDialog {...modal} />
       <Grid xl={7} md={12}>
         <Paper className={styles.container}>
           <Grid container spacing={2} direction="column" alignItems="center">

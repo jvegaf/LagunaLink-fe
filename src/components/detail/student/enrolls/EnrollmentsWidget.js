@@ -24,12 +24,7 @@ const useStyles = makeStyles(() => ({
 
 export const EnrollmentsWidget = props => {
   const classes = useStyles()
-  const { enrolls, changeIdx } = props
-
-
-  const handleChange = indx => {
-    changeIdx(indx)
-  }
+  const { enrolls, remove, view } = props
 
   return (
     <Card className={classes.root}>
@@ -38,9 +33,8 @@ export const EnrollmentsWidget = props => {
       <PerfectScrollbar>
         <Box className={classes.box} minWidth={500}>
           <List>
-            {enrolls !== undefined &&
-              enrolls.map((enroll, index) => (
-                <EnrollmentItem key={uuid()} enroll={enroll} index={index} changeIdx={handleChange} />
+            {enrolls.map((enroll, index) => (
+                <EnrollmentItem key={uuid()} enroll={enroll} index={index} view={view} remove={remove} />
               ))}
           </List>
         </Box>

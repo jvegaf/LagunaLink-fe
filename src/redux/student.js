@@ -209,6 +209,7 @@ const enrollThisJob = jobId => (dispatch, getState) => {
     .post(`job_openings/${jobId}/enrollments`, data, token)
     .then(res => {
       dispatch({ type: ENROLL_THIS_JOB_COMPLETE, payload: res.data.enrollments })
+      dispatch(sharedActions.setJobsEnrollable(res.data.enrollments))
     })
     .catch(e => dispatch({ type: ENROLL_THIS_JOB_ERROR, payload: e }))
 }
@@ -220,6 +221,7 @@ const unenrollThisJob = enrollId => (dispatch, getState) => {
     .remove(`enrollments`, enrollId, token)
     .then(res => {
       dispatch({ type: UNENROLL_THIS_JOB_COMPLETE, payload: res.data.enrollments })
+      dispatch(sharedActions.setJobsEnrollable(res.data.enrollments))
     })
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
