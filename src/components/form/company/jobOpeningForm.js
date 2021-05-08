@@ -1,10 +1,21 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Grid, makeStyles, TextField } from '@material-ui/core'
+import { isDate, parse } from 'date-fns'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
 import { actions } from '../../../redux/company'
+
+const today = new Date()
+
+const parseDateString = (value, originalValue) => {
+  const parsedDate = isDate(originalValue)
+    ? originalValue
+    : parse(originalValue, "yyyy-MM-dd", new Date());
+
+  return parsedDate;
+}
 
 const schema = yup.object().shape({
   position: yup.string().required(),
@@ -13,13 +24,16 @@ const schema = yup.object().shape({
   conditions: yup.string().required(),
   qualification: yup.string().required(),
   prevExperience: yup.string().required(),
-  hiringDate: yup.string().required(),
+  hiringDate: yup.date().transform(parseDateString).min(today)
 })
 
 const useStyles = makeStyles(() => ({
   root: {
     width: '100%',
   },
+  errorMessage: {
+    color: 'red'
+  }
 }))
 
 export const JobOpeningForm = props => {
@@ -33,7 +47,7 @@ export const JobOpeningForm = props => {
     qualification,
     prevExperience,
     hiringDate,
-    viewer,
+    readOnly,
   } = props
   const classes = useStyles()
   const { control, handleSubmit, errors, reset, setValue } = useForm({
@@ -69,7 +83,7 @@ export const JobOpeningForm = props => {
             name="company"
             control={control}
             fullWidth
-            inputProps={{ readOnly: viewer }}
+            inputProps={{ readOnly: readOnly }}
           />
         </Grid>
         <Grid item xs={12}>
@@ -83,7 +97,7 @@ export const JobOpeningForm = props => {
             control={control}
             error={Boolean(errors.position)}
             fullWidth
-            inputProps={{ readOnly: viewer }}
+            inputProps={{ readOnly: readOnly }}
           />
         </Grid>
         <Grid item xs={12}>
@@ -98,7 +112,7 @@ export const JobOpeningForm = props => {
             control={control}
             error={Boolean(errors.description)}
             fullWidth
-            inputProps={{ readOnly: viewer }}
+            inputProps={{ readOnly: readOnly }}
           />
         </Grid>
         <Grid item xs={12}>
@@ -113,7 +127,7 @@ export const JobOpeningForm = props => {
             error={Boolean(errors.responsibilities)}
             control={control}
             fullWidth
-            inputProps={{ readOnly: viewer }}
+            inputProps={{ readOnly: readOnly }}
           />
         </Grid>
         <Grid item xs={12}>
@@ -128,7 +142,7 @@ export const JobOpeningForm = props => {
             control={control}
             error={Boolean(errors.conditions)}
             fullWidth
-            inputProps={{ readOnly: viewer }}
+            inputProps={{ readOnly: readOnly }}
           />
         </Grid>
         <Grid item xs={12}>
@@ -142,11 +156,11 @@ export const JobOpeningForm = props => {
             control={control}
             error={Boolean(errors.qualification)}
             fullWidth
-            inputProps={{ readOnly: viewer }}
+            inputProps={{ readOnly: readOnly }}
           />
         </Grid>
         <Grid item xs={12} md={6}>
-        <Controller
+          <Controller
             as={TextField}
             defaultValue=""
             type="date"
@@ -157,8 +171,9 @@ export const JobOpeningForm = props => {
             control={control}
             error={Boolean(errors.hiringDate)}
             fullWidth
-            inputProps={{ readOnly: viewer }}
+            inputProps={{ readOnly: readOnly }}
           />
+          {errors?.hiringDate && <p className={classes.errorMessage}>La fecha debe ser posterior a hoy</p>}
         </Grid>
         <Grid item xs={12} md={6}>
           <Controller
@@ -171,17 +186,19 @@ export const JobOpeningForm = props => {
             control={control}
             error={Boolean(errors.prevExperience)}
             fullWidth
-            inputProps={{ readOnly: viewer }}
+            inputProps={{ readOnly: readOnly }}
           />
         </Grid>
-        <Grid item xs={12} container hidden={viewer} justify={'space-around'}>
-          <Button color="primary" variant="text" onClick={props.hide}>
-            Cancelar
-          </Button>
-          <Button color="primary" variant="text" type="submit">
-            Guardar
-          </Button>
-        </Grid>
+        {!readOnly && (
+          <Grid item xs={12} container justify={'space-around'}>
+            <Button color="primary" variant="text" onClick={props.hide}>
+              Cancelar
+            </Button>
+            <Button color="primary" variant="text" type="submit">
+              Guardar
+            </Button>
+          </Grid>
+        )}
       </Grid>
     </form>
   )
