@@ -7,6 +7,9 @@ import {
   Divider,
 
 
+  Grid,
+
+
   List, makeStyles
 } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
@@ -15,10 +18,12 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import { v4 as uuid } from 'uuid'
 import { JobOpenDialog } from './JobOpenDialog'
 import JobItem from './widget/jobItem'
+import theme from '../../../theme/index'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
+    height: '80%'
   },
   cell: {
     padding: '4px',
@@ -32,34 +37,24 @@ const useStyles = makeStyles(() => ({
   box: {
     width: '100%'
   },
+  footer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(2)
+  }
 }))
 
 export const JobOpeningsWidget = props => {
+  const {jobs, view, remove } = props
   const [dialogShow, setDialogShow] = useState(false)
   const classes = useStyles()
-  const { idx, changeIdx } = props
-  const jobs = props.ownJobOpenings
   const hideDialog = () => {
     setDialogShow(false)
-  }
-
-  const handleDelete = job => {
-    // const jobsUpd = jobs.filter(jobExp => jobExp !== job)
-    // dispatch(actions.updateStudent({job_experiences: jobsUpd}))
-  }
-
-  const handleChange = indx => {
-    changeIdx(indx)
-  }
-
-  const handleView = job => {
-    setDialogShow(true)
   }
 
   const handleAdd = () => {
     setDialogShow(true)
   }
-
 
   return (
     <Card className={classes.root}>
@@ -71,12 +66,12 @@ export const JobOpeningsWidget = props => {
           <List>
             {jobs !== undefined &&
               jobs.map((job, index) => (
-                <JobItem key={uuid()} job={job} index={index} selectedIdx={idx} changeIdx={handleChange} />
+                <JobItem key={uuid()} job={job} index={index} {...props}  />
               ))}
           </List>
         </Box>
       </PerfectScrollbar>
-      <Box display="flex" justifyContent="flex-end" p={2}>
+      <Box className={classes.footer}>
         <Button color="primary" endIcon={<Add />} onClick={handleAdd} size="small" variant="text">
           Crear Nueva Oferta de Trabajo
         </Button>

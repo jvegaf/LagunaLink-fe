@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { apiProvider } from '../services/api/api-provider'
 import { actions as userActions } from './user'
 
@@ -19,11 +20,14 @@ const COMPANY_REGISTER = 'COMPANY_REGISTER'
 const COMPANY_REGISTER_COMPLETE = 'COMPANY_REGISTER_COMPLETE'
 const GET_PROFILE = 'GET_PROFILE'
 const GET_PROFILE_COMPLETE = 'GET_PROFILE_COMPLETE'
+const GET_PROFILE_ERROR = 'GET_PROFILE_ERROR'
 const ADD_JOB_OPENING = 'ADD_JOB_OPENING'
 const ADD_JOB_OPENING_COMPLETE = 'ADD_JOB_OPENING_COMPLETE'
 const ADD_JOB_OPENING_ERROR = 'ADD_JOB_OPENING_ERROR'
 const COMPANY_UPDATE = 'COMPANY_UPDATE'
 const COMPANY_UPDATE_COMPLETE = 'COMPANY_UPDATE_COMPLETE'
+const JOB_OPENING_UPDATE = 'JOB_OPENING_UPDATE'
+const JOB_OPENING_UPDATE_COMPLETE =  'JOB_OPENING_UPDATE_COMPLETE'
 const SET_ERROR = 'SET_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
 
@@ -45,6 +49,20 @@ const companyReducer = (state = initialState, action) => {
         isBusy: true,
       }
 
+    case JOB_OPENING_UPDATE:
+      return {
+        ...state,
+        taskError: null,
+        isBusy: true,
+      }
+
+    case JOB_OPENING_UPDATE_COMPLETE:
+      return {
+        ...state,
+        isBusy: false,
+        ownJobOpenings: action.payload
+      }
+
     case GET_PROFILE:
       return {
         ...state,
@@ -62,6 +80,13 @@ const companyReducer = (state = initialState, action) => {
         ownJobOpenings: action.payload.job_openings,
         region: action.payload.region,
         city: action.payload.city
+      }
+
+    case GET_PROFILE_ERROR:
+      return {
+        ...state,
+        isBusy: false,
+        taskError: action.payload
       }
 
     case ADD_JOB_OPENING:
@@ -115,10 +140,10 @@ const getProfile = (userId, token) => dispatch => {
   apiProvider
     .getSingle('companies', userId, token)
     .then(res => {
-      dispatch(userActions.setPrefName(res.data.company.name))
       dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data.company })
+      dispatch(userActions.setPrefName(res.data.company.name))
       dispatch(userActions.fetchCompleted())
-    }).catch(e => dispatch({ type: SET_ERROR, payload: e }))
+    }).catch(e => dispatch({ type: GET_PROFILE_ERROR, payload: e }))
 }
 
 const registerCompany = (data, token) => dispatch => {
@@ -153,10 +178,26 @@ const addJobOpening = data => (dispatch, getState) => {
     .catch(e => dispatch({ type: ADD_JOB_OPENING_ERROR }))
 }
 
+const removeJobOpening = jobId => (dispatch, getState) => {
+  dispatch({type: JOB_OPENING_UPDATE})
+  const { token } = getState().user
+  const { ownJobOpenings } = getState().company
+  const job = ownJobOpenings.find(j => j.id === jobId)
+  const hDate = moment().subtract(3, 'years').format('YYYY-MM-DD')
+  const model = {...job, hiringDate: hDate}
+  apiProvider.put('job_openings', jobId, model, token)
+  .then(res => {
+
+    const jobs = res.data.job_openings.filter(jb => moment(jb.hiringDate) > moment())
+    dispatch({type: JOB_OPENING_UPDATE_COMPLETE, payload: jobs})
+  })
+}
+
 export const actions = {
   signOut,
   getProfile,
   registerCompany,
   updateCompany,
-  addJobOpening
+  addJobOpening,
+  removeJobOpening
 }

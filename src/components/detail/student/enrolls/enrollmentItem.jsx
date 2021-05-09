@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-  },
+  }
 }))
 
 const EnrollmentItem = props => {
@@ -42,7 +42,7 @@ const EnrollmentItem = props => {
     view(item.id)
   }
   const handleRemove = (event, item) => {
-    confirm({ description: '¿ Quieres eliminar tu aplicación a esta oferta ?' }).then(() => {
+    confirm({ description: '¿ Quieres retirar tu aplicación a esta oferta ?' }).then(() => {
       remove(item.id)
     })
   }
