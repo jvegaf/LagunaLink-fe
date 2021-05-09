@@ -1,7 +1,7 @@
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { JobOpening } from '../../../components/detail/company/JobOpening'
 import { JobOpeningsWidget } from '../../../components/detail/company/JobOpeningsWidget'
 import { actions } from '../../../redux/company'
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 export const JobOpeningsView = () => {
   const dispatch = useDispatch()
-  const ownJobOpenings = useSelector(state => state.company.ownJobOpenings)
+  const ownJobOpenings = useSelector(state => state.company.ownJobOpenings, shallowEqual)
   const classes = useStyles()
   const [jobOpen, setJobOpen] = useState(undefined)
   const onView = jobId => {

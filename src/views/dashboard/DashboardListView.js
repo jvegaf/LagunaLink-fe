@@ -5,6 +5,7 @@ import { JobListItem } from '../../components/jobOpening/jobListItem'
 import { useSelector } from 'react-redux'
 import { v4 as uuid } from 'uuid'
 import { useHistory } from 'react-router-dom'
+import moment from 'moment'
 
 
 const useStyles = makeStyles(theme => ({
@@ -36,7 +37,7 @@ export const DashboardListView = () => {
   const jobOpenings = useSelector(state => state.shared.jobOpenings)
   let jobs;
   if (companiesFetched && jobsOpenFetched){
-    jobs = jobOpenings.map(job => {
+    jobs = jobOpenings.filter(job => moment(job.hiringDate) > moment()).map(job => {
       const comp = companies.find(comp => comp.id === job.company)
       return {...job, company: comp.name, thumbnail: comp.avatar}
     })

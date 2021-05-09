@@ -183,11 +183,13 @@ const removeJobOpening = jobId => (dispatch, getState) => {
   const { token } = getState().user
   const { ownJobOpenings } = getState().company
   const job = ownJobOpenings.find(j => j.id === jobId)
-  const hDate = moment().subtract(3, 'weeks').format('YYYY-MM-DD')
+  const hDate = moment().subtract(3, 'years').format('YYYY-MM-DD')
   const model = {...job, hiringDate: hDate}
   apiProvider.put('job_openings', jobId, model, token)
   .then(res => {
-    dispatch({type: JOB_OPENING_UPDATE_COMPLETE, payload: res.data.job_openings})
+
+    const jobs = res.data.job_openings.filter(jb => moment(jb.hiringDate) > moment())
+    dispatch({type: JOB_OPENING_UPDATE_COMPLETE, payload: jobs})
   })
 }
 
