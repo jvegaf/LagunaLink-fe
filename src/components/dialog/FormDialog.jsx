@@ -15,18 +15,13 @@ const useStyles = makeStyles(() => ({
 }))
 
 export const FormDialog = props => {
+  const {open, title, body, hide} = props
   const classes = useStyles()
-  const [open, setOpen] = React.useState(true)
-
-  const handleClose = () => {
-    setOpen(false)
-    props.cb()
-  }
 
   return (
-    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
-      <DialogContent>{props.body}</DialogContent>
+    <Dialog open={open} onClose={hide} aria-labelledby="form-dialog-title">
+      <DialogTitle id="form-dialog-title">{title}</DialogTitle>
+      <DialogContent>{body}</DialogContent>
     </Dialog>
   )
 }

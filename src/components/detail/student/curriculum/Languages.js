@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   Box,
   Button,
@@ -15,9 +14,7 @@ import {
 } from '@material-ui/core'
 import { Add, Delete, Edit } from '@material-ui/icons'
 import { Rating } from '@material-ui/lab'
-import clsx from 'clsx'
-import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useDispatch } from 'react-redux'
 import { v4 as uuid } from 'uuid'
@@ -47,27 +44,26 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const LanguagesWidget = ({ className, ...rest }) => {
+export const LanguagesWidget = props => {
+  const { languages } = props
   const [dialog, setDialog] = useState(false)
   const classes = useStyles()
   const dispatch = useDispatch()
-  const langs = rest.languages;
   
 const handleDelete = (lang) =>{
-  const langsUpd = langs.filter(language => language !== lang)
+  const langsUpd = languages.filter(language => language !== lang)
   dispatch(actions.updateStudent({languages: langsUpd}))
 }
 
-const hideDialog = () => setDialog(false)
+const hide = () => setDialog(false)
 
-const hideDiag = {
-  hide: hideDialog
-}
+const formProps = { hide }
 
 const addLangprops = {
   title: 'Nuevo Idioma',
-  body: <LanguageForm {...hideDiag} />,
-  cb: hideDialog
+  body: <LanguageForm {...formProps} />,
+  hide,
+  open: dialog
 }
 
 
@@ -76,8 +72,8 @@ const handleAdd = () => {
 }
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest}>
-      {dialog &&  <FormDialog {...addLangprops} />}
+    <Card className={classes.root}>
+      <FormDialog {...addLangprops} />
       <CardHeader title="Idiomas" />
       <Divider />
       <PerfectScrollbar>
@@ -92,15 +88,15 @@ const handleAdd = () => {
               </TableRow>
             </TableHead>
             <TableBody >
-              {langs !== null &&
-                langs.map(lang => (
+              {languages &&
+                languages.map(lang => (
                   <TableRow hover key={uuid()}>
                     <TableCell className={classes.cell}>{lang.name}</TableCell>
                     <TableCell className={classes.rate}>
-                      <Rating value={lang.speak} readOnly />
+                      <Rating value={Number(lang.speak)} readOnly />
                     </TableCell>
                     <TableCell className={classes.rate}>
-                      <Rating value={lang.write} readOnly />
+                      <Rating value={Number(lang.write)} readOnly />
                     </TableCell>
                     <TableCell className={classes.cell}>
                       <IconButton aria-label="edit" >
@@ -124,9 +120,3 @@ const handleAdd = () => {
     </Card>
   )
 }
-
-LanguagesWidget.propTypes = {
-  className: PropTypes.string,
-}
-
-export default LanguagesWidget

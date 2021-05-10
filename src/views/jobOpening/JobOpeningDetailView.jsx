@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { actions } from '../../redux/student'
 import { useConfirm } from 'material-ui-confirm'
+import { dateFormatter } from '../../services/date/dateFormatter'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,6 +45,12 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(3),
     color: theme.palette.secondary.main,
   },
+  actionsSection: {
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    marginBottom: theme.spacing(5)
+  }
 }))
 
 export const JobOpeningDetailView = props => {
@@ -89,6 +96,19 @@ export const JobOpeningDetailView = props => {
             </Grid>
             <Grid item className={styles.position}>
               <Typography variant="h1">{jobOpening.position}</Typography>
+            </Grid>
+            <Grid item container className={styles.actionsSection}>
+              <Grid item>
+                <Typography align={'center'} variant="body1">fecha de contratacion: </Typography>
+                <Typography align={'center'} variant="h4">{dateFormatter(jobOpening.hiringDate)}</Typography>
+              </Grid>
+              {!hideEnroll && (
+                <Grid item>
+                  <Button hidden={hideEnroll} color="primary" variant="contained" onClick={enrollAction}>
+                    Aplicar Oferta
+                  </Button>
+                </Grid>
+              )}
             </Grid>
             <Grid item container className={styles.gridSection}>
               <Grid item container>
@@ -139,13 +159,6 @@ export const JobOpeningDetailView = props => {
                 </Grid>
               </Grid>
             </Grid>
-            {!hideEnroll && (
-              <Grid item className={styles.gridSection}>
-                <Button hidden={hideEnroll} color="primary" variant="contained" onClick={enrollAction}>
-                  Aplicar Oferta
-                </Button>
-              </Grid>
-            )}
           </Grid>
         </Paper>
       </Grid>

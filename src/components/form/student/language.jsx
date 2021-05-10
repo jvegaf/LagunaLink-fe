@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Grid, makeStyles, Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import { green } from '@material-ui/core/colors'
 import TextField from '@material-ui/core/TextField'
 import { Rating } from '@material-ui/lab'
 import React from 'react'
@@ -20,24 +21,32 @@ const useStyles = makeStyles(theme => ({
   center: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-between',
+    justifyContent: 'space-evenly',
     marginTop: theme.spacing(3),
   },
   button: {
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
   },
+  successBtn: {
+    paddingLeft: theme.spacing(5),
+    paddingRight: theme.spacing(5),
+    backgroundColor: green.A700,
+    color: '#ffffff',
+    '&:hover': {
+      backgroundColor: green.A400
+    }
+  }
 }))
 
 export const LanguageForm = props => {
+  const { hide } = props
   const classes = useStyles()
   const student = useSelector(state => state.student)
   const { control, handleSubmit, errors, formState, reset } = useForm({
     resolver: yupResolver(schema),
   })
   const dispatch = useDispatch()
-
-  const hide = () => props.hide()
 
   const onSubmit = data => {
     const langs = student.languages
@@ -46,6 +55,8 @@ export const LanguageForm = props => {
     reset()
     hide()
   }
+
+  const onCancel = () => hide()
 
   return (
     <div>
@@ -96,9 +107,8 @@ export const LanguageForm = props => {
 
           <Grid item xs={12} className={classes.center}>
             <Button
-              color="primary"
               disabled={!formState.isDirty}
-              className={classes.button}
+              className={classes.successBtn}
               variant="contained"
               type="submit"
             >
@@ -108,7 +118,7 @@ export const LanguageForm = props => {
               color="primary"
               className={classes.button}
               variant="contained"
-              onClick={hide}
+              onClick={onCancel}
             >
               Cancelar
             </Button>

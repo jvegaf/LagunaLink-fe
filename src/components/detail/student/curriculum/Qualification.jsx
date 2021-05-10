@@ -8,7 +8,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export const Qualification = (props) => {
+export const Qualification = props => {
   const classes = useStyles()
 
   return (

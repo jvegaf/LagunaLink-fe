@@ -3,10 +3,10 @@ import { makeStyles } from '@material-ui/styles'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Profile } from '../../../components/detail/account/Profile'
-import { StudentAccount } from '../../../components/detail/student/StudentAccount'
-import LanguagesWidget from '../../../components/detail/student/curriculum/Languages'
+import { LanguagesWidget } from '../../../components/detail/student/curriculum/Languages'
 import { Qualification } from '../../../components/detail/student/curriculum/Qualification'
 import JobExperiencesWidget from '../../../components/detail/student/jobExp/JobExperiencesWidget'
+import { StudentAccount } from '../../../components/detail/student/StudentAccount'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,12 +23,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const StudentProfileView = () => {
+  const email = useSelector(state => state.user.email)
   const user = useSelector(state => state.user)
   const student = useSelector(state => state.student)
   const classes = useStyles()
 
-  const props = {...student, email: user.email}
-  // debugger
+  const props = {...student, email, newRegistry: false}
   return (
     <Container maxWidth="lg">
       <Grid container className={classes.gridContainer} spacing={3}>
