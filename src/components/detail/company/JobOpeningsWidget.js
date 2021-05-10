@@ -23,7 +23,7 @@ import theme from '../../../theme/index'
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    height: '80%'
+    height: 'auto'
   },
   cell: {
     padding: '4px',
@@ -64,7 +64,7 @@ export const JobOpeningsWidget = props => {
       <PerfectScrollbar>
         <Box className={classes.box} minWidth={500}>
           <List>
-            {jobs !== undefined &&
+            {jobs &&
               jobs.map((job, index) => (
                 <JobItem key={uuid()} job={job} index={index} {...props}  />
               ))}

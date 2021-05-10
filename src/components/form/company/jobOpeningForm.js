@@ -1,21 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Grid, makeStyles, TextField } from '@material-ui/core'
-import { isDate, parse } from 'date-fns'
-import React from 'react'
+import moment from 'moment'
+import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
 import { actions } from '../../../redux/company'
 
-const today = new Date()
-
-const parseDateString = (value, originalValue) => {
-  const parsedDate = isDate(originalValue)
-    ? originalValue
-    : parse(originalValue, "yyyy-MM-dd", new Date());
-
-  return parsedDate;
-}
+const today = moment()
 
 const schema = yup.object().shape({
   position: yup.string().required(),
@@ -24,7 +16,7 @@ const schema = yup.object().shape({
   conditions: yup.string().required(),
   qualification: yup.string().required(),
   prevExperience: yup.string().required(),
-  hiringDate: yup.date().transform(parseDateString).min(today)
+  hiringDate: yup.date().min(today)
 })
 
 const useStyles = makeStyles(() => ({
@@ -64,7 +56,17 @@ export const JobOpeningForm = props => {
   setValue('prevExperience', prevExperience)
   setValue('hiringDate', hiringDate)
 
+  const [showActions, setShowActions] = useState(false)
+
+  useEffect(() => {
+    setShowActions(!readOnly)
+    return () => {
+      setShowActions(false)
+    }
+  }, [readOnly])
+
   const onSubmit = data => {
+    data.hiringDate = data.hiringDate.toISOString().substr(0,10)
     dispatch(actions.addJobOpening(data))
     reset()
     hide()
@@ -189,7 +191,7 @@ export const JobOpeningForm = props => {
             inputProps={{ readOnly: readOnly }}
           />
         </Grid>
-        {!readOnly && (
+        {showActions && (
           <Grid item xs={12} container justify={'space-around'}>
             <Button color="primary" variant="text" onClick={props.hide}>
               Cancelar

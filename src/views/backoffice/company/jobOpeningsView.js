@@ -1,5 +1,6 @@
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
+import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { JobOpening } from '../../../components/detail/company/JobOpening'
@@ -15,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   gridContainer: {
     paddingTop: theme.spacing(3),
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'space-evenly',
   },
   gridItem: {
     flexGrow: 1,
@@ -26,6 +27,7 @@ export const JobOpeningsView = () => {
   const dispatch = useDispatch()
   const ownJobOpenings = useSelector(state => state.company.ownJobOpenings, shallowEqual)
   const classes = useStyles()
+  const [jobs, setJobs] = useState(undefined)
   const [jobOpen, setJobOpen] = useState(undefined)
   const onView = jobId => {
     const job = ownJobOpenings.find(j => j.id === jobId)
@@ -36,24 +38,24 @@ export const JobOpeningsView = () => {
     dispatch(actions.removeJobOpening(jobId))
   }
 
-  const widgetProps = { jobs: ownJobOpenings, view: onView, remove: onRemove }
+  const widgetProps = { jobs, view: onView, remove: onRemove }
 
   useEffect(() => {
-    if (ownJobOpenings) {
-      const job = ownJobOpenings[0]
-      const jobProps = { ...job, readOnly: true }
-      setJobOpen(jobProps)
-    }
+    const _jobs = ownJobOpenings.filter(job => moment(job.hiringDate) > moment())
+    setJobs(_jobs)
+    const job = _jobs[0]
+    const jobProps = { ...job, readOnly: true }
+    setJobOpen(jobProps)
   }, [ownJobOpenings])
 
   return (
-    <Grid container className={classes.gridContainer} spacing={3}>
-      <Grid item xl={6} lg={4} md={6} xs={12}>
+    <Grid container className={classes.gridContainer}>
+      <Grid item xl={4} lg={4} md={6} xs={12}>
         <JobOpeningsWidget {...widgetProps} />
       </Grid>
       <Grid item xl={6} lg={8} md={6} xs={12}>
         <Grid item className={classes.gridItem}>
-          {ownJobOpenings && <JobOpening {...jobOpen} />}
+          <JobOpening {...jobOpen} />
         </Grid>
       </Grid>
     </Grid>

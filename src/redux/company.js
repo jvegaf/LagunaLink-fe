@@ -173,8 +173,8 @@ const addJobOpening = data => (dispatch, getState) => {
   apiProvider
     .post('job_openings', model, token)
     .then((res) => {
-      ownJobOpenings.push(res.data.job_opening)
-      dispatch({ type: ADD_JOB_OPENING_COMPLETE, payload: ownJobOpenings })})
+      const jobs = [...ownJobOpenings, data]
+      dispatch({ type: ADD_JOB_OPENING_COMPLETE, payload: jobs })})
     .catch(e => dispatch({ type: ADD_JOB_OPENING_ERROR }))
 }
 
