@@ -224,7 +224,7 @@ const signIn = data => dispatch => {
 
         const payload = { ...response.data, email: data.email }
 
-        data.rememberMe ? persistInLocalStorage(payload) : persistInSessionStorage(payload)
+        data.rememberMe ? persistInLocalStorage({...payload, token: response.data.access_token}) : persistInSessionStorage({...payload, token: response.data.access_token})
 
         dispatch({
           type: SIGNIN_SUCCESS,
@@ -244,6 +244,7 @@ const signIn = data => dispatch => {
 }
 
 const signOut = () => dispatch => {
+  clearStorage()
   dispatch(studentActions.signOut())
   dispatch(companyActions.signOut())
   dispatch({ type: SIGN_OUT })
@@ -383,16 +384,23 @@ const fetchCompaniesAndJobs = (dispatch, token) => {
 }
 
 const persistInLocalStorage = (payload) => {
+  localStorage.setItem('token', payload.token)
   localStorage.setItem('userEmail', payload.email)
-  localStorage.setItem('userId', payload.userId)
-  localStorage.setItem('userRole', payload.role)
+  localStorage.setItem('userId', payload.user_id)
+  localStorage.setItem('userRole', payload.user_role)
   localStorage.setItem('avatarURI', payload.avatar)
 }
 
 const persistInSessionStorage = (payload) => {
+  sessionStorage.setItem('token', payload.token)
   sessionStorage.setItem('userEmail', payload.email)
-  sessionStorage.setItem('userId', payload.userId)
-  sessionStorage.setItem('userRole', payload.role)
+  sessionStorage.setItem('userId', payload.user_id)
+  sessionStorage.setItem('userRole', payload.user_role)
   sessionStorage.setItem('avatarURI', payload.avatar)
+}
+
+const clearStorage = () => {
+  sessionStorage.clear()
+  localStorage.clear()
 }
 

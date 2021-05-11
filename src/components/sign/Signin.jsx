@@ -8,51 +8,54 @@ import { useHistory } from 'react-router-dom'
 import { actions } from '../../redux/user'
 import { EmailInput } from '../form/__shared__/EmailInput'
 import { PasswordInput } from '../form/__shared__/PasswordInput'
-import { Title } from '../shared/Title'
+import { RememberMeCB } from '../form/__shared__/RememberMeCB'
 import { Logo } from '../logo/Logo'
+import { Title } from '../shared/Title'
 
 const useStyles = makeStyles(theme => ({
-    root: {
-      padding: '2em',
-      width: '100%'
+  root: {
+    padding: '2em',
+    width: '100%',
+  },
+  button: {
+    paddingLeft: '4em',
+    paddingRight: '4em',
+  },
+  wrapper: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(6),
+    position: 'relative',
+    display: 'flex',
+    alignContent: 'center',
+  },
+  buttonSuccess: {
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[700],
     },
-    button: {
-      paddingLeft: '4em',
-      paddingRight: '4em',
-    },
-    wrapper: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(6),
-      position: 'relative',
-      display: 'flex',
-      alignContent: 'center'
-    },
-    buttonSuccess: {
-      backgroundColor: green[500],
-      '&:hover': {
-        backgroundColor: green[700],
-      },
-    },
-    buttonProgress: {
-      color: green[500],
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      marginTop: -12,
-      marginLeft: -12,
-    },
-    flexCnt: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: theme.spacing(3)
-    },
-    logo: {
-      height: '80px',
-      width: '80px',
-    }
-  }
-))
+  },
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
+  flexCnt: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  rememberCnt: {
+    marginBottom: theme.spacing(4),
+    justifyContent: 'end'
+  },
+  logo: {
+    height: '80px',
+    width: '80px',
+  },
+}))
 
 export const SignInComponent = () => {
   const history = useHistory()
@@ -72,56 +75,64 @@ export const SignInComponent = () => {
   }
 
   useEffect(() => {
-    if(needStudentRegister === true){
+    dispatch(actions.getCredentials())
+  }, [])
+
+  useEffect(() => {
+    if (needStudentRegister === true) {
       history.push('/register/student')
     }
   }, [needStudentRegister])
 
   useEffect(() => {
-    if(needCompanyRegister === true){
+    if (needCompanyRegister === true) {
       history.push('/register/company')
     }
   }, [needCompanyRegister])
 
   useEffect(() => {
-    if(isSignedIn === true){
+    if (isSignedIn === true) {
       history.push('/app/dashboard')
     }
   }, [isSignedIn])
 
   useEffect(() => {
-    if(inactiveError === true){
-      enqueueSnackbar('Verificacion de Correo necesaria. Mira en tu buzon de correo', {variant: 'warning'})
+    if (inactiveError === true) {
+      enqueueSnackbar('Verificacion de Correo necesaria. Mira en tu buzon de correo', { variant: 'warning' })
     }
   }, [inactiveError])
 
   useEffect(() => {
-    if(signinError === true){
-      enqueueSnackbar('Correo/Contrasena incorrectos', {variant: 'error'})
+    if (signinError === true) {
+      enqueueSnackbar('Correo/Contrasena incorrectos', { variant: 'error' })
     }
   }, [signinError])
 
   return (
     <Paper elevation={3} className={classes.root}>
       <Box className={classes.flexCnt}>
-        <Logo className={classes.logo}/>
+        <Logo className={classes.logo} />
       </Box>
-      <Title content="Iniciar Sesion"/>
-      <FormProvider {...methods} >
+      <Title content="Iniciar Sesion" />
+      <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Grid container direction="column">
-            <Grid item >
-              <EmailInput/>
+            <Grid item>
+              <EmailInput />
             </Grid>
-            <Grid item >
-              <PasswordInput/>
+            <Grid item>
+              <PasswordInput />
             </Grid>
             <Grid item className={classes.flexCnt}>
               <div className={classes.wrapper}>
-                <Button color="primary" className={classes.button} disabled={isBusy}
-                variant="contained" type="submit">Entrar</Button>
-                 {isBusy && <CircularProgress size={24} className={classes.buttonProgress} />}
+                <Button color="primary" className={classes.button} disabled={isBusy} variant="contained" type="submit">
+                  Entrar
+                </Button>
+                {isBusy && <CircularProgress size={24} className={classes.buttonProgress} />}
               </div>
+            </Grid>
+            <Grid item container className={classes.rememberCnt}>
+              <RememberMeCB />
             </Grid>
           </Grid>
         </form>
