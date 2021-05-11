@@ -23,11 +23,6 @@ const studentNavConf = {
       icon: UserPlusIcon,
       title: 'Ofertas Aplicadas',
     },
-    {
-      href: '/app/settings',
-      icon: SettingsIcon,
-      title: 'Configuracion',
-    },
   ],
 }
 

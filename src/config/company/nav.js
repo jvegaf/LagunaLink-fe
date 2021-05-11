@@ -22,11 +22,6 @@ const companyNavConf = {
       icon: UserIcon,
       title: 'Ofertas Publicadas',
     },
-    {
-      href: '/app/settings',
-      icon: SettingsIcon,
-      title: 'Configuracion',
-    },
   ],
 }
 
