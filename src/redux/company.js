@@ -19,6 +19,8 @@ const initialState = {
 const COMPANY_REGISTER = 'COMPANY_REGISTER'
 const COMPANY_REGISTER_COMPLETE = 'COMPANY_REGISTER_COMPLETE'
 const GET_PROFILE = 'GET_PROFILE'
+const FETCH_JOBS_ENROLLS = 'FETCH_JOBS_ENROLLS'
+const FETCH_JOBS_ENROLLS_COMPLETE = 'FETCH_JOBS_ENROLLS_COMPLETE'
 const GET_PROFILE_COMPLETE = 'GET_PROFILE_COMPLETE'
 const GET_PROFILE_ERROR = 'GET_PROFILE_ERROR'
 const ADD_JOB_OPENING = 'ADD_JOB_OPENING'
@@ -54,6 +56,20 @@ const companyReducer = (state = initialState, action) => {
         ...state,
         taskError: null,
         isBusy: true,
+      }
+
+    case FETCH_JOBS_ENROLLS:
+      return {
+        ...state,
+        taskError: null,
+        isBusy: true,
+      }
+
+    case FETCH_JOBS_ENROLLS_COMPLETE:
+      return {
+        ...state,
+        ownJobOpenings: action.payload,
+        taskError: null,
       }
 
     case JOB_OPENING_UPDATE_COMPLETE:
@@ -143,6 +159,7 @@ const getProfile = (userId, token) => dispatch => {
       dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data.company })
       dispatch(userActions.setPrefName(res.data.company.name))
       dispatch(userActions.fetchCompleted())
+      dispatch(actions.getEnrollsOfJobs(res.data.job_openings))
     }).catch(e => dispatch({ type: GET_PROFILE_ERROR, payload: e }))
 }
 
@@ -193,11 +210,25 @@ const removeJobOpening = jobId => (dispatch, getState) => {
   })
 }
 
+const getEnrollsOfJobs = jobs => (dispatch, getState) => {
+  dispatch({type: FETCH_JOBS_ENROLLS})
+  const { token } = getState().user
+  const _jobs = jobs.map(async job =>{
+    return await apiProvider.getAll(`job_openings/${job.id}`, token)
+    .then(res =>{
+      job.enrolls = res.data.enrolls
+      return job
+    })
+  })
+  dispatch({type: FETCH_JOBS_ENROLLS_COMPLETE, payload: _jobs})
+}
+
 export const actions = {
   signOut,
   getProfile,
   registerCompany,
   updateCompany,
   addJobOpening,
-  removeJobOpening
+  removeJobOpening,
+  getEnrollsOfJobs
 }
