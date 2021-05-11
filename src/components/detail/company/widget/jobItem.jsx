@@ -1,33 +1,51 @@
-import { Avatar, IconButton, makeStyles, NoSsr } from '@material-ui/core'
-import { Delete, Visibility } from '@material-ui/icons'
+import { Avatar, IconButton, makeStyles, NoSsr, Typography } from '@material-ui/core'
+import { Delete } from '@material-ui/icons'
 import { Item, Row } from '@mui-treasury/components/flex'
-import { Info, InfoCaption, InfoSubtitle, InfoTitle } from '@mui-treasury/components/info'
-import { usePopularInfoStyles } from '@mui-treasury/styles/info/popular'
+import { useConfirm } from 'material-ui-confirm'
 import React from 'react'
 import GoogleFontLoader from 'react-google-font-loader'
-import { useConfirm } from 'material-ui-confirm'
+import { dateFormatter } from '../../../../services/date/dateFormatter'
 
 const useStyles = makeStyles(theme => ({
   root: {},
   itemRow: {
+    padding: theme.spacing(2),
     '&:hover': {
       backgroundColor: '#f5f5f5',
+      cursor: 'pointer',
     },
   },
   actions: {
-    paddingRight: '1em',
-    flexGrow: 1,
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
-  },
-  actionButton: {
-    padding: '0.9em',
   },
   itemAvatar: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  enrollItem: {
+    alignItems: 'center',
+  },
+  positionTitle: {
+    fontSize: '1.1rem',
+    padding: '0.5em 0',
+    fontFamily: 'Poppins',
+    fontWeight: 'bolder',
+    lineHeight: 1.4,
+  },
+  enrolled: {
+    fontSize: '1rem',
+    padding: '0.5em 0',
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 'bold',
+    lineHeight: 1.4,
+  },
+  positionInfo: {
+    fontSize: '0.75rem',
+    fontFamily: 'Poppins, sans-serif',
+    lineHeight: 1.2,
   },
 }))
 
@@ -47,27 +65,35 @@ const JobItem = props => {
       <NoSsr>
         <GoogleFontLoader fonts={[{ font: 'Poppins', weights: [400, 700] }]} />
       </NoSsr>
-      <Row className={classes.itemRow} gap={3}>
-        <Item className={classes.itemAvatar}>
+      <Row gap={1.5} onClick={event => handleView(event, job.id)} className={classes.itemRow}>
+        <Item className={classes.itemAvatar} position={'left'}>
           <Avatar>{idx}</Avatar>
         </Item>
-        <Info useStyles={usePopularInfoStyles}>
-          <InfoSubtitle>{job.createdAt}</InfoSubtitle>
-          <InfoTitle>{job.position}</InfoTitle>
-          <InfoCaption>{job.hiringDate}</InfoCaption>
-        </Info>
-        <div className={classes.actions}>
+        <Item position={'middle'} ml={2} grow>
+          <Typography className={classes.positionInfo}>
+            {'F. Publicacion: '} <b>{dateFormatter(job.createdAt)}</b>
+          </Typography>
+          <Typography color="secondary" className={classes.positionTitle}>{job.position}</Typography>
+          <Typography className={classes.positionInfo}>
+            {'F. Contratacion: '} <b>{dateFormatter(job.hiringDate)}</b>
+          </Typography>
+        </Item>
+        <Item position={'right'} mr={4} alignSelf={'center'}>
+          <Typography align="center" className={classes.positionInfo}>
+            Adscritos
+          </Typography>
+          <Typography align="center" color="secondary" className={classes.enrolled}>
+            12
+          </Typography>
+        </Item>
+        <Item position={'right'} mr={-0.5} className={classes.actions}>
           <IconButton
-            className={classes.actionButton}
-            onClick={event => handleView(event, job.id)}
-            aria-label="view job"
+            onClick={event => handleRemove(event, job.id)}
+            aria-label="remove"
           >
-            <Visibility />
-          </IconButton>
-          <IconButton className={classes.actionButton} onClick={event => handleRemove(event, job.id)} aria-label="remove">
             <Delete />
           </IconButton>
-        </div>
+        </Item>
       </Row>
     </>
   )
