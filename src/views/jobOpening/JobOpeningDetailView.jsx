@@ -60,6 +60,7 @@ export const JobOpeningDetailView = props => {
   const styles = useStyles()
   const dispatch = useDispatch()
   const [jobOpening, setJobOpening] = useState({})
+  const [hiringDate, setHiringDate] = useState('')
   const [company, setCompany] = useState({})
   const [hideEnroll, setHideEnroll] = useState(true)
   const shared = useSelector(state => state.shared)
@@ -69,6 +70,7 @@ export const JobOpeningDetailView = props => {
       const jobOpening = shared.jobOpenings.find(job => job.id === detailId)
       const company = shared.companies.find(comp => comp.id === jobOpening.company)
       setJobOpening(jobOpening)
+      setHiringDate(dateFormatter(jobOpening.hiringDate))
       setCompany(company)
       const isCompany = role !== 'ROLE_STUDENT'
       const notEnrollable = isCompany || jobOpening.enrolled
@@ -100,7 +102,7 @@ export const JobOpeningDetailView = props => {
             <Grid item container className={styles.actionsSection}>
               <Grid item>
                 <Typography align={'center'} variant="body1">fecha de contratacion: </Typography>
-                <Typography align={'center'} variant="h4">{dateFormatter(jobOpening.hiringDate)}</Typography>
+                <Typography align={'center'} variant="h4">{hiringDate}</Typography>
               </Grid>
               {!hideEnroll && (
                 <Grid item>
