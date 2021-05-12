@@ -1,7 +1,6 @@
 import {
   BarChart as BarChartIcon,
-  Settings as SettingsIcon,
-  User as UserIcon,
+  User as UserIcon
 } from 'react-feather'
 
 const companyNavConf = {
