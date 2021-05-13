@@ -156,11 +156,10 @@ const getProfile = (userId, token) => dispatch => {
   apiProvider
     .getSingle('companies', userId, token)
     .then(res => {
-      dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data.company })
       dispatch(userActions.setPrefName(res.data.company.name))
-      dispatch(userActions.fetchCompleted())
-      dispatch(actions.getEnrollsOfJobs(res.data.job_openings))
-    }).catch(e => dispatch({ type: GET_PROFILE_ERROR, payload: e }))
+      dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data.company })
+    })
+    .catch(e => dispatch({ type: GET_PROFILE_ERROR, payload: e }))
 }
 
 const registerCompany = (data, token) => dispatch => {
@@ -210,16 +209,16 @@ const removeJobOpening = jobId => (dispatch, getState) => {
   })
 }
 
-const getEnrollsOfJobs = jobs => (dispatch, getState) => {
+const getEnrollsOfJobs = jobs => async (dispatch, getState) => {
   dispatch({type: FETCH_JOBS_ENROLLS})
   const { token } = getState().user
-  const _jobs = jobs.map(async job =>{
-    return await apiProvider.getAll(`job_openings/${job.id}`, token)
+  const _jobs = await Promise.all(jobs.map(async job =>{
+    return await apiProvider.getAll(`job_openings/${job.id}/enrollments`, token)
     .then(res =>{
       job.enrolls = res.data.enrolls
       return job
     })
-  })
+  }))
   dispatch({type: FETCH_JOBS_ENROLLS_COMPLETE, payload: _jobs})
 }
 

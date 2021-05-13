@@ -73,7 +73,7 @@ const JobItem = props => {
           <Typography className={classes.positionInfo}>
             {'F. Publicacion: '} <b>{dateFormatter(job.createdAt)}</b>
           </Typography>
-          <Typography color="secondary" className={classes.positionTitle}>{job.position}</Typography>
+          <Typography color="primary" className={classes.positionTitle}>{job.position}</Typography>
           <Typography className={classes.positionInfo}>
             {'F. Contratacion: '} <b>{dateFormatter(job.hiringDate)}</b>
           </Typography>
@@ -82,8 +82,8 @@ const JobItem = props => {
           <Typography align="center" className={classes.positionInfo}>
             Adscritos
           </Typography>
-          <Typography align="center" color="secondary" className={classes.enrolled}>
-            12
+          <Typography align="center" color="primary" className={classes.enrolled}>
+            {job.enrollsCount}
           </Typography>
         </Item>
         <Item position={'right'} mr={-0.5} className={classes.actions}>
