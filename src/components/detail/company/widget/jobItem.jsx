@@ -1,5 +1,6 @@
-import { Avatar, Badge, IconButton, makeStyles, NoSsr, Typography } from '@material-ui/core'
-import { Delete, PeopleAlt } from '@material-ui/icons'
+import { Avatar, Box, IconButton, makeStyles, NoSsr, Typography } from '@material-ui/core'
+import { lightBlue, orange } from '@material-ui/core/colors'
+import { Delete } from '@material-ui/icons'
 import { Item, Row } from '@mui-treasury/components/flex'
 import { useConfirm } from 'material-ui-confirm'
 import React from 'react'
@@ -15,15 +16,15 @@ const useStyles = makeStyles(theme => ({
       cursor: 'pointer',
     },
   },
-  actions: {
+  center: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  itemAvatar: {
+  enrolls: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: '0.7em',
   },
   enrollItem: {
     alignItems: 'center',
@@ -37,10 +38,14 @@ const useStyles = makeStyles(theme => ({
   },
   enrolled: {
     fontSize: '1rem',
-    padding: '0.5em 0',
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 'bold',
     lineHeight: 1.4,
+    color: theme.palette.getContrastText(lightBlue[600]),
+    backgroundColor: lightBlue[300],
+    '&:hover': {
+      backgroundColor: orange[300],
+    }
   },
   positionInfo: {
     fontSize: '0.75rem',
@@ -66,14 +71,16 @@ const JobItem = props => {
         <GoogleFontLoader fonts={[{ font: 'Poppins', weights: [400, 700] }]} />
       </NoSsr>
       <Row gap={1.5} onClick={event => handleView(event, job.id)} className={classes.itemRow}>
-        <Item className={classes.itemAvatar} position={'left'}>
+        <Item className={classes.center} position={'left'}>
           <Avatar>{idx}</Avatar>
         </Item>
         <Item position={'middle'} ml={2} grow>
           <Typography className={classes.positionInfo}>
             {'F. Publicacion: '} <b>{dateFormatter(job.createdAt)}</b>
           </Typography>
-          <Typography color="primary" className={classes.positionTitle}>{job.position}</Typography>
+          <Typography color="primary" className={classes.positionTitle}>
+            {job.position}
+          </Typography>
           <Typography className={classes.positionInfo}>
             {'F. Contratacion: '} <b>{dateFormatter(job.hiringDate)}</b>
           </Typography>
@@ -82,18 +89,12 @@ const JobItem = props => {
           <Typography align="center" className={classes.positionInfo}>
             Adscritos
           </Typography>
-          <Badge color="primary" badgeContent={job.enrollsCount} showZero>
-            <PeopleAlt />
-          </Badge>
-          <Typography align="center"  className={classes.enrolled}>
-            
-          </Typography>
+          <Box className={classes.enrolls}>
+            <Avatar onClick={()=>alert('clicked')} className={classes.enrolled}>{job.enrollsCount}</Avatar>
+          </Box>
         </Item>
-        <Item position={'right'} mr={-0.5} className={classes.actions}>
-          <IconButton
-            onClick={event => handleRemove(event, job.id)}
-            aria-label="remove"
-          >
+        <Item position={'right'} mr={-0.5} className={classes.center}>
+          <IconButton onClick={event => handleRemove(event, job.id)} aria-label="remove">
             <Delete />
           </IconButton>
         </Item>
