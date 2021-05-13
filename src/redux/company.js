@@ -10,7 +10,7 @@ const initialState = {
   region: '',
   city: '',
   registered: false,
-  ownJobOpenings: [], 
+  ownJobOpenings: [],
   isBusy: false,
   taskError: null,
 }
@@ -19,8 +19,8 @@ const initialState = {
 const COMPANY_REGISTER = 'COMPANY_REGISTER'
 const COMPANY_REGISTER_COMPLETE = 'COMPANY_REGISTER_COMPLETE'
 const GET_PROFILE = 'GET_PROFILE'
-const FETCH_JOBS_ENROLLS = 'FETCH_JOBS_ENROLLS'
-const FETCH_JOBS_ENROLLS_COMPLETE = 'FETCH_JOBS_ENROLLS_COMPLETE'
+const FETCH_JOB_ENROLLS = 'FETCH_JOB_ENROLLS'
+const FETCH_JOB_ENROLLS_COMPLETE = 'FETCH_JOB_ENROLLS_COMPLETE'
 const GET_PROFILE_COMPLETE = 'GET_PROFILE_COMPLETE'
 const GET_PROFILE_ERROR = 'GET_PROFILE_ERROR'
 const ADD_JOB_OPENING = 'ADD_JOB_OPENING'
@@ -29,7 +29,7 @@ const ADD_JOB_OPENING_ERROR = 'ADD_JOB_OPENING_ERROR'
 const COMPANY_UPDATE = 'COMPANY_UPDATE'
 const COMPANY_UPDATE_COMPLETE = 'COMPANY_UPDATE_COMPLETE'
 const JOB_OPENING_UPDATE = 'JOB_OPENING_UPDATE'
-const JOB_OPENING_UPDATE_COMPLETE =  'JOB_OPENING_UPDATE_COMPLETE'
+const JOB_OPENING_UPDATE_COMPLETE = 'JOB_OPENING_UPDATE_COMPLETE'
 const SET_ERROR = 'SET_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
 
@@ -58,17 +58,18 @@ const companyReducer = (state = initialState, action) => {
         isBusy: true,
       }
 
-    case FETCH_JOBS_ENROLLS:
+    case FETCH_JOB_ENROLLS:
       return {
         ...state,
         taskError: null,
         isBusy: true,
       }
 
-    case FETCH_JOBS_ENROLLS_COMPLETE:
+    case FETCH_JOB_ENROLLS_COMPLETE:
       return {
         ...state,
         ownJobOpenings: action.payload,
+        enrollsFetched: true,
         taskError: null,
       }
 
@@ -76,7 +77,7 @@ const companyReducer = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        ownJobOpenings: action.payload
+        ownJobOpenings: action.payload,
       }
 
     case GET_PROFILE:
@@ -95,35 +96,35 @@ const companyReducer = (state = initialState, action) => {
         postalCode: action.payload.postalCode,
         ownJobOpenings: action.payload.job_openings,
         region: action.payload.region,
-        city: action.payload.city
+        city: action.payload.city,
       }
 
     case GET_PROFILE_ERROR:
       return {
         ...state,
         isBusy: false,
-        taskError: action.payload
+        taskError: action.payload,
       }
 
     case ADD_JOB_OPENING:
       return {
         ...state,
         taskError: null,
-        isBusy: true
+        isBusy: true,
       }
 
     case ADD_JOB_OPENING_COMPLETE:
       return {
         ...state,
         isBusy: false,
-        ownJobOpenings: action.payload
+        ownJobOpenings: action.payload,
       }
 
     case ADD_JOB_OPENING_ERROR:
       return {
         ...state,
         isBusy: false,
-        taskError: true
+        taskError: true,
       }
 
     case COMPANY_REGISTER_COMPLETE:
@@ -166,9 +167,10 @@ const registerCompany = (data, token) => dispatch => {
   dispatch({ type: COMPANY_REGISTER })
   apiProvider
     .post('companies', data, token)
-    .then(() =>{ 
+    .then(() => {
       userActions.unsetRegister()
-      dispatch({ type: COMPANY_REGISTER_COMPLETE, payload: data })})
+      dispatch({ type: COMPANY_REGISTER_COMPLETE, payload: data })
+    })
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
@@ -178,48 +180,49 @@ const updateCompany = (userId, data, token) => dispatch => {
     .put('companies', userId, data, token)
     .then(() => dispatch({ type: COMPANY_UPDATE_COMPLETE }))
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
-
 }
 
 const addJobOpening = data => (dispatch, getState) => {
-  const {userId, token} = getState().user
+  const { userId, token } = getState().user
   const { ownJobOpenings } = getState().company
-  const model = {...data, company: userId}
-  dispatch({ type: ADD_JOB_OPENING})
+  const model = { ...data, company: userId }
+  dispatch({ type: ADD_JOB_OPENING })
   apiProvider
     .post('job_openings', model, token)
-    .then((res) => {
+    .then(res => {
       const jobs = [...ownJobOpenings, data]
-      dispatch({ type: ADD_JOB_OPENING_COMPLETE, payload: jobs })})
+      dispatch({ type: ADD_JOB_OPENING_COMPLETE, payload: jobs })
+    })
     .catch(e => dispatch({ type: ADD_JOB_OPENING_ERROR }))
 }
 
 const removeJobOpening = jobId => (dispatch, getState) => {
-  dispatch({type: JOB_OPENING_UPDATE})
+  dispatch({ type: JOB_OPENING_UPDATE })
   const { token } = getState().user
   const { ownJobOpenings } = getState().company
   const job = ownJobOpenings.find(j => j.id === jobId)
   const hDate = moment().subtract(3, 'years').format('YYYY-MM-DD')
-  const model = {...job, hiringDate: hDate}
-  apiProvider.put('job_openings', jobId, model, token)
-  .then(res => {
-
+  const model = { ...job, hiringDate: hDate }
+  apiProvider.put('job_openings', jobId, model, token).then(res => {
     const jobs = res.data.job_openings.filter(jb => moment(jb.hiringDate) > moment())
-    dispatch({type: JOB_OPENING_UPDATE_COMPLETE, payload: jobs})
+    dispatch({ type: JOB_OPENING_UPDATE_COMPLETE, payload: jobs })
   })
 }
 
-const getEnrollsOfJobs = jobs => async (dispatch, getState) => {
-  dispatch({type: FETCH_JOBS_ENROLLS})
+const getEnrollsOfJob = jobId => async (dispatch, getState) => {
+  const { ownJobOpenings } = getState().company
+  dispatch({ type: FETCH_JOB_ENROLLS })
   const { token } = getState().user
-  const _jobs = await Promise.all(jobs.map(async job =>{
-    return await apiProvider.getAll(`job_openings/${job.id}/enrollments`, token)
-    .then(res =>{
-      job.enrolls = res.data.enrolls
+  apiProvider.getAll(`job_openings/${jobId}/enrollments`, token).then(res => {
+    const enrolls = res.data.enrolls
+    const jobs = ownJobOpenings.map(job => {
+      if (job.id === jobId) {
+        job.enrolls = enrolls
+      }
       return job
     })
-  }))
-  dispatch({type: FETCH_JOBS_ENROLLS_COMPLETE, payload: _jobs})
+    dispatch({ type: FETCH_JOB_ENROLLS_COMPLETE, payload: jobs })
+  })
 }
 
 export const actions = {
@@ -229,5 +232,5 @@ export const actions = {
   updateCompany,
   addJobOpening,
   removeJobOpening,
-  getEnrollsOfJobs
+  getEnrollsOfJob,
 }

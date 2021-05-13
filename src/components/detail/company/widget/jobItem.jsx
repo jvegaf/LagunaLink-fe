@@ -1,5 +1,5 @@
-import { Avatar, IconButton, makeStyles, NoSsr, Typography } from '@material-ui/core'
-import { Delete } from '@material-ui/icons'
+import { Avatar, Badge, IconButton, makeStyles, NoSsr, Typography } from '@material-ui/core'
+import { Delete, PeopleAlt } from '@material-ui/icons'
 import { Item, Row } from '@mui-treasury/components/flex'
 import { useConfirm } from 'material-ui-confirm'
 import React from 'react'
@@ -82,8 +82,11 @@ const JobItem = props => {
           <Typography align="center" className={classes.positionInfo}>
             Adscritos
           </Typography>
-          <Typography align="center" color="primary" className={classes.enrolled}>
-            {job.enrollsCount}
+          <Badge color="primary" badgeContent={job.enrollsCount} showZero>
+            <PeopleAlt />
+          </Badge>
+          <Typography align="center"  className={classes.enrolled}>
+            
           </Typography>
         </Item>
         <Item position={'right'} mr={-0.5} className={classes.actions}>
