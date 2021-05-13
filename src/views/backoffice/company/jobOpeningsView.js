@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/styles'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { JobOpening } from '../../../components/detail/company/JobOpening'
-import { JobOpeningsWidget } from '../../../components/detail/company/JobOpeningsWidget'
+import { JobOpening } from '../../../components/detail/company/jobOpening/JobOpening'
+import { JobOpeningsWidget } from '../../../components/detail/company/jobOpening/JobOpeningsWidget'
 import { actions } from '../../../redux/company'
 
 const useStyles = makeStyles(theme => ({

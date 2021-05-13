@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core'
 import React from 'react'
-import { JobOpeningForm } from '../../form/company/jobOpeningForm'
-import Card from '../../shared/Card'
+import { JobOpeningForm } from '../../../form/company/jobOpeningForm'
+import Card from '../../../shared/Card.js'
 
 const useStyles = makeStyles(() => ({
   root: {

@@ -1,29 +1,16 @@
 /* eslint-disable no-unused-vars */
-import {
-  Box,
-  Button,
-  Card,
-  CardHeader,
-  Divider,
-
-
-  Grid,
-
-
-  List, makeStyles
-} from '@material-ui/core'
+import { Box, Button, Card, CardHeader, Divider, List, makeStyles } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import React, { useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { v4 as uuid } from 'uuid'
+import JobItem from './jobItem'
 import { JobOpenDialog } from './JobOpenDialog'
-import JobItem from './widget/jobItem'
-import theme from '../../../theme/index'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    height: 'auto'
+    height: 'auto',
   },
   cell: {
     padding: '4px',
@@ -35,17 +22,17 @@ const useStyles = makeStyles((theme) => ({
     background: '#f5f5f5',
   },
   box: {
-    width: '100%'
+    width: '100%',
   },
   footer: {
     display: 'flex',
     justifyContent: 'flex-end',
-    padding: theme.spacing(2)
-  }
+    padding: theme.spacing(2),
+  },
 }))
 
 export const JobOpeningsWidget = props => {
-  const {jobs, view, remove } = props
+  const { jobs, view, remove } = props
   const [dialogShow, setDialogShow] = useState(false)
   const classes = useStyles()
   const hideDialog = () => {
@@ -63,12 +50,7 @@ export const JobOpeningsWidget = props => {
       <Divider />
       <PerfectScrollbar>
         <Box className={classes.box} minWidth={500}>
-          <List>
-            {jobs &&
-              jobs.map((job, index) => (
-                <JobItem key={uuid()} job={job} index={index} {...props}  />
-              ))}
-          </List>
+          <List>{jobs && jobs.map((job, index) => <JobItem key={uuid()} job={job} index={index} {...props} />)}</List>
         </Box>
       </PerfectScrollbar>
       <Box className={classes.footer}>
