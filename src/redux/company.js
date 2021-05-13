@@ -11,6 +11,7 @@ const initialState = {
   city: '',
   registered: false,
   ownJobOpenings: [],
+  jobEnrolls: [],
   isBusy: false,
   taskError: null,
 }
@@ -19,8 +20,8 @@ const initialState = {
 const COMPANY_REGISTER = 'COMPANY_REGISTER'
 const COMPANY_REGISTER_COMPLETE = 'COMPANY_REGISTER_COMPLETE'
 const GET_PROFILE = 'GET_PROFILE'
-const FETCH_JOB_ENROLLS = 'FETCH_JOB_ENROLLS'
-const FETCH_JOB_ENROLLS_COMPLETE = 'FETCH_JOB_ENROLLS_COMPLETE'
+const FETCH_JOBS_ENROLLS = 'FETCH_JOB_ENROLLS'
+const FETCH_JOBS_ENROLLS_COMPLETE = 'FETCH_JOB_ENROLLS_COMPLETE'
 const GET_PROFILE_COMPLETE = 'GET_PROFILE_COMPLETE'
 const GET_PROFILE_ERROR = 'GET_PROFILE_ERROR'
 const ADD_JOB_OPENING = 'ADD_JOB_OPENING'
@@ -58,18 +59,17 @@ const companyReducer = (state = initialState, action) => {
         isBusy: true,
       }
 
-    case FETCH_JOB_ENROLLS:
+    case FETCH_JOBS_ENROLLS:
       return {
         ...state,
         taskError: null,
         isBusy: true,
       }
 
-    case FETCH_JOB_ENROLLS_COMPLETE:
+    case FETCH_JOBS_ENROLLS_COMPLETE:
       return {
         ...state,
-        ownJobOpenings: action.payload,
-        enrollsFetched: true,
+        jobEnrolls: action.payload,
         taskError: null,
       }
 
@@ -209,20 +209,18 @@ const removeJobOpening = jobId => (dispatch, getState) => {
   })
 }
 
-const getEnrollsOfJob = jobId => async (dispatch, getState) => {
-  const { ownJobOpenings } = getState().company
-  dispatch({ type: FETCH_JOB_ENROLLS })
+const getEnrollsOfJobs = jobs => async (dispatch, getState) => {
+  dispatch({ type: FETCH_JOBS_ENROLLS })
   const { token } = getState().user
-  apiProvider.getAll(`job_openings/${jobId}/enrollments`, token).then(res => {
-    const enrolls = res.data.enrolls
-    const jobs = ownJobOpenings.map(job => {
-      if (job.id === jobId) {
-        job.enrolls = enrolls
-      }
+  const _jobs = await Promise.all(
+    jobs.map(async job => {
+      if (job.enrollsCount < 1) return
+      const res = await apiProvider.getAll(`job_openings/${job.id}/enrollments`, token)
+      job.enrolls = res.data.enrolls
       return job
     })
-    dispatch({ type: FETCH_JOB_ENROLLS_COMPLETE, payload: jobs })
-  })
+  )
+  dispatch({ type: FETCH_JOBS_ENROLLS_COMPLETE, payload: _jobs })
 }
 
 export const actions = {
@@ -232,5 +230,5 @@ export const actions = {
   updateCompany,
   addJobOpening,
   removeJobOpening,
-  getEnrollsOfJob,
+  getEnrollsOfJobs,
 }

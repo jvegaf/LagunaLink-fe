@@ -48,6 +48,12 @@ export const JobOpeningsView = () => {
     setJobOpen(jobProps)
   }, [ownJobOpenings])
 
+  useEffect(() => {
+    if (jobs){
+      dispatch(actions.getEnrollsOfJobs(jobs))
+    }
+  }, [jobs])
+
   return (
     <Grid container className={classes.gridContainer}>
       <Grid item xl={4} lg={4} md={6} xs={12}>
