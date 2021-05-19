@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 
 export const CompanyForm = props => {
   const classes = useStyles()
-  const { control, handleSubmit, setValue, errors, formState, reset } = useForm({
+  const { control, handleSubmit, setValue, errors, formState } = useForm({
     resolver: yupResolver(schema),
   })
   const dispatch = useDispatch()
@@ -53,7 +53,6 @@ export const CompanyForm = props => {
       dispatch(actions.registerCompany(data))
     }
     // const action = props.newRegistry === true ? actions.registerCompany() : actions.updateCompany() 
-    reset()
   };
 
   return (

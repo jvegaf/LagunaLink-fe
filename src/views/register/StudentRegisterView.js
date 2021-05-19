@@ -3,7 +3,7 @@
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, shallowEqual } from 'react-redux'
 import { Redirect, useHistory } from 'react-router-dom'
 import { StudentRegister } from '../../components/register/student/StudentRegister'
 
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 export const StudentRegisterView = () => {
   const history = useHistory();
   const classes = useStyles()
-  const registered = useSelector(state => state.student.registered)
+  const registered = useSelector(state => state.student.registered, shallowEqual)
   useEffect(() => {
     if (registered === true){
       history.push('/app/dashboard')

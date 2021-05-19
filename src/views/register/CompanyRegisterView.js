@@ -4,8 +4,8 @@ import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React, { useEffect } from 'react'
 import { SignUp } from '../../components/sign/SignUp'
-import { useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { useSelector, shallowEqual } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { CompanyRegister } from '../../components/register/company/CompanyRegister'
 
 
@@ -19,11 +19,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const CompanyRegisterView = () => {
+  const history = useHistory()
   const classes = useStyles()
-  const registered = useSelector(state => state.company.registered)
+  const registered = useSelector(state => state.company.registered, shallowEqual)
 
   useEffect(() => {
-    if (registered === true){
+    if (registered){
       history.push('/app/dashboard')
     }
   }, [registered])

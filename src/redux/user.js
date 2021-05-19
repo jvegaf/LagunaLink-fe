@@ -269,7 +269,7 @@ const setPrefName = name => dispatch => {
   dispatch({ type: SET_NAME, payload: name })
 }
 
-const unsetRegister = dispatch => dispatch({ type: REGISTER_COMPLETED })
+const unsetRegister = () => dispatch => dispatch({ type: REGISTER_COMPLETED })
 
 const uploadAvatar = file => (dispatch, getState) => {
   dispatch({ type: AVATAR_UPLOAD })

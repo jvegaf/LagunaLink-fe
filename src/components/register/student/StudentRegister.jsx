@@ -1,7 +1,7 @@
-import React from 'react'
-import Card from '../../shared/Card'
 import { makeStyles } from '@material-ui/core'
+import React from 'react'
 import { StudentForm } from '../../form/student/register'
+import Card from '../../shared/Card'
 
 const useStyles = makeStyles(() => ({
   root: {

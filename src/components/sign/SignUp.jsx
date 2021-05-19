@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Link, makeStyles, Paper, Typography } from '@material-ui/core'
+import { Box, Button, CircularProgress, Grid, Link, makeStyles, Paper, Typography } from '@material-ui/core'
 import { green } from '@material-ui/core/colors'
 import React, { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -9,6 +9,7 @@ import { AlertDialog } from '../dialog/AlertDialog'
 import { EmailInput } from '../form/__shared__/EmailInput'
 import { PasswordInput } from '../form/__shared__/PasswordInput'
 import { RoleSelectInput } from '../form/__shared__/RoleSelectInput'
+import { Logo } from '../logo/Logo'
 import { Title } from '../shared/Title'
 
 const useStyles = makeStyles(theme => ({
@@ -40,6 +41,19 @@ const useStyles = makeStyles(theme => ({
     marginTop: -12,
     marginLeft: -12,
   },
+  logo: {
+    height: '80px',
+    width: '80px',
+  },
+  flexCnt: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3)
+  }
 }
 ))
 
@@ -87,26 +101,31 @@ export const SignUp = () => {
   return (
     <Paper elevation={3} className={classes.root}>
       <AlertDialog {...modal} />
-      <Title content="Registro"/>
+      <Box className={classes.flexCnt}>
+        <Logo className={classes.logo} />
+      </Box>
+      <Box className={classes.title}>
+      <Title content="Registro nueva cuenta"/>
+      </Box>
       <FormProvider {...methods} >
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="col">
-            <div className="row justify-content-center">
+          <Grid container direction="column">
+            <Grid item>
               <RoleSelectInput />
-            </div>
-            <div className="row justify-content-center">
+            </Grid>
+            <Grid item>
               <EmailInput/> 
-            </div>
-            <div className="row justify-content-center">
+            </Grid>
+            <Grid item>
               <PasswordInput/>
-            </div>
-            <div className="row justify-content-center">
+            </Grid>
+            <Grid item className={classes.flexCnt}>
               <div className={classes.wrapper}>
                 <Button color={'primary'} className={classes.button} variant={'contained'} type={'submit'}>Crear Cuenta</Button>
                 {isBusy && <CircularProgress size={24} className={classes.buttonProgress} />}
               </div>
-            </div>
-          </div>
+            </Grid>
+          </Grid>
         </form>
       </FormProvider>
       <div className={'justify-content-end mt-4'}>

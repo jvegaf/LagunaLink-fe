@@ -154,22 +154,25 @@ const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
 const getProfile = (userId, token) => dispatch => {
   dispatch({ type: GET_PROFILE })
+  debugger
   apiProvider
     .getSingle('companies', userId, token)
     .then(res => {
+      debugger
       dispatch(userActions.setPrefName(res.data.company.name))
       dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data.company })
     })
     .catch(e => dispatch({ type: GET_PROFILE_ERROR, payload: e }))
 }
 
-const registerCompany = (data, token) => dispatch => {
+const registerCompany = data => (dispatch, getState) => {
   dispatch({ type: COMPANY_REGISTER })
+  const {token} = getState().user
   apiProvider
     .post('companies', data, token)
     .then(() => {
-      userActions.unsetRegister()
-      dispatch({ type: COMPANY_REGISTER_COMPLETE, payload: data })
+      dispatch(userActions.unsetRegister())
+      dispatch({ type: COMPANY_REGISTER_COMPLETE })
     })
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
