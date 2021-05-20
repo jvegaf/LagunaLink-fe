@@ -59,7 +59,7 @@ export const JobOpeningsView = () => {
       <Grid item xl={4} lg={4} md={6} xs={12}>
         <JobOpeningsWidget {...widgetProps} />
       </Grid>
-      <Grid item xl={6} lg={8} md={6} xs={12}>
+      <Grid item xl={5} lg={8} md={6} xs={12}>
         <Grid item className={classes.gridItem}>
           <JobOpening {...jobOpen} />
         </Grid>

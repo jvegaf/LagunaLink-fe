@@ -15,7 +15,7 @@ import { Title } from '../shared/Title'
 const useStyles = makeStyles(theme => ({
   root: {
     padding: '2em',
-    width: '100%',
+    width: '80%',
   },
   button: {
     paddingLeft: '4em',
@@ -48,19 +48,23 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
   },
   rememberCnt: {
-    marginBottom: theme.spacing(4),
-    justifyContent: 'end'
+    marginBottom: theme.spacing(5),
+    display: 'flex',
+    justifyContent: 'center'
   },
   logo: {
     height: '80px',
     width: '80px',
   },
+  titleContainer: {
+    marginTop: theme.spacing(3)
+  }
 }))
 
 export const SignInComponent = () => {
   const history = useHistory()
   const { enqueueSnackbar } = useSnackbar()
-  const needStudentRegister = useSelector(state => state.user.needStudentRegister)
+  const needStudentRegister = useSelector(state => state.user.needRegister)
   const needCompanyRegister = useSelector(state => state.user.needCompanyRegister)
   const isSignedIn = useSelector(state => state.user.isSignedIn)
   const isBusy = useSelector(state => state.user.isBusy)
@@ -113,14 +117,16 @@ export const SignInComponent = () => {
       <Box className={classes.flexCnt}>
         <Logo className={classes.logo} />
       </Box>
-      <Title content="Iniciar Sesion" />
+      <Box className={classes.titleContainer}>
+        <Title content="Iniciar Sesion" />
+      </Box>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Grid container direction="column">
-            <Grid item>
+            <Grid item className={classes.flexCnt}>
               <EmailInput />
             </Grid>
-            <Grid item>
+            <Grid item className={classes.flexCnt}>
               <PasswordInput />
             </Grid>
             <Grid item className={classes.flexCnt}>
@@ -131,7 +137,7 @@ export const SignInComponent = () => {
                 {isBusy && <CircularProgress size={24} className={classes.buttonProgress} />}
               </div>
             </Grid>
-            <Grid item container className={classes.rememberCnt}>
+            <Grid item className={classes.rememberCnt}>
               <RememberMeCB />
             </Grid>
           </Grid>

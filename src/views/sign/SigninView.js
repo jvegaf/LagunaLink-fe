@@ -25,7 +25,7 @@ export const SignInView = () => {
 
   return (
     <Grid container className={classes.root} >
-      <Grid item className={classes.child} xl={2} lg={3} md={4} sm={6} xs={12}>
+      <Grid item container className={classes.child} xl={2} lg={3} md={4} sm={6} xs={12}>
         <SignInComponent />
       </Grid>
     </Grid>

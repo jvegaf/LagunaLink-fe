@@ -12,8 +12,8 @@ const useStyles = makeStyles(() => ({
 export const JobOpening = props => {
   const classes = useStyles()
   return (
-    <Card className={classes.root} title={`${props.position}`}>
-      <JobOpeningForm {...props} />
+    <Card className={classes.root} title={`${props.position || 'No tienes ninguna oferta creada aun'}`}>
+      {props.position && <JobOpeningForm {...props} />}
     </Card>
   )
 }
