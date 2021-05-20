@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { handleResponse, handleError } from './response'
 
-const BASE_URL = 'http://localhost:3300'
-// const BASE_URL = 'https://lagunalink-be.herokuapp.com'
+// const BASE_URL = 'http://localhost:3300'
+const BASE_URL = 'https://lagunalink-be.herokuapp.com'
 
 const getAll = (resource, accessToken) => {
   axios.defaults.headers.common.Authorization = accessToken
