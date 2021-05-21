@@ -1,14 +1,15 @@
-import { Container, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
 import { Profile } from '../../../components/detail/account/Profile'
 import { CompanyAccount } from '../../../components/detail/company/CompanyAccount'
 
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100%',
-    flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'center',
     padding: theme.spacing(6),
   },
   gridContainer: {
@@ -21,21 +22,20 @@ const useStyles = makeStyles(theme => ({
 
 export const CompanyProfileView = () => {
   const user = useSelector(state => state.user)
-  const company = useSelector(state => state.company)
+  const company = useSelector(state => state.company, shallowEqual)
   const classes = useStyles()
+  const props = { ...company, email: user.email }
 
   return (
-    <Container maxWidth="lg">
-      <Grid container className={classes.gridContainer} spacing={3}>
-        <Grid item lg={4} md={6} xs={12}>
-          <Profile {...user} />
-        </Grid>
-        <Grid item container direction="column" spacing={3} xl={6} lg={8} md={6} xs={12}>
-          <Grid item className={classes.gridItem}>
-            <CompanyAccount company={company} email={user.email} />
-          </Grid>
+    <Grid container className={classes.root} spacing={3}>
+      <Grid item xl={3} lg={4} md={6} xs={12}>
+        <Profile {...user} />
+      </Grid>
+      <Grid item container direction="column" xl={6} lg={8} md={6} xs={12}>
+        <Grid item className={classes.gridItem}>
+          <CompanyAccount {...props} />
         </Grid>
       </Grid>
-    </Container>
+    </Grid>
   )
 }

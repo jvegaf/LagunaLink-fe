@@ -4,11 +4,11 @@ import { actions as studentActions } from './student'
 import { actions as sharedActions } from './shared'
 
 const initialState = {
-  token: '',
+  accessToken: '',
   userId: '',
   email: '',
   isBusy: false,
-  role: '',
+  userRole: '',
   needStudentRegister: false,
   needCompanyRegister: false,
   isSignedIn: false,
@@ -92,10 +92,10 @@ const userReducer = (state = initialState, action) => {
     case SIGNIN_SUCCESS:
       return {
         ...state,
-        userId: action.payload.user_id,
+        userId: action.payload.userId,
         email: action.payload.email,
-        token: action.payload.access_token,
-        role: action.payload.user_role,
+        accessToken: action.payload.accessToken,
+        userRole: action.payload.userRole,
         avatar: action.payload.avatar,
         profile: action.payload.profile,
         isSignedIn: true,
@@ -151,13 +151,13 @@ const userReducer = (state = initialState, action) => {
     case NEED_REGISTER:
       return {
         ...state,
-        userId: action.payload.user_id,
-        token: action.payload.access_token,
+        userId: action.payload.userId,
+        accessToken: action.payload.accessToken,
         email: action.payload.email,
-        role: action.payload.user_role,
+        userRole: action.payload.userRole,
         isBusy: false,
-        needStudentRegister: action.payload.user_role === ROLE_STUDENT,
-        needCompanyRegister: action.payload.user_role === ROLE_COMPANY,
+        needStudentRegister: action.payload.userRole === ROLE_STUDENT,
+        needCompanyRegister: action.payload.userRole === ROLE_COMPANY,
       }
 
     case REGISTER_COMPLETED:
@@ -205,15 +205,15 @@ const signIn = data => dispatch => {
         dispatch({ type: NEED_REGISTER, payload: response.data })
       }
       if (response.status === STATUS_OK) {
-        fetchCompaniesAndJobs(dispatch, response.data.access_token)
+        fetchCompaniesAndJobs(dispatch, response.data.accessToken)
 
         const payload = { ...response.data, email: data.email }
 
         setUserProfile(payload, dispatch)
 
         data.rememberMe
-          ? persistInLocalStorage({ ...payload, token: response.data.access_token })
-          : persistInSessionStorage({ ...payload, token: response.data.access_token })
+          ? persistInLocalStorage({ ...payload, accessToken: response.data.accessToken })
+          : persistInSessionStorage({ ...payload, accessToken: response.data.accessToken })
 
         dispatch({
           type: SIGNIN_SUCCESS,
@@ -258,19 +258,19 @@ const setPrefName = name => dispatch => {
 }
 
 const unsetRegister =
-  ({ role, userId, token }) =>
+  ({ userRole, userId, accessToken }) =>
   dispatch => {
     dispatch({ type: REGISTER_COMPLETED })
   }
 
 const uploadAvatar = file => (dispatch, getState) => {
   dispatch({ type: AVATAR_UPLOAD })
-  const { token, userId } = getState().user
+  const { accessToken, userId } = getState().user
 
   const formData = new FormData()
   formData.append('image', file)
   apiProvider
-    .upload(userId, formData, token)
+    .upload(userId, formData, accessToken)
     .then(res => {
       if (res.status === 200) {
         const avatarPath = res.data.avatar
@@ -285,10 +285,10 @@ const uploadAvatar = file => (dispatch, getState) => {
 
 const deleteAvatar = dispatch => (dispatch, getState) => {
   dispatch({ type: AVATAR_DELETE })
-  const { token, userId } = getState().user
+  const { accessToken, userId } = getState().user
 
   apiProvider
-    .removeAvatar(userId, token)
+    .removeAvatar(userId, accessToken)
     .then(res => {
       if (res.status === 200) {
         dispatch({ type: AVATAR_DELETED })
@@ -302,9 +302,9 @@ const deleteAvatar = dispatch => (dispatch, getState) => {
 
 const update = data => (dispatch, getState) => {
   dispatch({ type: UPDATE })
-  const { token, userId } = getState().user
+  const { accessToken, userId } = getState().user
   apiProvider
-    .put('user', userId, data, token)
+    .put('user', userId, data, accessToken)
     .then(res => {
       if (res.status === 200) dispatch({ type: UPDATED, payload: res.data.user })
     })
@@ -314,40 +314,40 @@ const update = data => (dispatch, getState) => {
 }
 
 const getCredentials = () => dispatch => {
-  const LStoken = localStorage.getItem('token')
-  const SStoken = sessionStorage.getItem('token')
+  const LStoken = localStorage.getItem('accessToken')
+  const SStoken = sessionStorage.getItem('accessToken')
 
   if (LStoken) {
     const email = localStorage.getItem('userEmail')
     const userId = localStorage.getItem('userId')
-    const role = localStorage.getItem('user_role')
+    const userRole = localStorage.getItem('userRole')
     const avatar = localStorage.getItem('avatarURI')
     const profile = localStorage.getItem('profile')
 
-    setUserProfile({role, profile}, dispatch);
+    setUserProfile({userRole, profile}, dispatch);
 
     fetchCompaniesAndJobs(dispatch, LStoken)
 
     dispatch({
       type: SIGNIN_SUCCESS,
-      payload: { email, userId, role, avatar, profile },
+      payload: { email, userId, userRole, avatar, profile },
     })
   }
 
   if (SStoken) {
     const email = sessionStorage.getItem('userEmail')
     const userId = sessionStorage.getItem('userId')
-    const role = sessionStorage.getItem('user_role')
+    const userRole = sessionStorage.getItem('userRole')
     const avatar = sessionStorage.getItem('avatarURI')
     const profile = sessionStorage.getItem('profile')
 
-    setUserProfile({role, profile}, dispatch);
+    setUserProfile({userRole, profile}, dispatch);
 
     fetchCompaniesAndJobs(dispatch, SStoken)
 
     dispatch({
       type: SIGNIN_SUCCESS,
-      payload: { email, userId, role, avatar, profile },
+      payload: { email, userId, userRole, avatar, profile },
     })
   }
 }
@@ -364,25 +364,25 @@ export const actions = {
   deleteAvatar,
 }
 
-const fetchCompaniesAndJobs = (dispatch, token) => {
-  dispatch(sharedActions.fetchAllCompanies(token))
-  dispatch(sharedActions.fetchAllJobOpen(token))
+const fetchCompaniesAndJobs = (dispatch, accessToken) => {
+  dispatch(sharedActions.fetchAllCompanies(accessToken))
+  dispatch(sharedActions.fetchAllJobOpen(accessToken))
 }
 
 const persistInLocalStorage = payload => {
-  localStorage.setItem('token', payload.token)
-  localStorage.setItem('userEmail', payload.email)
-  localStorage.setItem('userId', payload.user_id)
-  localStorage.setItem('user_role', payload.user_role)
+  localStorage.setItem('accessToken', payload.accessToken)
+  localStorage.setItem('email', payload.email)
+  localStorage.setItem('userId', payload.userId)
+  localStorage.setItem('userRole', payload.userRole)
   localStorage.setItem('avatarURI', payload.avatar)
   localStorage.setItem('profile', payload.profile)
 }
 
 const persistInSessionStorage = payload => {
-  sessionStorage.setItem('token', payload.token)
-  sessionStorage.setItem('userEmail', payload.email)
-  sessionStorage.setItem('userId', payload.user_id)
-  sessionStorage.setItem('user_role', payload.user_role)
+  sessionStorage.setItem('accessToken', payload.accessToken)
+  sessionStorage.setItem('email', payload.email)
+  sessionStorage.setItem('userId', payload.userId)
+  sessionStorage.setItem('userRole', payload.userRole)
   sessionStorage.setItem('avatarURI', payload.avatar)
   sessionStorage.setItem('profile', payload.profile)
 }
@@ -393,7 +393,8 @@ const clearStorage = () => {
 }
 
 const setUserProfile = (payload, dispatch) => {
-  switch (payload.user_role) {
+  debugger
+  switch (payload.userRole) {
     case ROLE_COMPANY:
       dispatch(companyActions.setProfile(payload.profile))
       break

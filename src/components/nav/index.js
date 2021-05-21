@@ -25,7 +25,7 @@ const NavBar = ({ user, config}) => {
           {user.prefName}
         </Typography>
         <Typography color="textSecondary" variant="body2">
-          {config.role}
+          {config.userRole}
         </Typography>
       </Box>
       <Divider />

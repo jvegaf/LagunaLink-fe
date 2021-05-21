@@ -12,20 +12,20 @@ const useStyles = makeStyles(theme => ({
 export const RoleSelectInput = () => {
   const { register, watch, setValue } = useFormContext()
   const classes = useStyles()
-  const roleValue = watch('role')
+  const roleValue = watch('userRole')
 
   useEffect(() => {
-    register({ name: 'role' })
+    register({ name: 'userRole' })
   }, [register])
 
-  const handleChange = e => setValue('role', e.target.value)
+  const handleChange = e => setValue('userRole', e.target.value)
 
   return (
     <FormControl className={classes.formControl}>
-      <InputLabel id="role">Tipo de Cuenta</InputLabel>
+      <InputLabel id="userRole">Tipo de Cuenta</InputLabel>
       <Select
-        labelId="role"
-        name="role"
+        labelId="userRole"
+        name="userRole"
         value={roleValue}
         onChange={handleChange}
       >

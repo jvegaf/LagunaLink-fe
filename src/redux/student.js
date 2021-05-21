@@ -131,10 +131,10 @@ const setProfile = profile => dispatch => {
 }
 
 const registerStudent = data => (dispatch, getState) => {
-  const { token } = getState().user
+  const { accessToken } = getState().user
   dispatch({ type: STUDENT_REGISTER })
   apiProvider
-    .post('students', data, token)
+    .post('students', data, accessToken)
     .then(() => {
       userActions.unsetRegister()
       dispatch({ type: STUDENT_REGISTER_COMPLETE, payload: data })
@@ -143,10 +143,10 @@ const registerStudent = data => (dispatch, getState) => {
 }
 
 const updateStudent = data => (dispatch, getState) => {
-  const { userId, token } = getState().user
+  const { userId, accessToken } = getState().user
   dispatch({ type: STUDENT_UPDATE })
   apiProvider
-    .put('students', userId, data, token)
+    .put('students', userId, data, accessToken)
     .then(res => {
       if (res.status === 200) {
         dispatch({ type: STUDENT_UPDATE_COMPLETE, payload: res.data.student })
@@ -156,7 +156,7 @@ const updateStudent = data => (dispatch, getState) => {
 }
 
 const enrollThisJob = jobId => (dispatch, getState) => {
-  const { userId, token } = getState().user
+  const { userId, accessToken } = getState().user
   const todayDate = Date.now()
   const today = dateToISOString(todayDate)
   const data = {
@@ -166,7 +166,7 @@ const enrollThisJob = jobId => (dispatch, getState) => {
   }
   dispatch({ type: ENROLL_THIS_JOB })
   apiProvider
-    .post(`job_openings/${jobId}/enrollments`, data, token)
+    .post(`job_openings/${jobId}/enrollments`, data, accessToken)
     .then(res => {
       dispatch({ type: ENROLL_THIS_JOB_COMPLETE, payload: res.data.enrollments })
       dispatch(sharedActions.setJobsEnrollable(res.data.enrollments))
@@ -175,10 +175,10 @@ const enrollThisJob = jobId => (dispatch, getState) => {
 }
 
 const unenrollThisJob = enrollId => (dispatch, getState) => {
-  const { token } = getState().user
+  const { accessToken } = getState().user
   dispatch({ type: UNENROLL_THIS_JOB })
   apiProvider
-    .remove(`enrollments`, enrollId, token)
+    .remove(`enrollments`, enrollId, accessToken)
     .then(res => {
       dispatch({ type: UNENROLL_THIS_JOB_COMPLETE, payload: res.data.enrollments })
       dispatch(sharedActions.setJobsEnrollable(res.data.enrollments))

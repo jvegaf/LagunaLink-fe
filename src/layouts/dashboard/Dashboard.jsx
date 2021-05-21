@@ -21,8 +21,8 @@ export const DashBoard = props => {
   const { id } = useParams();
   const user = useSelector(state => state.user)
   const navUser = { ...user }
-  const navConf = conf(user.role)
-  const view = checkRequest({...props, role: user.role, detailId: id})
+  const navConf = conf(user.userRole)
+  const view = checkRequest({...props, userRole: user.userRole, detailId: id})
   
   return (
     <Root config={config} style={{ minHeight: '100vh' }}>
@@ -52,16 +52,16 @@ export const DashBoard = props => {
   )
 }
 
-const conf = role => role === 'ROLE_STUDENT' ? studentNavConf : companyNavConf
+const conf = userRole => userRole === 'ROLE_STUDENT' ? studentNavConf : companyNavConf
 
-const profileView = role => role === 'ROLE_STUDENT' ? <StudentProfileView /> : <CompanyProfileView />
+const profileView = userRole => userRole === 'ROLE_STUDENT' ? <StudentProfileView /> : <CompanyProfileView />
 
 const checkRequest = props => {
   switch (props.reqView) {
     case 'dashboard':
       return <DashboardListView />
     case 'profile':
-      return profileView(props.role)
+      return profileView(props.userRole)
     case 'jobOpenings':
       return <JobOpeningsView />
     case 'jobOpeningDetail':

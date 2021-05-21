@@ -4,7 +4,7 @@ import {
 } from 'react-feather'
 
 const companyNavConf = {
-  role: 'Empresa',
+  userRole: 'Empresa',
   items: [
     {
       href: '/app/dashboard',

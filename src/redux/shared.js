@@ -90,31 +90,31 @@ export default sharedReducer
 
 // actions
 
-const fetchAllJobOpen = token => dispatch => {
+const fetchAllJobOpen = accessToken => dispatch => {
   dispatch({ type: FETCH_JOB_OPENINGS })
   apiProvider
-    .getAll('job_openings', token)
+    .getAll('job_openings', accessToken)
     .then(res => dispatch({ type: FETCH_JOBS_COMPLETE, payload: res.data.jobOpenings }))
     .catch(e => dispatch({ type: FETCH_ERROR }))
 }
 
-const fetchAllCompanies = token => (dispatch, getState) => {
+const fetchAllCompanies = accessToken => (dispatch, getState) => {
   dispatch({ type: FETCH_COMPANIES })
   apiProvider
-    .getAll('companies', token)
+    .getAll('companies', accessToken)
     .then(async res => {
       const companies = [...res.data.companies]
       for (const company of res.data.companies) {
-        company.avatar = await getCompanyAvatar(company.id, token)
+        company.avatar = await getCompanyAvatar(company.id, accessToken)
       }
       dispatch({ type: FETCH_COMPANIES_COMPLETE, payload: companies })
     })
     .catch(e => dispatch({ type: FETCH_ERROR }))
 }
 
-const getCompanyAvatar = async (companyId, token) => {
+const getCompanyAvatar = async (companyId, accessToken) => {
   try {
-    const response = await apiProvider.getSingle(`user/${companyId}`, 'avatar', token)
+    const response = await apiProvider.getSingle(`user/${companyId}`, 'avatar', accessToken)
     return response.data.avatarURL
   } catch (e) {
     console.error(e.message)

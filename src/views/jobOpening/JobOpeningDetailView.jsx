@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 export const JobOpeningDetailView = props => {
   const history = useHistory()
   const confirm = useConfirm()
-  const { detailId, role } = props
+  const { detailId, userRole } = props
   const styles = useStyles()
   const dispatch = useDispatch()
   const [jobOpening, setJobOpening] = useState({})
@@ -72,7 +72,7 @@ export const JobOpeningDetailView = props => {
       setJobOpening(jobOpening)
       setHiringDate(dateFormatter(jobOpening.hiringDate))
       setCompany(company)
-      const isCompany = role !== 'ROLE_STUDENT'
+      const isCompany = userRole !== 'ROLE_STUDENT'
       const notEnrollable = isCompany || jobOpening.enrolled
       setHideEnroll(notEnrollable)
     }

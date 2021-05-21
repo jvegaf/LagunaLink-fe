@@ -1,7 +1,7 @@
 import { BarChart as BarChartIcon, User as UserIcon, UserPlus as UserPlusIcon } from 'react-feather'
 
 const studentNavConf = {
-  role: 'Estudiante',
+  userRole: 'Estudiante',
   items: [
     {
       href: '/app/dashboard',

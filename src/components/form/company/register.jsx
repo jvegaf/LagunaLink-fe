@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Grid, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
@@ -24,73 +24,150 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     paddingLeft: theme.spacing(5),
-    paddingRight: theme.spacing(5)
+    paddingRight: theme.spacing(5),
   },
 }))
 
-
 export const CompanyForm = props => {
+  const { email, name, description, address, postalCode, region, city, isBusy, newRegistry } = props
   const classes = useStyles()
+  const [showActions, setShowActions] = useState(false)
   const { control, handleSubmit, setValue, errors, formState } = useForm({
     resolver: yupResolver(schema),
   })
   const dispatch = useDispatch()
-  
+
   useEffect(() => {
-    if (!props.newRegistry) {
-      setValue('email', props.email)
-      setValue('name', props.name)
-      setValue('description', props.description)
-      setValue('address', props.address)
-      setValue('postalCode', props.postalCode)
-      setValue('region', props.region)
-      setValue('city', props.city)
-    }
+    setValue('email', email)
+    setValue('name', name)
+    setValue('description', description)
+    setValue('address', address)
+    setValue('postalCode', postalCode)
+    setValue('region', region)
+    setValue('city', city)
+    setShowActions(false)
   }, [props])
 
+  useEffect(() => {
+    setShowActions(true)
+  }, [formState.isDirty])
+
+  useEffect(() => {
+    setShowActions(false)
+  }, [formState.isSubmitting])
+
   const onSubmit = data => {
-    if (props.newRegistry) {
-      dispatch(actions.registerCompany(data))
-    }
-    // const action = props.newRegistry === true ? actions.registerCompany() : actions.updateCompany() 
-  };
+    newRegistry ? dispatch(actions.registerCompany(data)) : dispatch(actions.updateCompany(data))
+  }
 
   return (
     <div>
       <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
-          <Grid item hidden={props.newRegistry} xs={12}>
-            <TextField className={classes.formControl} size="small" variant="outlined" label="Correo Electronico" inputProps={{ readOnly: true }} name="email"  value={props.email} fullWidth/>
+          <Grid item hidden={newRegistry} xs={12}>
+            <TextField
+              className={classes.formControl}
+              size="small"
+              variant="outlined"
+              label="Correo Electronico"
+              inputProps={{ readOnly: true }}
+              name="email"
+              value={email}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12}>
-            <Controller as={TextField} className={classes.formControl} defaultValue="" variant="outlined" size="small" label="Nombre" name="name" 
-            control={control} error={Boolean(errors.name)} fullWidth/>
+            <Controller
+              as={TextField}
+              className={classes.formControl}
+              defaultValue=""
+              variant="outlined"
+              size="small"
+              label="Nombre"
+              name="name"
+              control={control}
+              error={Boolean(errors.name)}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12}>
-            <Controller as={TextField} multiline className={classes.formControl} variant="outlined" defaultValue="" size="small" label="Descripcion" name="description" error={Boolean(errors.description)}
-              control={control} fullWidth/>
+            <Controller
+              as={TextField}
+              multiline
+              className={classes.formControl}
+              variant="outlined"
+              defaultValue=""
+              size="small"
+              label="Descripcion"
+              name="description"
+              error={Boolean(errors.description)}
+              control={control}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12}>
-            <Controller as={TextField} className={classes.formControl} variant="outlined" defaultValue="" size="small" label="Direccion" name="address" error={Boolean(errors.address)}
-              control={control} fullWidth/>
+            <Controller
+              as={TextField}
+              className={classes.formControl}
+              variant="outlined"
+              defaultValue=""
+              size="small"
+              label="Direccion"
+              name="address"
+              error={Boolean(errors.address)}
+              control={control}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Controller as={TextField} className={classes.formControl} variant="outlined" defaultValue="" size="small" label="Codigo Postal" name="postalCode" error={Boolean(errors.postalCode)}
-              control={control} fullWidth/>
+            <Controller
+              as={TextField}
+              className={classes.formControl}
+              variant="outlined"
+              defaultValue=""
+              size="small"
+              label="Codigo Postal"
+              name="postalCode"
+              error={Boolean(errors.postalCode)}
+              control={control}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Controller as={TextField} className={classes.formControl} variant="outlined" defaultValue="" size="small" label="Provincia" name="region" error={Boolean(errors.region)}
-              control={control} fullWidth/>
+            <Controller
+              as={TextField}
+              className={classes.formControl}
+              variant="outlined"
+              defaultValue=""
+              size="small"
+              label="Provincia"
+              name="region"
+              error={Boolean(errors.region)}
+              control={control}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Controller as={TextField} className={classes.formControl} variant="outlined" defaultValue="" size="small" 
-            label="Poblacion" name="city" error={Boolean(errors.city)} control={control} fullWidth/>
+            <Controller
+              as={TextField}
+              className={classes.formControl}
+              variant="outlined"
+              defaultValue=""
+              size="small"
+              label="Poblacion"
+              name="city"
+              error={Boolean(errors.city)}
+              control={control}
+              fullWidth
+            />
           </Grid>
-          <Grid item xs={12} hidden={!formState.isDirty && !props.newRegistry}>
-            <Button color="primary" className={classes.button} disabled={props.isBusy} variant="text" type="submit" fullWidth>
-              Guardar 
-            </Button>
-          </Grid>
+          {showActions && (
+            <Grid item xs={12}>
+              <Button color="primary" className={classes.button} disabled={isBusy} variant="text" type="submit" fullWidth>
+                Guardar
+              </Button>
+            </Grid>
+          )}
         </Grid>
       </form>
     </div>
