@@ -76,7 +76,7 @@ const handleAdd = () => {
               </TableRow>
             </TableHead>
             <TableBody >
-              {jobs !== null &&
+              {jobs &&
                 jobs.map(job => (
                   <TableRow hover key={uuid()}>
                     <TableCell className={classes.cell}>{job.company}</TableCell>

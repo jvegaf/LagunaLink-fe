@@ -3,7 +3,7 @@ import { green } from '@material-ui/core/colors'
 import { useSnackbar } from 'notistack'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { actions } from '../../redux/user'
 import { EmailInput } from '../form/__shared__/EmailInput'
@@ -64,8 +64,8 @@ const useStyles = makeStyles(theme => ({
 export const SignInComponent = () => {
   const history = useHistory()
   const { enqueueSnackbar } = useSnackbar()
-  const needStudentRegister = useSelector(state => state.user.needRegister)
-  const needCompanyRegister = useSelector(state => state.user.needCompanyRegister)
+  const needStudentRegister = useSelector(state => state.user.needStudentRegister, shallowEqual)
+  const needCompanyRegister = useSelector(state => state.user.needCompanyRegister, shallowEqual)
   const isSignedIn = useSelector(state => state.user.isSignedIn)
   const isBusy = useSelector(state => state.user.isBusy)
   const inactiveError = useSelector(state => state.user.inactiveError)
@@ -83,13 +83,13 @@ export const SignInComponent = () => {
   }, [])
 
   useEffect(() => {
-    if (needStudentRegister === true) {
+    if (needStudentRegister) {
       history.push('/register/student')
     }
   }, [needStudentRegister])
 
   useEffect(() => {
-    if (needCompanyRegister === true) {
+    if (needCompanyRegister) {
       history.push('/register/company')
     }
   }, [needCompanyRegister])
