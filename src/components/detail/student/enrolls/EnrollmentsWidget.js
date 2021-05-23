@@ -33,7 +33,7 @@ export const EnrollmentsWidget = props => {
       <PerfectScrollbar>
         <Box className={classes.box} minWidth={500}>
           <List>
-            {enrolls.map((enroll, index) => (
+            {enrolls && enrolls.map((enroll, index) => (
                 <EnrollmentItem key={uuid()} enroll={enroll} index={index} view={view} remove={remove} />
               ))}
           </List>

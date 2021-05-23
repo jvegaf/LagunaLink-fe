@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { Container, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { Profile } from '../../../components/detail/account/Profile'
@@ -43,22 +44,15 @@ export const EnrollmentsView = () => {
     history.push(`/app/detail/job_opening/${enroll.job_opening}`)
   }
 
-  const updateEnrolls = (enrollmnts, comps, jobs) => {
-    return enrollmnts.map(en => {
-      const job = jobOpenings.find(j => j.id === en.job_opening)
-      const company = companies.find(comp => comp.id === job.company)
-      en.jobPosition = job.position
-      en.companyName = company.name
-      return en
-    })
-  }
-
-  useEffect(() => {
-    if (companies && jobOpenings) {
-      const _enrolls = updateEnrolls(enrollments, companies, jobOpenings)
-      setEnrolls(_enrolls)
-    }
-  }, [enrollments])
+  // const updateEnrolls = (enrollmnts, comps, jobs) => {
+  //   return enrollmnts.map(en => {
+  //     const job = jobOpenings.find(j => j.id === en.job_opening)
+  //     const company = companies.find(comp => comp.id === job.company)
+  //     en.jobPosition = job.position
+  //     en.companyName = company.name
+  //     return en
+  //   })
+  // }
 
   const props = { enrolls, remove: actionRemove, view: actionView }
   return (
@@ -69,7 +63,7 @@ export const EnrollmentsView = () => {
         </Grid>
         <Grid item container direction="column" spacing={3} xl={6} lg={8} md={6} xs={12}>
           <Grid item className={classes.gridItem}>
-            {enrolls &&  <EnrollmentsWidget {...props} /> }
+            {enrollments &&  <EnrollmentsWidget {...props} /> }
           </Grid>
         </Grid>
       </Grid>

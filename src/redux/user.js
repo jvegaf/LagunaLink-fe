@@ -393,7 +393,6 @@ const clearStorage = () => {
 }
 
 const setUserProfile = (payload, dispatch) => {
-  debugger
   switch (payload.userRole) {
     case ROLE_COMPANY:
       dispatch(companyActions.setProfile(payload.profile))

@@ -41,6 +41,7 @@ export const JobOpeningsView = () => {
   const widgetProps = { jobs, view: onView, remove: onRemove }
 
   useEffect(() => {
+    if(!jobOpenings) {return;}
     if (!jobOpenings.length) {return;}
     const _jobs = jobOpenings.filter(job => moment(job.hiringDate) > moment())
     setJobs(_jobs)

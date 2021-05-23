@@ -22,7 +22,7 @@ export const StudentRegisterView = () => {
   const classes = useStyles()
   const registered = useSelector(state => state.student.registered, shallowEqual)
   useEffect(() => {
-    if (registered === true){
+    if (registered){
       history.push('/app/dashboard')
     }
   }, [registered])

@@ -1,7 +1,7 @@
 import { Container, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, shallowEqual } from 'react-redux'
 import { Profile } from '../../../components/detail/account/Profile'
 import { LanguagesWidget } from '../../../components/detail/student/curriculum/Languages'
 import { Qualification } from '../../../components/detail/student/curriculum/Qualification'
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 export const StudentProfileView = () => {
   const email = useSelector(state => state.user.email)
   const user = useSelector(state => state.user)
-  const student = useSelector(state => state.student)
+  const student = useSelector(state => state.student, shallowEqual)
   const classes = useStyles()
 
   const props = {...student, email, newRegistry: false}
