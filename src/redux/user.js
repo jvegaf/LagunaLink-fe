@@ -9,8 +9,6 @@ const initialState = {
   email: '',
   isBusy: false,
   userRole: '',
-  needStudentRegister: false,
-  needCompanyRegister: false,
   isSignedIn: false,
   isSignedUp: false,
   inactiveError: false,
@@ -26,14 +24,12 @@ const initialState = {
 const ROLE_STUDENT = 'ROLE_STUDENT'
 const ROLE_COMPANY = 'ROLE_COMPANY'
 const STATUS_OK = 200
-const REGISTER_NEEDED = 230
 const BAD_REQUEST = 400
 const USER_INACTIVE = 450
 
+const GET_PROFILE = 'GET_PROFILE'
 const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS'
 const SIGNIN = 'SIGNIN'
-const NEED_REGISTER = 'NEED_REGISTER'
-const REGISTER_COMPLETED = 'REGISTER_COMPLETED'
 const SIGNIN_ERROR = 'SIGNIN_ERROR'
 const INACTIVE_ERROR = 'INACTIVE_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
@@ -65,6 +61,12 @@ const userReducer = (state = initialState, action) => {
         ...state,
         isBusy: true,
         sigupError: null,
+      }
+
+    case GET_PROFILE:
+      return {
+        ...state,
+        isBusy: true,
       }
 
     case AVATAR_UPLOAD:
@@ -148,26 +150,6 @@ const userReducer = (state = initialState, action) => {
     case SIGN_OUT:
       return initialState
 
-    case NEED_REGISTER:
-      return {
-        ...state,
-        userId: action.payload.userId,
-        accessToken: action.payload.accessToken,
-        email: action.payload.email,
-        userRole: action.payload.userRole,
-        isBusy: false,
-        needStudentRegister: action.payload.userRole === ROLE_STUDENT,
-        needCompanyRegister: action.payload.userRole === ROLE_COMPANY,
-      }
-
-    case REGISTER_COMPLETED:
-      return {
-        ...state,
-        needCompanyRegister: false,
-        needStudentRegister: false,
-        isSignedIn: true,
-      }
-
     case SET_NAME:
       return {
         ...state,
@@ -201,9 +183,6 @@ const signIn = data => dispatch => {
   apiProvider
     .post('auth/signin', data)
     .then(response => {
-      if (response.status === REGISTER_NEEDED) {
-        dispatch({ type: NEED_REGISTER, payload: response.data })
-      }
       if (response.status === STATUS_OK) {
         fetchCompaniesAndJobs(dispatch, response.data.accessToken)
 
@@ -212,8 +191,8 @@ const signIn = data => dispatch => {
         setUserProfile(payload, dispatch)
 
         data.rememberMe
-          ? persistInLocalStorage({ ...payload, accessToken: response.data.accessToken })
-          : persistInSessionStorage({ ...payload, accessToken: response.data.accessToken })
+          ? persistInLocalStorage(payload)
+          : persistInSessionStorage(payload)
 
         dispatch({
           type: SIGNIN_SUCCESS,
@@ -257,12 +236,6 @@ const setPrefName = name => dispatch => {
   dispatch({ type: SET_NAME, payload: name })
 }
 
-const unsetRegister =
-  ({ userRole, userId, accessToken }) =>
-  dispatch => {
-    dispatch({ type: REGISTER_COMPLETED })
-  }
-
 const uploadAvatar = file => (dispatch, getState) => {
   dispatch({ type: AVATAR_UPLOAD })
   const { accessToken, userId } = getState().user
@@ -288,7 +261,7 @@ const deleteAvatar = dispatch => (dispatch, getState) => {
   const { accessToken, userId } = getState().user
 
   apiProvider
-    .removeAvatar(userId, accessToken)
+    .remove('avatar',userId, accessToken)
     .then(res => {
       if (res.status === 200) {
         dispatch({ type: AVATAR_DELETED })
@@ -322,16 +295,10 @@ const getCredentials = () => dispatch => {
     const userId = localStorage.getItem('userId')
     const userRole = localStorage.getItem('userRole')
     const avatar = localStorage.getItem('avatarURI')
-    const profile = localStorage.getItem('profile')
 
-    setUserProfile({userRole, profile}, dispatch);
+    dispatch(actions.getProfile(LStoken, {email, userId, userRole, avatar}))
 
     fetchCompaniesAndJobs(dispatch, LStoken)
-
-    dispatch({
-      type: SIGNIN_SUCCESS,
-      payload: { email, userId, userRole, avatar, profile },
-    })
   }
 
   if (SStoken) {
@@ -339,16 +306,34 @@ const getCredentials = () => dispatch => {
     const userId = sessionStorage.getItem('userId')
     const userRole = sessionStorage.getItem('userRole')
     const avatar = sessionStorage.getItem('avatarURI')
-    const profile = sessionStorage.getItem('profile')
 
-    setUserProfile({userRole, profile}, dispatch);
+    dispatch(actions.getProfile(SStoken,{email, userId, userRole, avatar}))
 
     fetchCompaniesAndJobs(dispatch, SStoken)
+  }
+}
 
+const getProfile = (accessToken, props) => dispatch => {
+  dispatch({type: GET_PROFILE})
+  apiProvider.getAll('user/profile', accessToken)
+  .then(res => {
+    dispatch(actions.setUserProfile({...props, profile: res.data.profile}));
     dispatch({
       type: SIGNIN_SUCCESS,
-      payload: { email, userId, userRole, avatar, profile },
+      payload: props
     })
+  }).catch(e => console.error({e}))
+}
+
+const setUserProfile = payload => dispatch => {
+  switch (payload.userRole) {
+    case ROLE_COMPANY:
+      dispatch(companyActions.setProfile(payload.profile))
+      break
+
+    case ROLE_STUDENT:
+      dispatch(studentActions.setProfile(payload.profile))
+      break
   }
 }
 
@@ -356,9 +341,10 @@ export const actions = {
   signIn,
   signOut,
   getCredentials,
+  getProfile,
+  setUserProfile,
   signUp,
   update,
-  unsetRegister,
   setPrefName,
   uploadAvatar,
   deleteAvatar,
@@ -375,7 +361,6 @@ const persistInLocalStorage = payload => {
   localStorage.setItem('userId', payload.userId)
   localStorage.setItem('userRole', payload.userRole)
   localStorage.setItem('avatarURI', payload.avatar)
-  localStorage.setItem('profile', payload.profile)
 }
 
 const persistInSessionStorage = payload => {
@@ -384,22 +369,9 @@ const persistInSessionStorage = payload => {
   sessionStorage.setItem('userId', payload.userId)
   sessionStorage.setItem('userRole', payload.userRole)
   sessionStorage.setItem('avatarURI', payload.avatar)
-  sessionStorage.setItem('profile', payload.profile)
 }
 
 const clearStorage = () => {
   sessionStorage.clear()
   localStorage.clear()
-}
-
-const setUserProfile = (payload, dispatch) => {
-  switch (payload.userRole) {
-    case ROLE_COMPANY:
-      dispatch(companyActions.setProfile(payload.profile))
-      break
-
-    case ROLE_STUDENT:
-      dispatch(studentActions.setProfile(payload.profile))
-      break
-  }
 }

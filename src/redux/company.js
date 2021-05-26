@@ -1,6 +1,5 @@
 import moment from 'moment'
 import { apiProvider } from '../services/api/api-provider'
-import { actions as userActions } from './user'
 
 const initialState = {
   name: '',
@@ -9,7 +8,6 @@ const initialState = {
   postalCode: '',
   region: '',
   city: '',
-  registered: false,
   jobOpenings: null,
   enrolls: null,
   students: null,
@@ -18,8 +16,6 @@ const initialState = {
 }
 
 // const types
-const COMPANY_REGISTER = 'COMPANY_REGISTER'
-const COMPANY_REGISTER_COMPLETE = 'COMPANY_REGISTER_COMPLETE'
 const SET_PROFILE = 'SET_COMPANY_PROFILE'
 const ADD_JOB_OPENING = 'ADD_JOB_OPENING'
 const ADD_JOB_OPENING_COMPLETE = 'ADD_JOB_OPENING_COMPLETE'
@@ -36,12 +32,6 @@ const companyReducer = (state = initialState, action) => {
   switch (action.type) {
     case SIGN_OUT:
       return initialState
-
-    case COMPANY_REGISTER:
-      return {
-        ...state,
-        isBusy: true,
-      }
 
     case COMPANY_UPDATE:
       return {
@@ -111,19 +101,6 @@ const companyReducer = (state = initialState, action) => {
         taskError: true,
       }
 
-    case COMPANY_REGISTER_COMPLETE:
-      return {
-        ...state,
-        isBusy: false,
-        registered: true,
-        name: action.payload.name,
-        description: action.payload.description,
-        address: action.payload.address,
-        postalCode: action.payload.postalCode,
-        region: action.payload.region,
-        city: action.payload.city,
-      }
-
     case SET_ERROR:
       return {
         ...state,
@@ -144,18 +121,6 @@ const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
 const setProfile = profile => dispatch => {
   dispatch({ type: SET_PROFILE, payload: profile }) 
-}
-
-const registerCompany = data => (dispatch, getState) => {
-  dispatch({ type: COMPANY_REGISTER })
-  const {accessToken, userId} = getState().user
-  apiProvider
-    .post('companies', data, accessToken)
-    .then(() => {
-      dispatch(userActions.unsetRegister({userRole: 'ROLE_COMPANY', userId, accessToken}))
-      dispatch({ type: COMPANY_REGISTER_COMPLETE, payload: data })
-    })
-    .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
 
 const updateCompany = data => (dispatch, getState) => {
@@ -198,7 +163,6 @@ const removeJobOpening = jobId => (dispatch, getState) => {
 export const actions = {
   signOut,
   setProfile,
-  registerCompany,
   updateCompany,
   addJobOpening,
   removeJobOpening,
