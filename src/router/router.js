@@ -20,8 +20,6 @@ export default function Router() {
         />
         <Route path="/signin"><Main reqView={'signin'} /></Route>
         <Route path="/signup"><Main reqView={'signup'} /></Route>
-        <Route path="/register/student"><Main reqView={'studentRegistry'} /></Route>
-        <Route path="/register/company"><Main reqView={'companyRegistry'} /></Route>
         <Route path="/auth/confirmed"><Main reqView={'confirmed'} /></Route>
         <PrivateRoute exact path="/app"><DashBoard reqView={'dashboard'}/></PrivateRoute>
         <PrivateRoute path="/app/dashboard"><DashBoard reqView={'dashboard'}/></PrivateRoute>

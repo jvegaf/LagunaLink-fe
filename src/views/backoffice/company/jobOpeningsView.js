@@ -1,7 +1,6 @@
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import moment from 'moment'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { JobOpening } from '../../../components/detail/company/jobOpening/JobOpening'
 import { JobOpeningsWidget } from '../../../components/detail/company/jobOpening/JobOpeningsWidget'
@@ -27,7 +26,6 @@ export const JobOpeningsView = () => {
   const dispatch = useDispatch()
   const jobOpenings = useSelector(state => state.company.jobOpenings, shallowEqual)
   const classes = useStyles()
-  const [jobs, setJobs] = useState(undefined)
   const [jobOpen, setJobOpen] = useState(undefined)
   const onView = jobId => {
     const job = jobOpenings.find(j => j.id === jobId)
@@ -38,23 +36,7 @@ export const JobOpeningsView = () => {
     dispatch(actions.removeJobOpening(jobId))
   }
 
-  const widgetProps = { jobs, view: onView, remove: onRemove }
-
-  useEffect(() => {
-    if(!jobOpenings) {return;}
-    if (!jobOpenings.length) {return;}
-    const _jobs = jobOpenings.filter(job => moment(job.hiringDate) > moment())
-    setJobs(_jobs)
-    const job = _jobs[0]
-    const jobProps = { ...job, readOnly: true }
-    setJobOpen(jobProps)
-  }, [jobOpenings])
-
-  useEffect(() => {
-    if (jobs){
-      dispatch(actions.getEnrollsOfJobs(jobs))
-    }
-  }, [jobs])
+  const widgetProps = { jobOpenings, view: onView, remove: onRemove }
 
   return (
     <Grid container className={classes.gridContainer}>
