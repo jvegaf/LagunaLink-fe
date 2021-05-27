@@ -2,18 +2,18 @@ import { Avatar, Box, Divider, List, makeStyles, Toolbar, Typography } from '@ma
 import React from 'react'
 import NavItem from './NavItem'
 
-
-
 const useStyles = makeStyles(() => ({
   avatar: {
     width: 64,
     height: 64,
-    marginBottom: 10
+    marginBottom: 10,
   },
 }))
 
-const NavBar = ({ user, config}) => {
+const NavBar = ({ user, config }) => {
   const classes = useStyles()
+
+  const userName = user.profile !== null ? `${user.profile.name} ${user.profile.surname || ''}` : ''
 
   return (
     <Box height="100%" display="flex" flexDirection="column">
@@ -22,7 +22,7 @@ const NavBar = ({ user, config}) => {
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Avatar className={classes.avatar} src={user.avatar} />
         <Typography className={classes.name} color="textPrimary" variant="h5">
-          {user.prefName}
+          {userName}
         </Typography>
         <Typography color="textSecondary" variant="body2">
           {config.userRole}

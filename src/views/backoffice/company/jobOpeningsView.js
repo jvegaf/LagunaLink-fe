@@ -1,6 +1,6 @@
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { JobOpening } from '../../../components/detail/company/jobOpening/JobOpening'
 import { JobOpeningsWidget } from '../../../components/detail/company/jobOpening/JobOpeningsWidget'
@@ -28,6 +28,13 @@ export const JobOpeningsView = () => {
     setJobOpen({...job, readOnly: true})
   }
 
+  useEffect(() => {
+    if(jobOpenings !== undefined){ 
+      const jb = jobOpenings[0]
+      setJobOpen({...jb, readOnly: true})
+    }
+  }, [jobOpenings])
+
   const onRemove = jobId => {
     dispatch(actions.removeJobOpening(jobId))
   }
@@ -36,12 +43,12 @@ export const JobOpeningsView = () => {
 
   return (
     <Grid container spacing={4} className={classes.root}>
-      <Grid item xl={4} lg={4} md={5} xs={12}>
+      <Grid item lg={5} md={5} xs={12}>
         <JobOpeningsWidget {...widgetProps} />
       </Grid>
-      <Grid item xl={5} lg={7} md={5} xs={12}>
+      <Grid item lg={7} md={5} xs={12}>
         <Grid item className={classes.gridItem}>
-          <JobOpening {...jobOpen} />
+          {jobOpen !== undefined && <JobOpening {...jobOpen} />}
         </Grid>
       </Grid>
     </Grid>
