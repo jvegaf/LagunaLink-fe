@@ -58,8 +58,8 @@ const EnrollmentItem = props => {
           <Avatar>{idx}</Avatar>
         </Item>
         <Info useStyles={usePopularInfoStyles}>
-          <InfoSubtitle>{enroll.companyName}</InfoSubtitle>
-          <InfoTitle>{enroll.jobPosition}</InfoTitle>
+          <InfoSubtitle>{enroll.companyDetail.name}</InfoSubtitle>
+          <InfoTitle>{enroll.jobDetail.position}</InfoTitle>
           <InfoCaption>{enrollDate}</InfoCaption>
         </Info>
         <div className={classes.actions}>

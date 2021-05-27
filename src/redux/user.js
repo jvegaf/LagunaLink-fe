@@ -16,6 +16,7 @@ const initialState = {
   prevRegisteredError: false,
   avatarDeleteError: null,
   profile: null,
+  taskError: null,
   prefName: '',
   avatar: '',
 }
@@ -28,6 +29,8 @@ const BAD_REQUEST = 400
 const USER_INACTIVE = 450
 
 const GET_PROFILE = 'GET_PROFILE'
+const GET_PROFILE_COMPLETE = 'GET_PROFILE_COMPLETE'
+const GET_PROFILE_ERROR = 'GET_PROFILE_ERROR'
 const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS'
 const SIGNIN = 'SIGNIN'
 const SIGNIN_ERROR = 'SIGNIN_ERROR'
@@ -67,6 +70,21 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         isBusy: true,
+        taskError: null
+      }
+
+    case GET_PROFILE_COMPLETE:
+      return {
+        ...state,
+        isBusy: false,
+        profile: action.payload
+      }
+
+    case GET_PROFILE_ERROR:
+      return {
+        ...state,
+        isBusy: false,
+        taskError: action.payload
       }
 
     case AVATAR_UPLOAD:
@@ -99,7 +117,6 @@ const userReducer = (state = initialState, action) => {
         accessToken: action.payload.accessToken,
         userRole: action.payload.userRole,
         avatar: action.payload.avatar,
-        profile: action.payload.profile,
         isSignedIn: true,
         isBusy: false,
       }
@@ -188,7 +205,7 @@ const signIn = data => dispatch => {
 
         const payload = { ...response.data, email: data.email }
 
-        setUserProfile(payload, dispatch)
+        dispatch(actions.getProfile(response.data.accessToken, payload))
 
         data.rememberMe
           ? persistInLocalStorage(payload)
@@ -291,25 +308,37 @@ const getCredentials = () => dispatch => {
   const SStoken = sessionStorage.getItem('accessToken')
 
   if (LStoken) {
-    const email = localStorage.getItem('userEmail')
+    const email = localStorage.getItem('email')
     const userId = localStorage.getItem('userId')
     const userRole = localStorage.getItem('userRole')
     const avatar = localStorage.getItem('avatarURI')
 
-    dispatch(actions.getProfile(LStoken, {email, userId, userRole, avatar}))
+    const props = { email, userId, userRole, avatar }
+    dispatch(actions.getProfile(LStoken, props))
 
     fetchCompaniesAndJobs(dispatch, LStoken)
+
+    dispatch({
+      type: SIGNIN_SUCCESS,
+      payload: props
+    })
   }
 
   if (SStoken) {
-    const email = sessionStorage.getItem('userEmail')
+    const email = sessionStorage.getItem('email')
     const userId = sessionStorage.getItem('userId')
     const userRole = sessionStorage.getItem('userRole')
     const avatar = sessionStorage.getItem('avatarURI')
 
-    dispatch(actions.getProfile(SStoken,{email, userId, userRole, avatar}))
+    const props = { email, userId, userRole, avatar }
+    dispatch(actions.getProfile(SStoken,props))
 
     fetchCompaniesAndJobs(dispatch, SStoken)
+
+    dispatch({
+      type: SIGNIN_SUCCESS,
+      payload: props
+    })
   }
 }
 
@@ -318,11 +347,9 @@ const getProfile = (accessToken, props) => dispatch => {
   apiProvider.getAll('user/profile', accessToken)
   .then(res => {
     dispatch(actions.setUserProfile({...props, profile: res.data.profile}));
-    dispatch({
-      type: SIGNIN_SUCCESS,
-      payload: props
-    })
-  }).catch(e => console.error({e}))
+    dispatch({type: GET_PROFILE_COMPLETE, payload: res.data.profile})
+
+  }).catch(e => {dispatch({type: GET_PROFILE_ERROR, payload: e.response.data})})
 }
 
 const setUserProfile = payload => dispatch => {

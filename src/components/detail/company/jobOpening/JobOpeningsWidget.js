@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const JobOpeningsWidget = props => {
-  const { jobs, view, remove } = props
+  const { jobOpenings, view, remove } = props
   const [dialogShow, setDialogShow] = useState(false)
   const classes = useStyles()
   const hideDialog = () => {
@@ -49,8 +49,8 @@ export const JobOpeningsWidget = props => {
       <CardHeader title="Ofertas Publicadas" />
       <Divider />
       <PerfectScrollbar>
-        <Box className={classes.box} minWidth={500}>
-          <List>{jobs && jobs.map((job, index) => <JobItem key={uuid()} job={job} index={index} {...props} />)}</List>
+        <Box className={classes.box} minWidth={400}>
+          <List>{jobOpenings && jobOpenings.map((job, index) => <JobItem key={uuid()} job={job} index={index} {...props} />)}</List>
         </Box>
       </PerfectScrollbar>
       <Box className={classes.footer}>

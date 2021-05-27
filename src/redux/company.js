@@ -9,8 +9,6 @@ const initialState = {
   region: '',
   city: '',
   jobOpenings: null,
-  enrolls: null,
-  students: null,
   isBusy: false,
   taskError: null,
 }
@@ -48,7 +46,7 @@ const companyReducer = (state = initialState, action) => {
         address: action.payload.address,
         postalCode: action.payload.postalCode,
         region: action.payload.region,
-        city: action.payload.city
+        city: action.payload.city,
       }
 
     case JOB_OPENING_UPDATE:
@@ -76,8 +74,6 @@ const companyReducer = (state = initialState, action) => {
         region: action.payload.region,
         city: action.payload.city,
         jobOpenings: action.payload.jobOpenings,
-        enrolls: action.payload.enrolls,
-        students: action.payload.students
       }
 
     case ADD_JOB_OPENING:
@@ -120,12 +116,23 @@ export default companyReducer
 const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
 const setProfile = profile => dispatch => {
-  dispatch({ type: SET_PROFILE, payload: profile }) 
+  const { jobOpenings, enrolls, students } = profile
+  const jobs = jobOpenings.map(j => {
+    j.enrolls = enrolls.map(en => {
+      en.studentDetail = students.find(s=> s._id === en.student)
+      return en
+    })
+    return j
+  })
+
+  const props = {...profile, jobOpenings: jobs}
+
+  dispatch({ type: SET_PROFILE, payload: props })
 }
 
 const updateCompany = data => (dispatch, getState) => {
   dispatch({ type: COMPANY_UPDATE })
-  const { userId, accessToken} = getState().user
+  const { userId, accessToken } = getState().user
 
   apiProvider
     .put('companies', userId, data, accessToken)

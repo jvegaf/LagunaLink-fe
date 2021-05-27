@@ -87,7 +87,7 @@ export const JobOpeningDetailView = props => {
 
   return (
     <div className={styles.root}>
-      <Grid xl={7} md={12}>
+      <Grid lg={8} md={12}>
         <Paper className={styles.container}>
           <Grid container spacing={2} direction="column" alignItems="center">
             <Grid item>

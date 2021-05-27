@@ -14,7 +14,6 @@ const initialStudentState = {
   languages: null,
   jobExperiences: null,
   enrolls: null,
-  jobOpenings: null,
   isBusy: false,
   taskError: null,
 }
@@ -53,7 +52,6 @@ const studentReducer = (state = initialStudentState, action) => {
         languages: action.payload.languages,
         jobExperiences: action.payload.job_experiences,
         enrolls: action.payload.enrolls,
-        jobOpenings: action.payload.jobOpenings
       }
 
     case ENROLL_THIS_JOB:
@@ -106,8 +104,15 @@ export default studentReducer
 
 const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
-const setProfile = profile => dispatch => {
-  dispatch({ type: SET_PROFILE, payload: profile })
+const setProfile = profile => (dispatch, getState) => {
+  const { enrolls, jobOpenings, companies } = profile;
+  const enr = enrolls.map(en =>{
+    en.jobDetail = jobOpenings.find(j => j._id === en.job_opening)
+    en.companyDetail = companies.find(c => c._id === en.jobDetail.company)
+    return en
+  })
+  const props = {...profile, enrolls: enr}
+  dispatch({ type: SET_PROFILE, payload: props })
 }
 
 const updateStudent = data => (dispatch, getState) => {
@@ -134,7 +139,7 @@ const enrollThisJob = jobId => (dispatch, getState) => {
   }
   dispatch({ type: ENROLL_THIS_JOB })
   apiProvider
-    .post(`job_openings/${jobId}/enrollments`, data, accessToken)
+    .post(`enrollments/${jobId}`, data, accessToken)
     .then(res => {
       dispatch({ type: ENROLL_THIS_JOB_COMPLETE, payload: res.data.enrollments })
       dispatch(sharedActions.setJobsEnrollable(res.data.enrollments))

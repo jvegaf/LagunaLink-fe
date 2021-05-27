@@ -1,8 +1,8 @@
 import { apiProvider } from '../services/api/api-provider'
 
 const initialState = {
-  jobOpenings: [],
-  companies: [],
+  allJobOpenings: [],
+  allCompanies: [],
   isBusy: false,
   taskError: false,
   jobsFetched: false,
@@ -41,7 +41,7 @@ const sharedReducer = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        jobOpenings: action.payload,
+        allJobOpenings: action.payload,
       }
 
     case FETCH_COMPANIES:
@@ -54,7 +54,7 @@ const sharedReducer = (state = initialState, action) => {
     case FETCH_JOBS_COMPLETE:
       return {
         ...state,
-        jobOpenings: action.payload,
+        allJobOpenings: action.payload,
         isBusy: false,
         jobsFetched: true,
       }
@@ -62,7 +62,7 @@ const sharedReducer = (state = initialState, action) => {
     case FETCH_COMPANIES_COMPLETE:
       return {
         ...state,
-        companies: action.payload,
+        allCompanies: action.payload,
         isBusy: false,
         companiesFetched: true,
       }
@@ -70,7 +70,7 @@ const sharedReducer = (state = initialState, action) => {
     case COMPANIES_UPDATED:
       return {
         ...state,
-        companies: action.payload,
+        allCompanies: action.payload,
         isBusy: false,
       }
 
@@ -114,7 +114,7 @@ const fetchAllCompanies = accessToken => (dispatch, getState) => {
 
 const getCompanyAvatar = async (companyId, accessToken) => {
   try {
-    const response = await apiProvider.getSingle(`user/${companyId}`, 'avatar', accessToken)
+    const response = await apiProvider.getSingle('avatar', companyId, accessToken)
     return response.data.avatarURL
   } catch (e) {
     console.error(e.message)
