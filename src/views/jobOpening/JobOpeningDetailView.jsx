@@ -1,9 +1,9 @@
 import { Avatar, Button, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useConfirm } from 'material-ui-confirm'
+import React from 'react'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import { actions } from '../../redux/student'
-import { useConfirm } from 'material-ui-confirm'
 import { dateFormatter } from '../../services/date/dateFormatter'
 
 const useStyles = makeStyles(theme => ({
@@ -56,45 +56,29 @@ const useStyles = makeStyles(theme => ({
 export const JobOpeningDetailView = props => {
   const history = useHistory()
   const confirm = useConfirm()
-  const { detailId, userRole } = props
+  const { jobOpening, enrollable } = props  
   const styles = useStyles()
   const dispatch = useDispatch()
-  const [jobOpening, setJobOpening] = useState({})
-  const [hiringDate, setHiringDate] = useState('')
-  const [company, setCompany] = useState({})
-  const [hideEnroll, setHideEnroll] = useState(true)
-  const shared = useSelector(state => state.shared)
 
-  useEffect(() => {
-    if (shared !== undefined) {
-      const jobOpening = shared.jobOpenings.find(job => job.id === detailId)
-      const company = shared.companies.find(comp => comp.id === jobOpening.company)
-      setJobOpening(jobOpening)
-      setHiringDate(dateFormatter(jobOpening.hiringDate))
-      setCompany(company)
-      const isCompany = userRole !== 'ROLE_STUDENT'
-      const notEnrollable = isCompany || jobOpening.enrolled
-      setHideEnroll(notEnrollable)
-    }
-  }, [shared])
+  console.log(props);
 
   const enrollAction = () => {
     confirm({ description: '¿ Quieres aplicar a esta oferta ?' }).then(() => {
-      dispatch(actions.enrollThisJob(detailId))
+      dispatch(actions.enrollThisJob(jobOpening._id || jobOpening.id))
       history.goBack()
     })
   }
 
   return (
-    <div className={styles.root}>
+    <Grid container className={styles.root}>
       <Grid lg={8} md={12}>
         <Paper className={styles.container}>
           <Grid container spacing={2} direction="column" alignItems="center">
             <Grid item>
-              <Avatar className={styles.companyAvatar} src={company.avatar} />
+              <Avatar className={styles.companyAvatar} src={jobOpening.companyDetail.avatar} />
             </Grid>
             <Grid item>
-              <Typography variant="h3">{company.name}</Typography>
+              <Typography variant="h3">{jobOpening.companyDetail.name}</Typography>
             </Grid>
             <Grid item className={styles.position}>
               <Typography variant="h1">{jobOpening.position}</Typography>
@@ -102,11 +86,11 @@ export const JobOpeningDetailView = props => {
             <Grid item container className={styles.actionsSection}>
               <Grid item>
                 <Typography align={'center'} variant="body1">fecha de contratacion: </Typography>
-                <Typography align={'center'} variant="h4">{hiringDate}</Typography>
+                <Typography align={'center'} variant="h4">{dateFormatter(jobOpening.hiringDate)}</Typography>
               </Grid>
-              {!hideEnroll && (
+              {enrollable && (
                 <Grid item>
-                  <Button hidden={hideEnroll} color="primary" variant="contained" onClick={enrollAction}>
+                  <Button color="primary" variant="contained" onClick={enrollAction}>
                     Aplicar Oferta
                   </Button>
                 </Grid>
@@ -164,6 +148,6 @@ export const JobOpeningDetailView = props => {
           </Grid>
         </Paper>
       </Grid>
-    </div>
+    </Grid>
   )
 }

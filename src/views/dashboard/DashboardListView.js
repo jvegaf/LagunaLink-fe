@@ -38,12 +38,12 @@ export const DashboardListView = () => {
   let jobs;
   if (companiesFetched && jobsOpenFetched){
     jobs = jobOpenings.filter(job => moment(job.hiringDate) > moment()).map(job => {
-      const comp = companies.find(comp => comp.id === job.company)
-      return {...job, company: comp.name, thumbnail: comp.avatar}
+      job.companyDetail = companies.find(comp => comp.id === job.company)
+      return job
     })
   }
 
-  const handleClick = job => history.push(`/app/detail/job_opening/${job.id}`)
+  const handleClick = job => history.push({pathname:'/app/detail/job_opening', state: job})
 
   return (
     <Grid container className={classes.root}>

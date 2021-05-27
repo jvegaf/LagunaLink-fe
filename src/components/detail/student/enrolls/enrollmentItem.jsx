@@ -39,7 +39,8 @@ const EnrollmentItem = props => {
   const enrollDate = dateFormatter(enroll.enrollment_date)
   const classes = useStyles()
   const handleView = (event, item) => {
-    view(item.id)
+    // view(item.id)
+    console.log({...enroll.jobDetail})
   }
   const handleRemove = (event, item) => {
     confirm({ description: '¿ Quieres retirar tu aplicación a esta oferta ?' }).then(() => {

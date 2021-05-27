@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const JobListItem = props => {
   const styles = useStyles()
-  const {company, thumbnail, position, createdAt} = props
+  const {companyDetail, position, createdAt} = props
   const _createdAt = dateFormatter(createdAt)
   const avatarStyles = useDynamicAvatarStyles({
     height: 56,
@@ -43,11 +43,11 @@ export const JobListItem = props => {
           <Avatar
             variant={'rounded'}
             classes={avatarStyles}
-            src={thumbnail}
+            src={companyDetail.avatar}
           />
         </Item>
         <Info className={styles.info} useStyles={usePopularInfoStyles}>
-          <InfoSubtitle>{company}</InfoSubtitle>
+          <InfoSubtitle>{companyDetail.name}</InfoSubtitle>
           <InfoTitle>{position}</InfoTitle>
           <InfoCaption>{_createdAt}</InfoCaption>
         </Info>

@@ -29,6 +29,7 @@ export const EnrollmentsView = () => {
   const enrolls = useSelector(state => state.student.enrolls, shallowEqual)
 
   
+  
   const actionRemove = itemId => {
     dispatch(actions.unenrollThisJob(itemId))
   }
