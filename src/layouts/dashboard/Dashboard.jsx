@@ -65,7 +65,7 @@ const checkRequest = props => {
     case 'jobOpenings':
       return <JobOpeningsView />
     case 'jobOpeningDetail':
-      return <JobOpeningDetailView {...props}/>
+      return <JobOpeningDetailView {...props.location.state}/>
     case 'enrollments':
       return <EnrollmentsView />
   }

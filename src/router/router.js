@@ -21,12 +21,12 @@ export default function Router() {
         <Route path="/signin"><Main reqView={'signin'} /></Route>
         <Route path="/signup"><Main reqView={'signup'} /></Route>
         <Route path="/auth/confirmed"><Main reqView={'confirmed'} /></Route>
-        <PrivateRoute exact path="/app"><DashBoard reqView={'dashboard'}/></PrivateRoute>
-        <PrivateRoute path="/app/dashboard"><DashBoard reqView={'dashboard'}/></PrivateRoute>
-        <PrivateRoute path="/app/profile"><DashBoard reqView={'profile'}/></PrivateRoute>
-        <PrivateRoute path="/app/enrollments"><DashBoard reqView={'enrollments'}/></PrivateRoute>
-        <PrivateRoute path="/app/detail/job_opening"><DashBoard reqView={'jobOpeningDetail'}/></PrivateRoute>
-        <PrivateRoute path="/app/job_openings"><DashBoard reqView={'jobOpenings'}/></PrivateRoute>
+        <PrivateRoute exact path="/app" component={DashBoard} reqView={'dashboard'}/>
+        <PrivateRoute path="/app/dashboard" component={DashBoard} reqView={'dashboard'}/>
+        <PrivateRoute path="/app/profile" component={DashBoard} reqView={'profile'}/>
+        <PrivateRoute path="/app/enrollments" component={DashBoard} reqView={'enrollments'}/>
+        <PrivateRoute path="/app/detail/job_opening" component={DashBoard} reqView={'jobOpeningDetail'}/>
+        <PrivateRoute path="/app/job_openings" component={DashBoard} reqView={'jobOpenings'}/>
       </Switch>
     </BrowserRouter>
   )

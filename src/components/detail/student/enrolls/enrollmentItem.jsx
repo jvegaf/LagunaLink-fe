@@ -38,9 +38,8 @@ const EnrollmentItem = props => {
   const { index, enroll, view, remove } = props
   const enrollDate = dateFormatter(enroll.enrollment_date)
   const classes = useStyles()
-  const handleView = (event, item) => {
-    // view(item.id)
-    console.log({...enroll.jobDetail})
+  const handleView = (event, enroll) => {
+    view({...enroll.jobDetail, id: enroll.jobDetail._id})
   }
   const handleRemove = (event, item) => {
     confirm({ description: '¿ Quieres retirar tu aplicación a esta oferta ?' }).then(() => {
@@ -59,7 +58,7 @@ const EnrollmentItem = props => {
           <Avatar>{idx}</Avatar>
         </Item>
         <Info useStyles={usePopularInfoStyles}>
-          <InfoSubtitle>{enroll.companyDetail.name}</InfoSubtitle>
+          <InfoSubtitle>{enroll.jobDetail.companyDetail.name}</InfoSubtitle>
           <InfoTitle>{enroll.jobDetail.position}</InfoTitle>
           <InfoCaption>{enrollDate}</InfoCaption>
         </Info>

@@ -108,7 +108,7 @@ const setProfile = profile => (dispatch, getState) => {
   const { enrolls, jobOpenings, companies } = profile;
   const enr = enrolls.map(en =>{
     en.jobDetail = jobOpenings.find(j => j._id === en.job_opening)
-    en.companyDetail = companies.find(c => c._id === en.jobDetail.company)
+    en.jobDetail.companyDetail = companies.find(c => c._id === en.jobDetail.company)
     return en
   })
   const props = {...profile, enrolls: enr}

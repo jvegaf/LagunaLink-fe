@@ -43,7 +43,7 @@ export const DashboardListView = () => {
     })
   }
 
-  const handleClick = job => history.push({pathname:'/app/detail/job_opening', state: job})
+  const handleClick = job => history.push({pathname:'/app/detail/job_opening', state: { job }})
 
   return (
     <Grid container className={classes.root}>

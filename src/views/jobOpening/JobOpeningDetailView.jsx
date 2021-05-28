@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 export const JobOpeningDetailView = props => {
   const history = useHistory()
   const confirm = useConfirm()
-  const { jobOpening, enrollable } = props  
+  const { job, enrollable } = props  
   const styles = useStyles()
   const dispatch = useDispatch()
 
@@ -64,7 +64,7 @@ export const JobOpeningDetailView = props => {
 
   const enrollAction = () => {
     confirm({ description: '¿ Quieres aplicar a esta oferta ?' }).then(() => {
-      dispatch(actions.enrollThisJob(jobOpening._id || jobOpening.id))
+      dispatch(actions.enrollThisJob(job._id || job.id))
       history.goBack()
     })
   }
@@ -75,18 +75,18 @@ export const JobOpeningDetailView = props => {
         <Paper className={styles.container}>
           <Grid container spacing={2} direction="column" alignItems="center">
             <Grid item>
-              <Avatar className={styles.companyAvatar} src={jobOpening.companyDetail.avatar} />
+              <Avatar className={styles.companyAvatar} src={job.companyDetail.avatar} />
             </Grid>
             <Grid item>
-              <Typography variant="h3">{jobOpening.companyDetail.name}</Typography>
+              <Typography variant="h3">{job.companyDetail.name}</Typography>
             </Grid>
             <Grid item className={styles.position}>
-              <Typography variant="h1">{jobOpening.position}</Typography>
+              <Typography variant="h1">{job.position}</Typography>
             </Grid>
             <Grid item container className={styles.actionsSection}>
               <Grid item>
                 <Typography align={'center'} variant="body1">fecha de contratacion: </Typography>
-                <Typography align={'center'} variant="h4">{dateFormatter(jobOpening.hiringDate)}</Typography>
+                <Typography align={'center'} variant="h4">{dateFormatter(job.hiringDate)}</Typography>
               </Grid>
               {enrollable && (
                 <Grid item>
@@ -103,7 +103,7 @@ export const JobOpeningDetailView = props => {
                 </Typography>
               </Grid>
               <Grid item className={styles.gridBody}>
-                <pre className={styles.preTag}>{jobOpening.description}</pre>
+                <pre className={styles.preTag}>{job.description}</pre>
               </Grid>
             </Grid>
             <Grid item container className={styles.gridSection}>
@@ -113,7 +113,7 @@ export const JobOpeningDetailView = props => {
                 </Typography>
               </Grid>
               <Grid item className={styles.gridBody}>
-                <pre className={styles.preTag}>{jobOpening.responsibilities}</pre>
+                <pre className={styles.preTag}>{job.responsibilities}</pre>
               </Grid>
             </Grid>
             <Grid item container>
@@ -123,7 +123,7 @@ export const JobOpeningDetailView = props => {
                 </Typography>
               </Grid>
               <Grid item className={styles.gridBody}>
-                <pre className={styles.preTag}>{jobOpening.conditions}</pre>
+                <pre className={styles.preTag}>{job.conditions}</pre>
               </Grid>
             </Grid>
             <Grid item container>
@@ -135,13 +135,13 @@ export const JobOpeningDetailView = props => {
                   <Typography variant="h4" align="left">
                     Titulacion
                   </Typography>
-                  <p className={styles.subBody}>{jobOpening.qualification}</p>
+                  <p className={styles.subBody}>{job.qualification}</p>
                 </Grid>
                 <Grid item className={styles.subSection}>
                   <Typography variant="h4" align="left">
                     Experiencia previa
                   </Typography>
-                  <p className={styles.subBody}>{jobOpening.prevExperience}</p>
+                  <p className={styles.subBody}>{job.prevExperience}</p>
                 </Grid>
               </Grid>
             </Grid>

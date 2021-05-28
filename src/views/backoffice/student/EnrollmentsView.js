@@ -34,9 +34,8 @@ export const EnrollmentsView = () => {
     dispatch(actions.unenrollThisJob(itemId))
   }
   
-  const actionView = itemId => {
-    const enroll = enrolls.find(enr => enr.id === itemId)
-    history.push(`/app/detail/job_opening/${enroll.job_opening}`)
+  const actionView = job => {
+    history.push( {pathname:`/app/detail/job_opening`, state: { job } })
   }
 
 
