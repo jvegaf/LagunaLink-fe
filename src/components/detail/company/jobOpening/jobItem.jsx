@@ -1,4 +1,4 @@
-import { Avatar, Box, IconButton, makeStyles, NoSsr, Typography } from '@material-ui/core'
+import { Avatar, Box, Button, IconButton, makeStyles, NoSsr, Typography } from '@material-ui/core'
 import { lightBlue, orange } from '@material-ui/core/colors'
 import { Delete } from '@material-ui/icons'
 import { Item, Row } from '@mui-treasury/components/flex'
@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: lightBlue[300],
     '&:hover': {
       backgroundColor: orange[300],
-    }
+    },
   },
   positionInfo: {
     fontSize: '0.75rem',
@@ -90,7 +90,9 @@ const JobItem = props => {
             Adscritos
           </Typography>
           <Box className={classes.enrolls}>
-            <Avatar onClick={()=>alert('clicked')} className={classes.enrolled}>{job.enrollsCount}</Avatar>
+            <Button onClick={() => alert('clicked')} color="primary">
+              {job.enrolls.length}
+            </Button>
           </Box>
         </Item>
         <Item position={'right'} mr={-0.5} className={classes.center}>

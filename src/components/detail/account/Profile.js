@@ -26,10 +26,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const Profile = props => {
-  const { userRole, prefName, avatar, isBusy } = props
+  const { profile, userRole, avatar, isBusy } = props
   const classes = useStyles()
   const dispatch = useDispatch()
   const role = userRole === 'ROLE_STUDENT' ? 'Estudiante' : 'Empresa'
+
+  const userName = profile !== null ? `${profile.name} ${profile.surname || ''}` : ''
 
   return (
     <Card className={classes.root}>
@@ -37,7 +39,7 @@ export const Profile = props => {
         <Box alignItems="center" display="flex" flexDirection="column">
           <Avatar className={classes.avatar} src={avatar} />
           <Typography color="textPrimary" gutterBottom variant="h3">
-            {prefName}
+            {userName}
           </Typography>
           <Typography color="textSecondary" variant="body1">
             {role}

@@ -1,9 +1,9 @@
 import { Avatar, Button, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useConfirm } from 'material-ui-confirm'
+import React from 'react'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import { actions } from '../../redux/student'
-import { useConfirm } from 'material-ui-confirm'
 import { dateFormatter } from '../../services/date/dateFormatter'
 
 const useStyles = makeStyles(theme => ({
@@ -56,57 +56,41 @@ const useStyles = makeStyles(theme => ({
 export const JobOpeningDetailView = props => {
   const history = useHistory()
   const confirm = useConfirm()
-  const { detailId, userRole } = props
+  const { job, enrollable } = props  
   const styles = useStyles()
   const dispatch = useDispatch()
-  const [jobOpening, setJobOpening] = useState({})
-  const [hiringDate, setHiringDate] = useState('')
-  const [company, setCompany] = useState({})
-  const [hideEnroll, setHideEnroll] = useState(true)
-  const shared = useSelector(state => state.shared)
 
-  useEffect(() => {
-    if (shared !== undefined) {
-      const jobOpening = shared.jobOpenings.find(job => job.id === detailId)
-      const company = shared.companies.find(comp => comp.id === jobOpening.company)
-      setJobOpening(jobOpening)
-      setHiringDate(dateFormatter(jobOpening.hiringDate))
-      setCompany(company)
-      const isCompany = userRole !== 'ROLE_STUDENT'
-      const notEnrollable = isCompany || jobOpening.enrolled
-      setHideEnroll(notEnrollable)
-    }
-  }, [shared])
+  console.log(props);
 
   const enrollAction = () => {
     confirm({ description: '¿ Quieres aplicar a esta oferta ?' }).then(() => {
-      dispatch(actions.enrollThisJob(detailId))
+      dispatch(actions.enrollThisJob(job._id || job.id))
       history.goBack()
     })
   }
 
   return (
-    <div className={styles.root}>
-      <Grid xl={7} md={12}>
+    <Grid container className={styles.root}>
+      <Grid lg={8} md={12}>
         <Paper className={styles.container}>
           <Grid container spacing={2} direction="column" alignItems="center">
             <Grid item>
-              <Avatar className={styles.companyAvatar} src={company.avatar} />
+              <Avatar className={styles.companyAvatar} src={job.companyDetail.avatar} />
             </Grid>
             <Grid item>
-              <Typography variant="h3">{company.name}</Typography>
+              <Typography variant="h3">{job.companyDetail.name}</Typography>
             </Grid>
             <Grid item className={styles.position}>
-              <Typography variant="h1">{jobOpening.position}</Typography>
+              <Typography variant="h1">{job.position}</Typography>
             </Grid>
             <Grid item container className={styles.actionsSection}>
               <Grid item>
                 <Typography align={'center'} variant="body1">fecha de contratacion: </Typography>
-                <Typography align={'center'} variant="h4">{hiringDate}</Typography>
+                <Typography align={'center'} variant="h4">{dateFormatter(job.hiringDate)}</Typography>
               </Grid>
-              {!hideEnroll && (
+              {enrollable && (
                 <Grid item>
-                  <Button hidden={hideEnroll} color="primary" variant="contained" onClick={enrollAction}>
+                  <Button color="primary" variant="contained" onClick={enrollAction}>
                     Aplicar Oferta
                   </Button>
                 </Grid>
@@ -119,7 +103,7 @@ export const JobOpeningDetailView = props => {
                 </Typography>
               </Grid>
               <Grid item className={styles.gridBody}>
-                <pre className={styles.preTag}>{jobOpening.description}</pre>
+                <pre className={styles.preTag}>{job.description}</pre>
               </Grid>
             </Grid>
             <Grid item container className={styles.gridSection}>
@@ -129,7 +113,7 @@ export const JobOpeningDetailView = props => {
                 </Typography>
               </Grid>
               <Grid item className={styles.gridBody}>
-                <pre className={styles.preTag}>{jobOpening.responsibilities}</pre>
+                <pre className={styles.preTag}>{job.responsibilities}</pre>
               </Grid>
             </Grid>
             <Grid item container>
@@ -139,7 +123,7 @@ export const JobOpeningDetailView = props => {
                 </Typography>
               </Grid>
               <Grid item className={styles.gridBody}>
-                <pre className={styles.preTag}>{jobOpening.conditions}</pre>
+                <pre className={styles.preTag}>{job.conditions}</pre>
               </Grid>
             </Grid>
             <Grid item container>
@@ -151,19 +135,19 @@ export const JobOpeningDetailView = props => {
                   <Typography variant="h4" align="left">
                     Titulacion
                   </Typography>
-                  <p className={styles.subBody}>{jobOpening.qualification}</p>
+                  <p className={styles.subBody}>{job.qualification}</p>
                 </Grid>
                 <Grid item className={styles.subSection}>
                   <Typography variant="h4" align="left">
                     Experiencia previa
                   </Typography>
-                  <p className={styles.subBody}>{jobOpening.prevExperience}</p>
+                  <p className={styles.subBody}>{job.prevExperience}</p>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
         </Paper>
       </Grid>
-    </div>
+    </Grid>
   )
 }

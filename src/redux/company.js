@@ -1,6 +1,5 @@
 import moment from 'moment'
 import { apiProvider } from '../services/api/api-provider'
-import { actions as userActions } from './user'
 
 const initialState = {
   name: '',
@@ -9,17 +8,12 @@ const initialState = {
   postalCode: '',
   region: '',
   city: '',
-  registered: false,
   jobOpenings: null,
-  enrolls: null,
-  students: null,
   isBusy: false,
   taskError: null,
 }
 
 // const types
-const COMPANY_REGISTER = 'COMPANY_REGISTER'
-const COMPANY_REGISTER_COMPLETE = 'COMPANY_REGISTER_COMPLETE'
 const SET_PROFILE = 'SET_COMPANY_PROFILE'
 const ADD_JOB_OPENING = 'ADD_JOB_OPENING'
 const ADD_JOB_OPENING_COMPLETE = 'ADD_JOB_OPENING_COMPLETE'
@@ -37,12 +31,6 @@ const companyReducer = (state = initialState, action) => {
     case SIGN_OUT:
       return initialState
 
-    case COMPANY_REGISTER:
-      return {
-        ...state,
-        isBusy: true,
-      }
-
     case COMPANY_UPDATE:
       return {
         ...state,
@@ -58,7 +46,7 @@ const companyReducer = (state = initialState, action) => {
         address: action.payload.address,
         postalCode: action.payload.postalCode,
         region: action.payload.region,
-        city: action.payload.city
+        city: action.payload.city,
       }
 
     case JOB_OPENING_UPDATE:
@@ -86,8 +74,6 @@ const companyReducer = (state = initialState, action) => {
         region: action.payload.region,
         city: action.payload.city,
         jobOpenings: action.payload.jobOpenings,
-        enrolls: action.payload.enrolls,
-        students: action.payload.students
       }
 
     case ADD_JOB_OPENING:
@@ -111,19 +97,6 @@ const companyReducer = (state = initialState, action) => {
         taskError: true,
       }
 
-    case COMPANY_REGISTER_COMPLETE:
-      return {
-        ...state,
-        isBusy: false,
-        registered: true,
-        name: action.payload.name,
-        description: action.payload.description,
-        address: action.payload.address,
-        postalCode: action.payload.postalCode,
-        region: action.payload.region,
-        city: action.payload.city,
-      }
-
     case SET_ERROR:
       return {
         ...state,
@@ -143,24 +116,23 @@ export default companyReducer
 const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
 const setProfile = profile => dispatch => {
-  dispatch({ type: SET_PROFILE, payload: profile }) 
-}
-
-const registerCompany = data => (dispatch, getState) => {
-  dispatch({ type: COMPANY_REGISTER })
-  const {accessToken, userId} = getState().user
-  apiProvider
-    .post('companies', data, accessToken)
-    .then(() => {
-      dispatch(userActions.unsetRegister({userRole: 'ROLE_COMPANY', userId, accessToken}))
-      dispatch({ type: COMPANY_REGISTER_COMPLETE, payload: data })
+  const { jobOpenings, enrolls, students } = profile
+  const jobs = jobOpenings.map(j => {
+    j.enrolls = enrolls.map(en => {
+      en.studentDetail = students.find(s=> s._id === en.student)
+      return en
     })
-    .catch(e => dispatch({ type: SET_ERROR, payload: e }))
+    return j
+  })
+
+  const props = {...profile, jobOpenings: jobs}
+
+  dispatch({ type: SET_PROFILE, payload: props })
 }
 
 const updateCompany = data => (dispatch, getState) => {
   dispatch({ type: COMPANY_UPDATE })
-  const { userId, accessToken} = getState().user
+  const { userId, accessToken } = getState().user
 
   apiProvider
     .put('companies', userId, data, accessToken)
@@ -198,7 +170,6 @@ const removeJobOpening = jobId => (dispatch, getState) => {
 export const actions = {
   signOut,
   setProfile,
-  registerCompany,
   updateCompany,
   addJobOpening,
   removeJobOpening,

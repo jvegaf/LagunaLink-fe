@@ -1,5 +1,4 @@
 import { apiProvider } from '../services/api/api-provider'
-import { actions as userActions } from './user'
 import { dateToISOString } from './../services/date/dateFormatter'
 import { actions as sharedActions } from './shared'
 
@@ -15,15 +14,11 @@ const initialStudentState = {
   languages: null,
   jobExperiences: null,
   enrolls: null,
-  jobOpenings: null,
   isBusy: false,
-  registered: false,
   taskError: null,
 }
 
 // const types
-const STUDENT_REGISTER = 'STUDENT_REGISTER'
-const STUDENT_REGISTER_COMPLETE = 'STUDENT_REGISTER_COMPLETE'
 const SET_PROFILE = 'SET_STUDENT_PROFILE'
 const ENROLL_THIS_JOB = 'ENROLL_THIS_JOB'
 const ENROLL_THIS_JOB_ERROR = 'ENROLL_THIS_JOB_ERROR'
@@ -41,12 +36,6 @@ const studentReducer = (state = initialStudentState, action) => {
     case SIGN_OUT:
       return initialStudentState
 
-    case STUDENT_REGISTER:
-      return {
-        ...state,
-        isBusy: true,
-      }
-
     case STUDENT_UPDATE:
       return {
         ...state,
@@ -63,7 +52,6 @@ const studentReducer = (state = initialStudentState, action) => {
         languages: action.payload.languages,
         jobExperiences: action.payload.job_experiences,
         enrolls: action.payload.enrolls,
-        jobOpenings: action.payload.jobOpenings
       }
 
     case ENROLL_THIS_JOB:
@@ -84,16 +72,6 @@ const studentReducer = (state = initialStudentState, action) => {
         ...state,
         isBusy: false,
         enrollments: action.payload,
-      }
-
-    case STUDENT_REGISTER_COMPLETE:
-      return {
-        ...state,
-        isBusy: false,
-        name: action.payload.name,
-        surname: action.payload.surname,
-        lastname: action.payload.lastname,
-        registered: true,
       }
 
     case STUDENT_UPDATE_COMPLETE:
@@ -126,20 +104,15 @@ export default studentReducer
 
 const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
-const setProfile = profile => dispatch => {
-  dispatch({ type: SET_PROFILE, payload: profile })
-}
-
-const registerStudent = data => (dispatch, getState) => {
-  const { accessToken } = getState().user
-  dispatch({ type: STUDENT_REGISTER })
-  apiProvider
-    .post('students', data, accessToken)
-    .then(() => {
-      userActions.unsetRegister()
-      dispatch({ type: STUDENT_REGISTER_COMPLETE, payload: data })
-    })
-    .catch(e => dispatch({ type: SET_ERROR, payload: e }))
+const setProfile = profile => (dispatch, getState) => {
+  const { enrolls, jobOpenings, companies } = profile;
+  const enr = enrolls.map(en =>{
+    en.jobDetail = jobOpenings.find(j => j._id === en.job_opening)
+    en.jobDetail.companyDetail = companies.find(c => c._id === en.jobDetail.company)
+    return en
+  })
+  const props = {...profile, enrolls: enr}
+  dispatch({ type: SET_PROFILE, payload: props })
 }
 
 const updateStudent = data => (dispatch, getState) => {
@@ -166,7 +139,7 @@ const enrollThisJob = jobId => (dispatch, getState) => {
   }
   dispatch({ type: ENROLL_THIS_JOB })
   apiProvider
-    .post(`job_openings/${jobId}/enrollments`, data, accessToken)
+    .post(`enrollments/${jobId}`, data, accessToken)
     .then(res => {
       dispatch({ type: ENROLL_THIS_JOB_COMPLETE, payload: res.data.enrollments })
       dispatch(sharedActions.setJobsEnrollable(res.data.enrollments))
@@ -191,7 +164,6 @@ const unenrollThisJob = enrollId => (dispatch, getState) => {
 export const actions = {
   signOut,
   setProfile,
-  registerStudent,
   updateStudent,
   enrollThisJob,
   unenrollThisJob,
