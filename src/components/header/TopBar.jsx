@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux'
 const useStyles = makeStyles(() => ({
   root: {},
   toolbar: {
-    marginLeft: 256
+    // marginLeft: 256
   },
   avatar: {
     width: 60,

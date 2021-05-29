@@ -43,10 +43,10 @@ export const JobOpeningsView = () => {
 
   return (
     <Grid container spacing={4} className={classes.root}>
-      <Grid item lg={5} md={5} xs={12}>
+      <Grid item lg={5} md={6} sm={12}>
         <JobOpeningsWidget {...widgetProps} />
       </Grid>
-      <Grid item lg={7} md={5} xs={12}>
+      <Grid item lg={7} md={6} sm={12}>
         <Grid item className={classes.gridItem}>
           {jobOpen !== undefined && <JobOpening {...jobOpen} />}
         </Grid>

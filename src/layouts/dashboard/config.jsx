@@ -21,9 +21,9 @@ export const config = {
     "md": 64
   },
   "clipped": {
-    "xs": false,
-    "sm": false,
-    "md": false
+    "xs": true,
+    "sm": true,
+    "md": true
   },
   "headerPosition": {
     "xs": "relative",
@@ -36,7 +36,7 @@ export const config = {
     "md": true
   },
   "footerShrink": {
-    "xs": false,
+    "xs": true,
     "sm": true,
     "md": true
   }

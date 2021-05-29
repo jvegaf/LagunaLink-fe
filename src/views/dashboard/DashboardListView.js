@@ -47,7 +47,7 @@ export const DashboardListView = () => {
 
   return (
     <Grid container className={classes.root}>
-      <Grid item lg={6}>
+      <Grid item lg={8} md={10} sm={12}>
         <Paper>
           <List>
             {jobs && jobs.map(job => (
