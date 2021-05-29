@@ -106,6 +106,7 @@ const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
 const setProfile = profile => (dispatch, getState) => {
   const { enrolls, jobOpenings, companies } = profile;
+  dispatch(sharedActions.setJobsEnrollable(enrolls));
   const enr = enrolls.map(en =>{
     en.jobDetail = jobOpenings.find(j => j._id === en.job_opening)
     en.jobDetail.companyDetail = companies.find(c => c._id === en.jobDetail.company)
@@ -158,7 +159,6 @@ const unenrollThisJob = enrollId => (dispatch, getState) => {
     })
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))
 }
-
 
 
 export const actions = {

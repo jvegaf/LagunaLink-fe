@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 export const JobOpeningDetailView = props => {
   const history = useHistory()
   const confirm = useConfirm()
-  const { job, enrollable } = props  
+  const { job } = props  
   const styles = useStyles()
   const dispatch = useDispatch()
 
@@ -88,7 +88,7 @@ export const JobOpeningDetailView = props => {
                 <Typography align={'center'} variant="body1">fecha de contratacion: </Typography>
                 <Typography align={'center'} variant="h4">{dateFormatter(job.hiringDate)}</Typography>
               </Grid>
-              {enrollable && (
+              {job.enrollable && (
                 <Grid item>
                   <Button color="primary" variant="contained" onClick={enrollAction}>
                     Aplicar Oferta

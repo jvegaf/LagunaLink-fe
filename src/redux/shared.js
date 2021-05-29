@@ -122,9 +122,9 @@ const getCompanyAvatar = async (companyId, accessToken) => {
 }
 
 const setJobsEnrollable = enrollments => (dispatch, getState) => {
-  const { jobOpenings } = getState().shared
-  const jobs = jobOpenings.map(job => {
-    job.enrolled = enrollments.some(e => e.job_opening === job.id)
+  const { allJobOpenings } = getState().shared
+  const jobs = allJobOpenings.map(job => {
+    job.enrollable = !(enrollments.some(e => e.job_opening === job.id))
     return job
   })
   dispatch({type: UPDATE_JOB_OPENINGS_COMPLETE, payload: jobs})
