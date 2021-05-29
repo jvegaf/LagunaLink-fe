@@ -3,7 +3,6 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import MenuIcon from '@material-ui/icons/Menu'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
 import { Content, Header, Nav, Root } from '.'
 import TopBar from '../../components/header/TopBar'
 import NavBar from '../../components/nav/index'
@@ -11,19 +10,18 @@ import companyNavConf from '../../config/company/nav'
 import studentNavConf from '../../config/student/nav'
 import { JobOpeningsView } from '../../views/backoffice/company/jobOpeningsView'
 import { CompanyProfileView } from '../../views/backoffice/company/ProfileView'
+import { EnrollmentsView } from '../../views/backoffice/student/EnrollmentsView'
 import { StudentProfileView } from '../../views/backoffice/student/ProfileView'
 import { DashboardListView } from '../../views/dashboard/DashboardListView'
 import { JobOpeningDetailView } from '../../views/jobOpening/JobOpeningDetailView'
 import { config } from './config'
-import { EnrollmentsView } from '../../views/backoffice/student/EnrollmentsView'
 
 export const DashBoard = props => {
-  const { id } = useParams();
   const user = useSelector(state => state.user)
-  const navUser = { ...user }
   const navConf = conf(user.userRole)
-  const view = checkRequest({...props, userRole: user.userRole, detailId: id})
-  
+  const navProps = { user, navConf }
+  const view = checkRequest({ ...props, userRole: user.userRole })
+
   return (
     <Root config={config} style={{ minHeight: '100vh' }}>
       <Header
@@ -31,7 +29,7 @@ export const DashBoard = props => {
           inactive: <MenuIcon />,
           active: <ArrowBackIcon />,
         }}
-        >
+      >
         <TopBar />
       </Header>
       <Nav
@@ -44,17 +42,17 @@ export const DashBoard = props => {
           // change null to some react element
           ctx => null
         }
-        >
-        <NavBar user={navUser} config={navConf} />
+      >
+        <NavBar {...navProps}/>
       </Nav>
       <Content>{view}</Content>
     </Root>
   )
 }
 
-const conf = userRole => userRole === 'ROLE_STUDENT' ? studentNavConf : companyNavConf
+const conf = userRole => (userRole === 'ROLE_STUDENT' ? studentNavConf : companyNavConf)
 
-const profileView = userRole => userRole === 'ROLE_STUDENT' ? <StudentProfileView /> : <CompanyProfileView />
+const profileView = userRole => (userRole === 'ROLE_STUDENT' ? <StudentProfileView /> : <CompanyProfileView />)
 
 const checkRequest = props => {
   switch (props.reqView) {
@@ -65,7 +63,7 @@ const checkRequest = props => {
     case 'jobOpenings':
       return <JobOpeningsView />
     case 'jobOpeningDetail':
-      return <JobOpeningDetailView {...props.location.state}/>
+      return <JobOpeningDetailView {...props.location.state} />
     case 'enrollments':
       return <EnrollmentsView />
   }

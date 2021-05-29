@@ -11,23 +11,21 @@ import { NavLink as RouterLink } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   item: {
     display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingTop: 0,
     paddingBottom: 0
   },
   button: {
     color: theme.palette.text.secondary,
     fontWeight: theme.typography.fontWeightMedium,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     letterSpacing: 0,
-    padding: '10px 8px',
+    padding: '10px 0px',
     textTransform: 'none',
     width: '100%'
   },
   icon: {
-    marginRight: theme.spacing(2)
-  },
-  title: {
-    // marginRight: 'auto'
   },
   active: {
     color: theme.palette.primary.main,
@@ -40,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const NavItem = ({
+const NavItemCollapsed = ({
   className,
   href,
   icon: Icon,
@@ -67,19 +65,16 @@ const NavItem = ({
             size="35"
           />
         )}
-        <span className={classes.title}>
-          {title}
-        </span>
       </Button>
     </ListItem>
   );
 };
 
-NavItem.propTypes = {
+NavItemCollapsed.propTypes = {
   className: PropTypes.string,
   href: PropTypes.string,
   icon: PropTypes.elementType,
   title: PropTypes.string
 };
 
-export default NavItem;
+export default NavItemCollapsed;

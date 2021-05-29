@@ -1,6 +1,8 @@
 import { Avatar, Box, Divider, List, makeStyles, Toolbar, Typography } from '@material-ui/core'
-import React from 'react'
+import React, { useContext } from 'react'
+import { LayoutContext } from '../../layouts/dashboard/Root'
 import NavItem from './NavItem'
+import NavItemCollapsed from './NavItemCollapsed'
 
 const useStyles = makeStyles(() => ({
   avatar: {
@@ -10,9 +12,11 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const NavBar = ({ user, config }) => {
+const NavBar = props => {
   const classes = useStyles()
-
+  const { user, navConf } = props
+  const ctx = useContext(LayoutContext)
+  const { collapsed } = ctx
   const userName = user.profile !== null ? `${user.profile.name} ${user.profile.surname || ''}` : ''
 
   return (
@@ -21,19 +25,22 @@ const NavBar = ({ user, config }) => {
       <Divider />
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Avatar className={classes.avatar} src={user.avatar} />
-        <Typography className={classes.name} color="textPrimary" variant="h5">
+        {!collapsed && <Typography className={classes.name} color="textPrimary" variant="h5">
           {userName}
-        </Typography>
+        </Typography>}
         <Typography color="textSecondary" variant="body2">
-          {config.userRole}
+          {navConf.userRole}
         </Typography>
       </Box>
       <Divider />
       <Box p={2}>
         <List>
-          {config.items.map(item => (
-            <NavItem href={item.href} key={item.title} title={item.title} icon={item.icon} />
-          ))}
+          {navConf.items.map(item => 
+          collapsed ? 
+            (<NavItemCollapsed href={item.href} key={item.title} icon={item.icon} />):
+            (<NavItem href={item.href} key={item.title} title={item.title} icon={item.icon} />)
+          )
+        }
         </List>
       </Box>
       <Box flexGrow={1} />
