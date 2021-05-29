@@ -1,24 +1,22 @@
-import {
-  BarChart as BarChartIcon,
-  User as UserIcon
-} from 'react-feather'
+
+import { Apps, Business, Person } from '@material-ui/icons'
 
 const companyNavConf = {
   userRole: 'Empresa',
   items: [
     {
       href: '/app/dashboard',
-      icon: BarChartIcon,
+      icon: Apps,
       title: 'Inicio',
     },
     {
       href: '/app/profile',
-      icon: UserIcon,
+      icon: Person,
       title: 'Perfil',
     },
     {
       href: '/app/job_openings',
-      icon: UserIcon,
+      icon: Business,
       title: 'Ofertas Publicadas',
     },
   ],

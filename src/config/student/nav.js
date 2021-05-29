@@ -1,21 +1,22 @@
-import { BarChart as BarChartIcon, User as UserIcon, UserPlus as UserPlusIcon } from 'react-feather'
+import { Apps, AssignmentTurnedIn, Person } from '@material-ui/icons'
+
 
 const studentNavConf = {
   userRole: 'Estudiante',
   items: [
     {
       href: '/app/dashboard',
-      icon: BarChartIcon,
+      icon: Apps,
       title: 'Inicio',
     },
     {
       href: '/app/profile',
-      icon: UserIcon,
+      icon: Person,
       title: 'Perfil',
     },
     {
       href: '/app/enrollments',
-      icon: UserPlusIcon,
+      icon: AssignmentTurnedIn,
       title: 'Ofertas Aplicadas',
     },
   ],
