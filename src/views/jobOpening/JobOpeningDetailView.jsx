@@ -1,8 +1,9 @@
-import { Avatar, Button, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
+import { Button, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
 import { useConfirm } from 'material-ui-confirm'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
+import { StyledAvatar } from '../../components/avatar/StyledAvatar'
 import { actions } from '../../redux/student'
 import { dateFormatter } from '../../services/date/dateFormatter'
 
@@ -75,7 +76,7 @@ export const JobOpeningDetailView = props => {
         <Paper className={styles.container}>
           <Grid container spacing={2} direction="column" alignItems="center">
             <Grid item>
-              <Avatar className={styles.companyAvatar} src={job.companyDetail.avatar} />
+              <StyledAvatar size={150} src={job.companyDetail.avatar} />
             </Grid>
             <Grid item>
               <Typography variant="h3">{job.companyDetail.name}</Typography>
