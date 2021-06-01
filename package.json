@@ -1,7 +1,8 @@
 {
   "name": "lagunalink-fe",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "homepage": "https://lagunalink.herokuapp.com/",
   "dependencies": {
     "@hookform/resolvers": "^1.3.5",
     "@material-ui/core": "^4.11.3",

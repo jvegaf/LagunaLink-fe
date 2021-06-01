@@ -53,12 +53,12 @@ export const DashboardListView = () => {
         <Paper>
           <List>
             {jobs && jobs.map(job => (
-            <>
-            <ListItem key={uuid()} button onClick={() => handleClick(job)}>
-              <JobListItem {...job}/>
-            </ListItem>
-            <Divider variant="middle"/>
-            </>
+            <div key={uuid()}>
+              <ListItem button onClick={() => handleClick(job)}>
+                <JobListItem {...job}/>
+              </ListItem>
+              <Divider variant="middle"/>
+            </div>
             ))}
           </List>
         </Paper>
