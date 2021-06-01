@@ -29,18 +29,18 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   return (
     <AppBar className={clsx(classes.root, className)} elevation={3} {...rest}>
       <Toolbar className={classes.toolbar}>
-        <Hidden lgUp>
-          <IconButton color="inherit" onClick={onMobileNavOpen}>
+        <Hidden mdUp>
+          <IconButton color="inherit" onClick={onMobileNavOpen(true)}>
             <MenuIcon />
           </IconButton>
         </Hidden>
-        <Hidden mdDown>
+        <Hidden smDown>
           <RouterLink to="/">
             <Logo />
           </RouterLink>
         </Hidden>
         <Box flexGrow={1} />
-        <Hidden mdDown>
+        <Hidden smDown>
           <IconButton color="inherit">
             <Badge badgeContent={notifications.length} color="primary" variant="dot">
               <NotificationsIcon />
@@ -50,7 +50,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
             <InputIcon />
           </IconButton>
         </Hidden>
-        <Hidden lgUp>
+        <Hidden mdUp>
           <Logo />
         </Hidden>
       </Toolbar>

@@ -1,13 +1,15 @@
+import { Drawer, Hidden } from '@material-ui/core'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import MenuIcon from '@material-ui/icons/Menu'
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Content, Header, Nav, Root } from '.'
 import TopBar from '../../components/header/TopBar'
 import NavBar from '../../components/nav/index'
 import companyNavConf from '../../config/company/nav'
 import studentNavConf from '../../config/student/nav'
+import { CreateJobOpenView } from '../../views/backoffice/company/CreateJobOpenView'
 import { JobOpeningsView } from '../../views/backoffice/company/jobOpeningsView'
 import { CompanyProfileView } from '../../views/backoffice/company/ProfileView'
 import { EnrollmentsView } from '../../views/backoffice/student/EnrollmentsView'
@@ -15,13 +17,23 @@ import { StudentProfileView } from '../../views/backoffice/student/ProfileView'
 import { DashboardListView } from '../../views/dashboard/DashboardListView'
 import { JobOpeningDetailView } from '../../views/jobOpening/JobOpeningDetailView'
 import { config } from './config'
-import { CreateJobOpenView } from '../../views/backoffice/company/CreateJobOpenView'
 
 export const DashBoard = props => {
   const user = useSelector(state => state.user)
   const navConf = conf(user.userRole)
   const navProps = { user, navConf }
   const view = checkRequest({ ...props, userRole: user.userRole })
+
+  const [anchor, setAnchor] = useState(false)
+
+  const toggleDrawer = anchor => event => {
+    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return
+    }
+    setAnchor(anchor)
+  }
+
+  const TBProps = { onMobileNavOpen: toggleDrawer }
 
   return (
     <Root config={config} style={{ minHeight: '100vh' }}>
@@ -31,7 +43,7 @@ export const DashBoard = props => {
           active: <ArrowBackIcon />,
         }}
       >
-        <TopBar />
+        <TopBar {...TBProps} />
       </Header>
       <Nav
         collapsedIcon={{
@@ -44,7 +56,12 @@ export const DashBoard = props => {
           ctx => null
         }
       >
-        <NavBar {...navProps}/>
+        <NavBar {...navProps} />
+        <Hidden mdUp>
+          <Drawer anchor={'left'} open={anchor} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)}>
+            <NavBar {...navProps} />
+          </Drawer>
+        </Hidden>
       </Nav>
       <Content>{view}</Content>
     </Root>
