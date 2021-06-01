@@ -1,36 +1,66 @@
-import React from 'react';
-import NoSsr from '@material-ui/core/NoSsr';
-import GoogleFontLoader from 'react-google-font-loader';
+import { makeStyles, Typography } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
-import { Row, Item } from '@mui-treasury/components/flex';
+import NoSsr from '@material-ui/core/NoSsr';
+import { Item, Row } from '@mui-treasury/components/flex';
 import {
   Info,
-  InfoTitle,
-  InfoSubtitle,
-  InfoCaption,
+
+  InfoSubtitle
 } from '@mui-treasury/components/info';
 import { useDynamicAvatarStyles } from '@mui-treasury/styles/avatar/dynamic';
 import { usePopularInfoStyles } from '@mui-treasury/styles/info/popular';
-import { makeStyles } from '@material-ui/core';
-import { dateFormatter } from '../../services/date/dateFormatter'
+import React from 'react';
+import GoogleFontLoader from 'react-google-font-loader';
+import { dateFormatter } from '../../services/date/dateFormatter';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    display: 'flex'
+    display: 'flex',
+    // paddingLeft: theme.spacing(2),
+    // paddingRight: theme.spacing(2)
   },
   info: {
-    flexGrow: 1
+    flexGrow: 2
+  },
+  details: {
+    flexGrow: 1,
+    marginRight: theme.spacing(6),
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+  },
+  section: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  subtitle: {
+    color: '#b13731',
+    fontFamily: 'Poppins, san-serif',
+    marginLeft: '1em'
+  },
+  title: {
+    color: theme.palette.primary,
+    fontFamily: 'Poppins, san-serif',
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    lineHeight: 1.9
+  },
+  
+  caption: {
+    fontFamily: 'Poppins, san-serif',
+    color: '#95a0a1',
   }
 }))
 
 export const JobListItem = props => {
   const styles = useStyles()
-  const {companyDetail, position, createdAt} = props
+  const {companyDetail, position, createdAt, hiringDate} = props
   const _createdAt = dateFormatter(createdAt)
+  const _hiringDate = dateFormatter(hiringDate)
   const avatarStyles = useDynamicAvatarStyles({
-    height: 56,
-    width: 64,
+    size: 64,
     radius: 8,
   });
   return (
@@ -39,7 +69,7 @@ export const JobListItem = props => {
         <GoogleFontLoader fonts={[{ font: 'Poppins', weights: [400, 700] }]} />
       </NoSsr>
       <Row gap={3} className={styles.root}>
-        <Item>
+        <Item style={{"marginRight": "2em", "marginLeft": "1em", }}>
           <Avatar
             variant={'rounded'}
             classes={avatarStyles}
@@ -48,9 +78,19 @@ export const JobListItem = props => {
         </Item>
         <Info className={styles.info} useStyles={usePopularInfoStyles}>
           <InfoSubtitle>{companyDetail.name}</InfoSubtitle>
-          <InfoTitle>{position}</InfoTitle>
-          <InfoCaption>{_createdAt}</InfoCaption>
+          <Typography className={styles.title}>{position}</Typography>
         </Info>
+        <div className={styles.details} >
+          <div className={styles.section}>
+            <Typography variant={'caption'} className={styles.caption}>Fecha de publicacion:</Typography>
+            <Typography variant={'subtitle2'} className={styles.subtitle}>{_createdAt}</Typography>
+          </div>
+          <div className={styles.section}>
+            <Typography variant={'caption'} className={styles.caption}>Fecha de contratacion:</Typography>
+            <Typography variant={'subtitle2'}className={styles.subtitle} >{_hiringDate}</Typography>
+          </div>
+
+        </div>
       </Row>
     </>
   )

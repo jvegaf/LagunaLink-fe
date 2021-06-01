@@ -1,4 +1,4 @@
-import { Grid, List, ListItem, Paper } from '@material-ui/core'
+import { Divider, Grid, List, ListItem, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import moment from 'moment'
 import React from 'react'
@@ -53,9 +53,12 @@ export const DashboardListView = () => {
         <Paper>
           <List>
             {jobs && jobs.map(job => (
+            <>
             <ListItem key={uuid()} button onClick={() => handleClick(job)}>
               <JobListItem {...job}/>
             </ListItem>
+            <Divider variant="middle"/>
+            </>
             ))}
           </List>
         </Paper>
