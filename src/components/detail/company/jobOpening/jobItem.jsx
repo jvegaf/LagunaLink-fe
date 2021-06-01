@@ -58,7 +58,7 @@ const JobItem = props => {
   const { index, job, view, remove } = props
   const confirm = useConfirm()
   const classes = useStyles()
-  const handleView = (event, jobId) => view(jobId)
+  const handleView = e => view(index)
   const handleRemove = (event, jobId) => {
     confirm({ description: '¿ Quieres eliminar esta vacante ?' }).then(() => {
       remove(jobId)
@@ -70,7 +70,7 @@ const JobItem = props => {
       <NoSsr>
         <GoogleFontLoader fonts={[{ font: 'Poppins', weights: [400, 700] }]} />
       </NoSsr>
-      <Row gap={1.5} onClick={event => handleView(event, job.id)} className={classes.itemRow}>
+      <Row gap={1.5} onClick={e => handleView(e)} className={classes.itemRow}>
         <Item className={classes.center} position={'left'}>
           <Avatar>{idx}</Avatar>
         </Item>

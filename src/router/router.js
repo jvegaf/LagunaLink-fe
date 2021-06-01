@@ -26,7 +26,8 @@ export default function Router() {
         <PrivateRoute path="/app/profile" component={DashBoard} reqView={'profile'}/>
         <PrivateRoute path="/app/enrollments" component={DashBoard} reqView={'enrollments'}/>
         <PrivateRoute path="/app/detail/job_opening" component={DashBoard} reqView={'jobOpeningDetail'}/>
-        <PrivateRoute path="/app/job_openings" component={DashBoard} reqView={'jobOpenings'}/>
+        <PrivateRoute exact path="/app/job_openings" component={DashBoard} reqView={'jobOpenings'}/>
+        <PrivateRoute exact path="/app/job_openings/new" component={DashBoard} reqView={'newjobOpening'}/>
       </Switch>
     </BrowserRouter>
   )

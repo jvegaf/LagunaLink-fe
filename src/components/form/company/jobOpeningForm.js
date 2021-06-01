@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Grid, makeStyles, TextField } from '@material-ui/core'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
 import { actions } from '../../../redux/company'
@@ -16,7 +17,7 @@ const schema = yup.object().shape({
   conditions: yup.string().required(),
   qualification: yup.string().required(),
   prevExperience: yup.string().required(),
-  hiringDate: yup.date().min(today)
+  hiringDate: yup.date().min(today),
 })
 
 const useStyles = makeStyles(() => ({
@@ -24,89 +25,100 @@ const useStyles = makeStyles(() => ({
     width: '100%',
   },
   errorMessage: {
-    color: 'red'
-  }
+    color: 'red',
+  },
 }))
 
 export const JobOpeningForm = props => {
   const {
-    hide,
-    companyName,
+    handleClose,
     position,
+    _id,
     description,
     responsibilities,
     conditions,
     qualification,
     prevExperience,
     hiringDate,
-    readOnly,
+    isActive,
+    isNew
   } = props
   const classes = useStyles()
-  const { control, handleSubmit, errors, reset, setValue } = useForm({
+  const {
+    control,
+    handleSubmit,
+    errors,
+    reset,
+    setValue,
+    formState,
+  } = useForm({
     resolver: yupResolver(schema),
   })
-  const dispatch = useDispatch()
 
-  setValue('company', companyName)
-  setValue('position', position)
-  setValue('description', description)
-  setValue('responsibilities', responsibilities)
-  setValue('conditions', conditions)
-  setValue('qualification', qualification)
-  setValue('prevExperience', prevExperience)
-  setValue('hiringDate', hiringDate)
+  const dispatch = useDispatch()
 
   const [showActions, setShowActions] = useState(false)
 
   useEffect(() => {
-    setShowActions(!readOnly)
-    return () => {
-      setShowActions(false)
-    }
-  }, [readOnly])
+    reset({
+      description,
+      responsibilities,
+      conditions,
+      qualification,
+      prevExperience,
+      hiringDate
+    })
+  }, [_id])
+
+  useEffect(() => {
+    setShowActions(formState.isDirty)
+  }, [formState.isDirty])
+
+  useEffect(() => {
+    setShowActions(isNew)
+  }, [isNew])
+
+  const close = () => {
+    handleClose === undefined ? reset() : handleClose()
+  }
 
   const onSubmit = data => {
-    data.hiringDate = data.hiringDate.toISOString().substr(0,10)
-    dispatch(actions.addJobOpening(data))
+    data.hiringDate = data.hiringDate.toISOString().substr(0, 10)
+    if (!isActive) {
+      dispatch(actions.addJobOpening(data))
+      reset()
+      handleClose()
+      return
+    }
+    data.id = _id
+    data.isActive = isActive
+    dispatch(actions.updateJobOpening(data))
     reset()
-    hide()
   }
 
   return (
     <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
-        <Grid item xs={12} hidden={true}>
-          <Controller
-            as={TextField}
-            variant="outlined"
-            defaultValue=""
-            size="small"
-            label="Empresa"
-            name="company"
-            control={control}
-            fullWidth
-            inputProps={{ readOnly: readOnly }}
-          />
-        </Grid>
+        {!isActive && (
+          <Grid item xs={12}>
+            <Controller
+              as={TextField}
+              defaultValue=""
+              variant="outlined"
+              size="small"
+              label="Posicion"
+              name="position"
+              control={control}
+              error={Boolean(errors.position)}
+              fullWidth
+            />
+          </Grid>
+        )}
         <Grid item xs={12}>
           <Controller
             as={TextField}
-            defaultValue=""
             variant="outlined"
-            size="small"
-            label="Posicion"
-            name="position"
-            control={control}
-            error={Boolean(errors.position)}
-            fullWidth
-            inputProps={{ readOnly: readOnly }}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Controller
-            as={TextField}
             defaultValue=""
-            variant="outlined"
             size="small"
             multiline
             label="Descripcion"
@@ -114,86 +126,80 @@ export const JobOpeningForm = props => {
             control={control}
             error={Boolean(errors.description)}
             fullWidth
-            inputProps={{ readOnly: readOnly }}
           />
         </Grid>
         <Grid item xs={12}>
           <Controller
             as={TextField}
             variant="outlined"
-            defaultValue=""
             size="small"
+            defaultValue=""
             label="Responsabilidades"
             name="responsibilities"
             multiline
             error={Boolean(errors.responsibilities)}
             control={control}
             fullWidth
-            inputProps={{ readOnly: readOnly }}
           />
         </Grid>
         <Grid item xs={12}>
           <Controller
             as={TextField}
-            defaultValue=""
             variant="outlined"
             size="small"
             multiline
+            defaultValue=""
             label="Condiciones"
             name="conditions"
             control={control}
             error={Boolean(errors.conditions)}
             fullWidth
-            inputProps={{ readOnly: readOnly }}
           />
         </Grid>
         <Grid item xs={12}>
           <Controller
             as={TextField}
-            defaultValue=""
             variant="outlined"
             size="small"
+            defaultValue=""
             label="Titulacion requerida"
             name="qualification"
             control={control}
             error={Boolean(errors.qualification)}
             fullWidth
-            inputProps={{ readOnly: readOnly }}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <Controller
             as={TextField}
-            defaultValue=""
             type="date"
-            variant="outlined"
+            defaultValue=""
+            variant="standard"
             size="small"
-            label="Fecha prevista de contratación"
+            helperText="Fecha prevista de contratación"
             name="hiringDate"
             control={control}
             error={Boolean(errors.hiringDate)}
             fullWidth
-            inputProps={{ readOnly: readOnly }}
           />
           {errors?.hiringDate && <p className={classes.errorMessage}>La fecha debe ser posterior a hoy</p>}
         </Grid>
         <Grid item xs={12} md={6}>
           <Controller
             as={TextField}
-            defaultValue=""
             variant="outlined"
+            defaultValue=""
             size="small"
             label="Experiencia requerida"
             name="prevExperience"
             control={control}
             error={Boolean(errors.prevExperience)}
             fullWidth
-            inputProps={{ readOnly: readOnly }}
           />
         </Grid>
         {showActions && (
           <Grid item xs={12} container justify={'space-around'}>
-            <Button color="primary" variant="text" onClick={props.hide}>
+            <Button color="primary" variant="text" onClick={() => close()}>
               Cancelar
             </Button>
             <Button color="primary" variant="text" type="submit">

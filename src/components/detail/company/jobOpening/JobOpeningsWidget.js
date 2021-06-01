@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
 import { Box, Button, Card, CardHeader, Divider, List, makeStyles } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
-import React, { useState } from 'react'
+import React from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import { useHistory } from 'react-router'
 import { v4 as uuid } from 'uuid'
 import JobItem from './jobItem'
-import { JobOpenDialog } from './JobOpenDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,20 +31,17 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const JobOpeningsWidget = props => {
-  const { jobOpenings, view, remove } = props
-  const [dialogShow, setDialogShow] = useState(false)
+  const { jobOpenings } = props
   const classes = useStyles()
-  const hideDialog = () => {
-    setDialogShow(false)
-  }
+  const history = useHistory()
 
   const handleAdd = () => {
-    setDialogShow(true)
+    history.push('/app/job_openings/new')
   }
+
 
   return (
     <Card className={classes.root}>
-      {dialogShow && <JobOpenDialog closeIt={hideDialog} />}
       <CardHeader title="Ofertas Publicadas" />
       <Divider />
       <PerfectScrollbar>

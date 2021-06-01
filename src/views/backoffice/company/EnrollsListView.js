@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 import { Grid, List, ListItem, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React from 'react'

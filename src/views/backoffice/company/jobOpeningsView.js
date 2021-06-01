@@ -1,7 +1,7 @@
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { JobOpening } from '../../../components/detail/company/jobOpening/JobOpening'
 import { JobOpeningsWidget } from '../../../components/detail/company/jobOpening/JobOpeningsWidget'
 import { actions } from '../../../redux/company'
@@ -20,20 +20,28 @@ const useStyles = makeStyles(theme => ({
 
 export const JobOpeningsView = () => {
   const dispatch = useDispatch()
-  const jobOpenings = useSelector(state => state.company.jobOpenings)
+  const jobOpenings = useSelector(state => state.company.jobOpenings, shallowEqual)
   const classes = useStyles()
-  const [jobOpen, setJobOpen] = useState(undefined)
-  const onView = jobId => {
-    const job = jobOpenings.find(j => j.id === jobId)
-    setJobOpen({...job, readOnly: true})
+  const [jobOpen, setJobOpen] = useState(null)
+  const [jobIndex, setJobIndex] = useState(null)
+  const onView = index => {
+    setJobIndex(index)
+    const job = jobOpenings[index]
+    setJobOpen({...job, isNew: false})
   }
 
   useEffect(() => {
-    if(jobOpenings !== undefined){ 
-      const jb = jobOpenings[0]
-      setJobOpen({...jb, readOnly: true})
+    if (Array.isArray(jobOpenings)) {
+      setJobIndex(0)
     }
   }, [jobOpenings])
+
+  useEffect(() => {
+    if(jobIndex !== null){
+      const jb = jobOpenings[jobIndex]
+      setJobOpen(jb)
+    }
+  }, [jobIndex])
 
   const onRemove = jobId => {
     dispatch(actions.removeJobOpening(jobId))
@@ -48,7 +56,7 @@ export const JobOpeningsView = () => {
       </Grid>
       <Grid item lg={7} md={6} sm={12}>
         <Grid item className={classes.gridItem}>
-          {jobOpen !== undefined && <JobOpening {...jobOpen} />}
+          <JobOpening {...jobOpen} />
         </Grid>
       </Grid>
     </Grid>

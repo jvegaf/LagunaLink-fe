@@ -15,6 +15,7 @@ import { StudentProfileView } from '../../views/backoffice/student/ProfileView'
 import { DashboardListView } from '../../views/dashboard/DashboardListView'
 import { JobOpeningDetailView } from '../../views/jobOpening/JobOpeningDetailView'
 import { config } from './config'
+import { CreateJobOpenView } from '../../views/backoffice/company/CreateJobOpenView'
 
 export const DashBoard = props => {
   const user = useSelector(state => state.user)
@@ -62,6 +63,8 @@ const checkRequest = props => {
       return profileView(props.userRole)
     case 'jobOpenings':
       return <JobOpeningsView />
+    case 'newjobOpening':
+      return <CreateJobOpenView />
     case 'jobOpeningDetail':
       return <JobOpeningDetailView {...props.location.state} />
     case 'enrollments':

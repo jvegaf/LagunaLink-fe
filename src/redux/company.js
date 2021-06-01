@@ -1,5 +1,6 @@
-import moment from 'moment'
 import { apiProvider } from '../services/api/api-provider'
+import { actions as sharedActions } from './shared'
+import { actions as userActions } from './user'
 
 const initialState = {
   name: '',
@@ -22,6 +23,8 @@ const COMPANY_UPDATE = 'COMPANY_UPDATE'
 const COMPANY_UPDATE_COMPLETE = 'COMPANY_UPDATE_COMPLETE'
 const JOB_OPENING_UPDATE = 'JOB_OPENING_UPDATE'
 const JOB_OPENING_UPDATE_COMPLETE = 'JOB_OPENING_UPDATE_COMPLETE'
+const JOB_OPENING_DEACTIVATE = 'JOB_OPENING_DEACTIVATE'
+const JOB_OPENING_DEACTIVATE_COMPLETE = 'JOB_OPENING_DEACTIVATE_COMPLETE'
 const SET_ERROR = 'SET_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
 
@@ -87,7 +90,6 @@ const companyReducer = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        jobOpenings: action.payload,
       }
 
     case ADD_JOB_OPENING_ERROR:
@@ -119,13 +121,13 @@ const setProfile = profile => dispatch => {
   const { jobOpenings, enrolls, students } = profile
   const jobs = jobOpenings.map(j => {
     j.enrolls = enrolls.map(en => {
-      en.studentDetail = students.find(s=> s._id === en.student)
+      en.studentDetail = students.find(s => s._id === en.student)
       return en
     })
     return j
   })
 
-  const props = {...profile, jobOpenings: jobs}
+  const props = { ...profile, jobOpenings: jobs }
 
   dispatch({ type: SET_PROFILE, payload: props })
 }
@@ -141,29 +143,36 @@ const updateCompany = data => (dispatch, getState) => {
 }
 
 const addJobOpening = data => (dispatch, getState) => {
-  const { userId, accessToken } = getState().user
-  const { jobOpenings } = getState().company
+  const { accessToken, email, userId, userRole, avatar } = getState().user
+
   const model = { ...data, company: userId }
   dispatch({ type: ADD_JOB_OPENING })
   apiProvider
     .post('job_openings', model, accessToken)
     .then(res => {
-      const jobs = [...jobOpenings, data]
-      dispatch({ type: ADD_JOB_OPENING_COMPLETE, payload: jobs })
+      dispatch(userActions.getProfile({ accessToken, email, userId, userRole, avatar }))
+      dispatch(sharedActions.fetchAllJobOpen(accessToken))
+      dispatch({ type: ADD_JOB_OPENING_COMPLETE })
     })
     .catch(e => dispatch({ type: ADD_JOB_OPENING_ERROR }))
 }
 
-const removeJobOpening = jobId => (dispatch, getState) => {
+const updateJobOpening = job => (dispatch, getState) => {
+  const { accessToken, email, userId, userRole, avatar } = getState().user
   dispatch({ type: JOB_OPENING_UPDATE })
+  apiProvider.put('job_openings', job.id, job, accessToken).then(res => {
+    dispatch(userActions.getProfile({ accessToken, email, userId, userRole, avatar }))
+    dispatch(sharedActions.fetchAllJobOpen(accessToken))
+    dispatch({ type: JOB_OPENING_UPDATE_COMPLETE })
+  })
+}
+
+const removeJobOpening = jobId => (dispatch, getState) => {
+  dispatch({ type: JOB_OPENING_DEACTIVATE })
   const { accessToken } = getState().user
-  const { jobOpenings } = getState().company
-  const job = jobOpenings.find(j => j.id === jobId)
-  const hDate = moment().subtract(3, 'years').format('YYYY-MM-DD')
-  const model = { ...job, hiringDate: hDate }
-  apiProvider.put('job_openings', jobId, model, accessToken).then(res => {
-    const jobs = res.data.job_openings.filter(jb => moment(jb.hiringDate) > moment())
-    dispatch({ type: JOB_OPENING_UPDATE_COMPLETE, payload: jobs })
+  apiProvider.remove('job_openings', jobId, accessToken).then(res => {
+    dispatch({ type: JOB_OPENING_DEACTIVATE_COMPLETE })
+    dispatch(sharedActions.fetchAllJobOpen(accessToken))
   })
 }
 
@@ -172,5 +181,6 @@ export const actions = {
   setProfile,
   updateCompany,
   addJobOpening,
+  updateJobOpening,
   removeJobOpening,
 }

@@ -5,15 +5,16 @@ import Card from '../../../shared/Card.js'
 
 const useStyles = makeStyles(() => ({
   root: {
-    width: '100%'
+    width: '100%',
   },
 }))
 
 export const JobOpening = props => {
   const classes = useStyles()
+  const { position } = props
   return (
-    <Card className={classes.root} title={props.position}>
-      {props.position && <JobOpeningForm {...props} />}
+    <Card className={classes.root} title={position}>
+      <JobOpeningForm {...props} />
     </Card>
   )
 }
