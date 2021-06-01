@@ -1,13 +1,12 @@
-import { Avatar, Box, Divider, List, makeStyles, Toolbar, Typography } from '@material-ui/core'
+import { Box, Divider, List, makeStyles, Toolbar, Typography } from '@material-ui/core'
 import React, { useContext } from 'react'
 import { LayoutContext } from '../../layouts/dashboard/Root'
+import { StyledAvatar } from '../avatar/StyledAvatar'
 import NavItem from './NavItem'
 import NavItemCollapsed from './NavItemCollapsed'
 
 const useStyles = makeStyles(() => ({
   avatar: {
-    width: 64,
-    height: 64,
     marginBottom: 10,
   },
 }))
@@ -24,10 +23,14 @@ const NavBar = props => {
       <Toolbar />
       <Divider />
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
-        <Avatar className={classes.avatar} src={user.avatar} />
-        {!collapsed && <Typography className={classes.name} color="textPrimary" variant="h5">
-          {userName}
-        </Typography>}
+        <Box className={classes.avatar}>
+          <StyledAvatar size={64} src={user.avatar} />
+        </Box>
+        {!collapsed && (
+          <Typography className={classes.name} color="textPrimary" variant="h5">
+            {userName}
+          </Typography>
+        )}
         <Typography color="textSecondary" variant="body2">
           {navConf.userRole}
         </Typography>
@@ -35,12 +38,13 @@ const NavBar = props => {
       <Divider />
       <Box p={2}>
         <List>
-          {navConf.items.map(item => 
-          collapsed ? 
-            (<NavItemCollapsed href={item.href} key={item.title} icon={item.icon} />):
-            (<NavItem href={item.href} key={item.title} title={item.title} icon={item.icon} />)
-          )
-        }
+          {navConf.items.map(item =>
+            collapsed ? (
+              <NavItemCollapsed href={item.href} key={item.title} icon={item.icon} />
+            ) : (
+              <NavItem href={item.href} key={item.title} title={item.title} icon={item.icon} />
+            )
+          )}
         </List>
       </Box>
       <Box flexGrow={1} />

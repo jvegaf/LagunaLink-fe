@@ -7,10 +7,10 @@ export const StyledAvatar = props => {
   const { size, src } = props
 
   const styles = useOnlineAvatarStyles({
-    color: '#9495c9',
+    color: '#952908',
     size: size,
     thickness: 4,
-    gap: 2,
+    gap: 0,
   })
 
   return (

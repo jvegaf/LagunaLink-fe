@@ -1,7 +1,8 @@
-import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, makeStyles, Typography } from '@material-ui/core'
+import { Box, Button, Card, CardActions, CardContent, Divider, makeStyles, Typography } from '@material-ui/core'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { actions } from '../../../redux/user'
+import { StyledAvatar } from '../../avatar/StyledAvatar'
 import '../../shared/styles.css'
 
 const useStyles = makeStyles(theme => ({
@@ -9,8 +10,6 @@ const useStyles = makeStyles(theme => ({
     minWidth: 300,
   },
   avatar: {
-    height: 100,
-    width: 100,
     marginBottom: 10,
     opacity: 100,
   },
@@ -37,7 +36,9 @@ export const Profile = props => {
     <Card className={classes.root}>
       <CardContent>
         <Box alignItems="center" display="flex" flexDirection="column">
-          <Avatar className={classes.avatar} src={avatar} />
+          <Box className={classes.avatar}>
+            <StyledAvatar size={100}  src={avatar} />
+          </Box>
           <Typography color="textPrimary" gutterBottom variant="h3">
             {userName}
           </Typography>
