@@ -22,8 +22,8 @@ export const DashBoard = props => {
   const user = useSelector(state => state.user)
   const navConf = conf(user.userRole)
   const navProps = { user, navConf }
-  const view = checkRequest({ ...props, userRole: user.userRole })
-
+  const view = checkRequest({ ...props, userRole: user.userRole, mobile:false })
+  const mobNavProps = {...navProps, mobile: true}
   const [anchor, setAnchor] = useState(false)
 
   const toggleDrawer = anchor => event => {
@@ -59,7 +59,7 @@ export const DashBoard = props => {
         <NavBar {...navProps} />
         <Hidden mdUp>
           <Drawer anchor={'left'} open={anchor} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)}>
-            <NavBar {...navProps} />
+            <NavBar {...mobNavProps} />
           </Drawer>
         </Hidden>
       </Nav>

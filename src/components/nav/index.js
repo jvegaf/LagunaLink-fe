@@ -1,9 +1,13 @@
-import { Box, Divider, List, makeStyles, Toolbar, Typography } from '@material-ui/core'
+/* eslint-disable no-unused-vars */
+import { Box, Button, Divider, List, makeStyles, Toolbar, Typography } from '@material-ui/core'
+import { ExitToApp } from '@material-ui/icons'
 import React, { useContext } from 'react'
 import { LayoutContext } from '../../layouts/dashboard/Root'
 import { StyledAvatar } from '../avatar/StyledAvatar'
 import NavItem from './NavItem'
 import NavItemCollapsed from './NavItemCollapsed'
+import { useDispatch } from 'react-redux'
+import { actions } from '../../redux/user'
 
 const useStyles = makeStyles(() => ({
   avatar: {
@@ -13,7 +17,8 @@ const useStyles = makeStyles(() => ({
 
 const NavBar = props => {
   const classes = useStyles()
-  const { user, navConf } = props
+  const { user, navConf, mobile } = props
+  const dispatch = useDispatch()
   const ctx = useContext(LayoutContext)
   const { collapsed } = ctx
   const userName = user.profile !== null ? `${user.profile.name} ${user.profile.surname || ''}` : ''
@@ -48,6 +53,19 @@ const NavBar = props => {
         </List>
       </Box>
       <Box flexGrow={1} />
+      {mobile && (
+        <Box p={2} pb={8}>
+          <Button
+            fullWidth
+            color="primary"
+            variant="contained"
+            startIcon={<ExitToApp />}
+            onClick={() => dispatch(actions.signOut())}
+          >
+            Salir
+          </Button>
+        </Box>
+      )}
     </Box>
   )
 }
