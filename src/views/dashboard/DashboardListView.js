@@ -34,11 +34,13 @@ export const DashboardListView = () => {
   const companiesFetched = useSelector(state => state.shared.companiesFetched)
   const jobsOpenFetched = useSelector(state => state.shared.jobsFetched)
   const companies = useSelector(state => state.shared.allCompanies)
+  const avatars = useSelector(state => state.shared.avatars)
   const jobOpenings = useSelector(state => state.shared.allJobOpenings)
   let jobs;
   if (companiesFetched && jobsOpenFetched){
     jobs = jobOpenings.filter(job => moment(job.hiringDate) > moment()).map(job => {
       job.companyDetail = companies.find(comp => comp.id === job.company)
+      job.companyDetail.avatar = avatars.find(av => av.id === job.company).url
       return job
     })
   }

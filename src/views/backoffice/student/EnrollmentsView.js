@@ -25,6 +25,7 @@ export const EnrollmentsView = () => {
   const history = useHistory()
   const classes = useStyles()
   const dispatch = useDispatch()
+  const avatars = useSelector(state => state.shared.avatars)
   const user = useSelector(state => state.user)
   const enrolls = useSelector(state => state.student.enrolls, shallowEqual)
 
@@ -35,6 +36,7 @@ export const EnrollmentsView = () => {
   }
   
   const actionView = job => {
+    job.companyDetail.avatar = avatars.find(av => av.id === job.companyDetail._id).url
     history.push( {pathname:`/app/detail/job_opening`, state: { job } })
   }
 

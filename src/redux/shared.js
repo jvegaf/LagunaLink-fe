@@ -3,6 +3,7 @@ import { apiProvider } from '../services/api/api-provider'
 const initialState = {
   allJobOpenings: [],
   allCompanies: [],
+  avatars: [],
   isBusy: false,
   taskError: false,
   jobsFetched: false,
@@ -16,6 +17,8 @@ const UPDATE_JOB_OPENINGS = 'UPDATE_JOB_OPENINGS'
 const UPDATE_JOB_OPENINGS_COMPLETE = 'UPDATE_JOB_OPENINGS_COMPLETE'
 const FETCH_COMPANIES = 'FETCH_COMPANIES'
 const FETCH_JOBS_COMPLETE = 'FETCH_JOBS_COMPLETE'
+const FETCH_COMPANIES_AVATAR = 'FETCH_COMPANIES_AVATAR'
+const FETCH_COMPANIES_AVATAR_COMPLETE = 'FETCH_COMPANIES_AVATAR_COMPLETE'
 const FETCH_COMPANIES_COMPLETE = 'FETCH_COMPANIES_COMPLETE'
 const COMPANIES_UPDATED = 'COMPANIES_UPDATED'
 const FETCH_ERROR = 'FETCH_ERROR'
@@ -59,12 +62,26 @@ const sharedReducer = (state = initialState, action) => {
         jobsFetched: true,
       }
 
+    case FETCH_COMPANIES_AVATAR:
+      return {
+        ...state,
+        isBusy: true,
+        taskError: false,
+      }
+
+    case FETCH_COMPANIES_AVATAR_COMPLETE:
+      return {
+        ...state,
+        isBusy: false,
+        avatars: action.payload,
+        companiesFetched: true
+      }
+
     case FETCH_COMPANIES_COMPLETE:
       return {
         ...state,
         allCompanies: action.payload,
-        isBusy: false,
-        companiesFetched: true,
+        isBusy: false
       }
 
     case COMPANIES_UPDATED:
@@ -104,12 +121,22 @@ const fetchAllCompanies = accessToken => (dispatch, getState) => {
     .getAll('companies', accessToken)
     .then(async res => {
       const companies = [...res.data.companies]
-      for (const company of res.data.companies) {
-        company.avatar = await getCompanyAvatar(company.id, accessToken)
-      }
+      dispatch(actions.fetchAllAvatars(res.data.companies, accessToken))
       dispatch({ type: FETCH_COMPANIES_COMPLETE, payload: companies })
     })
     .catch(e => dispatch({ type: FETCH_ERROR }))
+}
+
+const fetchAllAvatars = (companies, accessToken) => async dispatch => {
+  dispatch({type: FETCH_COMPANIES_AVATAR})
+  const avatarsFetched = []
+  for (const company of companies) {
+    const avatar = {}
+    avatar.id = company.id
+    avatar.url = await getCompanyAvatar(company.id, accessToken)
+    avatarsFetched.push(avatar)
+  }
+  dispatch({type: FETCH_COMPANIES_AVATAR_COMPLETE, payload: avatarsFetched})
 }
 
 const getCompanyAvatar = async (companyId, accessToken) => {
@@ -134,5 +161,6 @@ export const actions = {
   fetchAllJobOpen,
   setJobsEnrollable,
   fetchAllCompanies,
+  fetchAllAvatars,
   getCompanyAvatar,
 }
