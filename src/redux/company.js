@@ -119,11 +119,13 @@ const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
 const setProfile = profile => dispatch => {
   const { jobOpenings, enrolls, students } = profile
+
+  const enrlls = enrolls.map(en => {
+    en.studentDetail = students.find(s => s._id === en.student)
+    return en
+  })
   const jobs = jobOpenings.map(j => {
-    j.enrolls = enrolls.map(en => {
-      en.studentDetail = students.find(s => s._id === en.student)
-      return en
-    })
+    j.enrolls  = enrlls.filter(en => en.job_opening === j._id)
     return j
   })
 

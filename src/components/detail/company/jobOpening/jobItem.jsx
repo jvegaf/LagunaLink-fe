@@ -56,6 +56,7 @@ const useStyles = makeStyles(theme => ({
 
 const JobItem = props => {
   const { index, job, view, remove } = props
+  console.log(job);
   const confirm = useConfirm()
   const classes = useStyles()
   const handleView = e => view(index)
