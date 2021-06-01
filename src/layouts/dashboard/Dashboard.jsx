@@ -46,7 +46,7 @@ export const DashBoard = props => {
       >
         <NavBar {...navProps}/>
       </Nav>
-      <Content>{view}</Content>
+      <Content style={{ 'overflowX': 'hidden'}}>{view}</Content>
     </Root>
   )
 }

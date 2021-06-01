@@ -12,6 +12,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     paddingTop: theme.spacing(3),
     padding: theme.spacing(6),
+    overflow: 'hidden'
   },
   gridItem: {
     flexGrow: 1,

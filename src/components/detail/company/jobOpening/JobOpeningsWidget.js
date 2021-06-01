@@ -10,6 +10,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
     height: 'auto',
+    overflowY: 'auto'
   },
   cell: {
     padding: '4px',

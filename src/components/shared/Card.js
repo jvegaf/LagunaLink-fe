@@ -3,7 +3,14 @@ import clsx from 'clsx'
 import React from 'react'
 
 const useStyles = makeStyles(() => ({
-  root: {},
+  root: {
+    height: '100%',
+    width: '100%'
+  },
+  content:{
+    overflowX: 'hidden',
+    overflowY: 'auto'
+  }
 }))
 
 
@@ -14,7 +21,7 @@ const LinkCard = ({ className, ...rest }) => {
     <Card className={clsx(classes.root, className)}>
       {rest.title && <CardHeader title={rest.title} />}
       {rest.title && <Divider />}
-      <CardContent>{rest.children}</CardContent>
+      <CardContent className={classes.content}>{rest.children}</CardContent>
       {rest.action && <Divider />}
       {rest.action && (
         <CardActions>
