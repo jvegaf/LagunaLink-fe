@@ -4,13 +4,13 @@ import React from 'react'
 
 
 export const StyledAvatar = props => {
-  const { size, src } = props
+  const { size, thickness, src } = props
 
   const styles = useOnlineAvatarStyles({
-    color: '#952908',
+    color: '#8d6e63',
     size: size,
-    thickness: 4,
-    gap: 0,
+    thickness: thickness,
+    gap: 1,
   })
 
   return (

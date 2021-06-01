@@ -37,7 +37,7 @@ export const Profile = props => {
       <CardContent>
         <Box alignItems="center" display="flex" flexDirection="column">
           <Box className={classes.avatar}>
-            <StyledAvatar size={100}  src={avatar} />
+            <StyledAvatar size={100} thickness={4} src={avatar} />
           </Box>
           <Typography color="textPrimary" gutterBottom variant="h3">
             {userName}

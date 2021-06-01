@@ -24,7 +24,7 @@ const NavBar = props => {
       <Divider />
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Box className={classes.avatar}>
-          <StyledAvatar size={64} src={user.avatar} />
+          <StyledAvatar size={64} thickness={2} src={user.avatar} />
         </Box>
         {!collapsed && (
           <Typography className={classes.name} color="textPrimary" variant="h5">
