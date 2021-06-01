@@ -1,6 +1,7 @@
 import { apiProvider } from '../services/api/api-provider'
 import { dateToISOString } from './../services/date/dateFormatter'
 import { actions as sharedActions } from './shared'
+import { actions as userActions } from './user'
 
 const initialStudentState = {
   name: '',
@@ -60,6 +61,18 @@ const studentReducer = (state = initialStudentState, action) => {
         isBusy: true,
       }
 
+    case UNENROLL_THIS_JOB:
+      return {
+        ...state,
+        isBusy: true,
+      }
+
+    case UNENROLL_THIS_JOB_COMPLETE:
+      return {
+        ...state,
+        isBusy: false,
+      }
+
     case ENROLL_THIS_JOB_ERROR:
       return {
         ...state,
@@ -70,8 +83,7 @@ const studentReducer = (state = initialStudentState, action) => {
     case ENROLL_THIS_JOB_COMPLETE:
       return {
         ...state,
-        isBusy: false,
-        enrollments: action.payload,
+        isBusy: false
       }
 
     case STUDENT_UPDATE_COMPLETE:
@@ -130,7 +142,7 @@ const updateStudent = data => (dispatch, getState) => {
 }
 
 const enrollThisJob = jobId => (dispatch, getState) => {
-  const { userId, accessToken } = getState().user
+  const { accessToken, email, userId, userRole, avatar } = getState().user
   const todayDate = Date.now()
   const today = dateToISOString(todayDate)
   const data = {
@@ -142,19 +154,21 @@ const enrollThisJob = jobId => (dispatch, getState) => {
   apiProvider
     .post(`enrollments/${jobId}`, data, accessToken)
     .then(res => {
-      dispatch({ type: ENROLL_THIS_JOB_COMPLETE, payload: res.data.enrollments })
+      dispatch({ type: ENROLL_THIS_JOB_COMPLETE})
+      dispatch(userActions.getProfile({ accessToken, email, userId, userRole, avatar }))
       dispatch(sharedActions.setJobsEnrollable(res.data.enrollments))
     })
     .catch(e => dispatch({ type: ENROLL_THIS_JOB_ERROR, payload: e }))
 }
 
 const unenrollThisJob = enrollId => (dispatch, getState) => {
-  const { accessToken } = getState().user
+  const { accessToken, email, userId, userRole, avatar } = getState().user
   dispatch({ type: UNENROLL_THIS_JOB })
   apiProvider
     .remove(`enrollments`, enrollId, accessToken)
     .then(res => {
-      dispatch({ type: UNENROLL_THIS_JOB_COMPLETE, payload: res.data.enrollments })
+      dispatch({ type: UNENROLL_THIS_JOB_COMPLETE })
+      dispatch(userActions.getProfile({ accessToken, email, userId, userRole, avatar }))
       dispatch(sharedActions.setJobsEnrollable(res.data.enrollments))
     })
     .catch(e => dispatch({ type: SET_ERROR, payload: e }))

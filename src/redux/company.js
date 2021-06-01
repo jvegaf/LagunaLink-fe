@@ -171,10 +171,11 @@ const updateJobOpening = job => (dispatch, getState) => {
 
 const removeJobOpening = jobId => (dispatch, getState) => {
   dispatch({ type: JOB_OPENING_DEACTIVATE })
-  const { accessToken } = getState().user
+  const { accessToken, email, userId, userRole, avatar } = getState().user
   apiProvider.remove('job_openings', jobId, accessToken).then(res => {
-    dispatch({ type: JOB_OPENING_DEACTIVATE_COMPLETE })
+    dispatch(userActions.getProfile({ accessToken, email, userId, userRole, avatar }))
     dispatch(sharedActions.fetchAllJobOpen(accessToken))
+    dispatch({ type: JOB_OPENING_DEACTIVATE_COMPLETE })
   })
 }
 
