@@ -1,6 +1,7 @@
-import { makeStyles, Typography } from '@material-ui/core';
+import { Chip, makeStyles, Typography } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import NoSsr from '@material-ui/core/NoSsr';
+import { CheckCircle } from '@material-ui/icons';
 import { Item, Row } from '@mui-treasury/components/flex';
 import {
   Info,
@@ -16,9 +17,7 @@ import { dateFormatter } from '../../services/date/dateFormatter';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    display: 'flex',
-    // paddingLeft: theme.spacing(2),
-    // paddingRight: theme.spacing(2)
+    display: 'flex'
   },
   info: {
     flexGrow: 2
@@ -45,7 +44,9 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'Poppins, san-serif',
     fontSize: '1.2rem',
     fontWeight: 'bold',
-    lineHeight: 1.9
+    lineHeight: 1.9,
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   },
   
   caption: {
@@ -56,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const JobListItem = props => {
   const styles = useStyles()
-  const {companyDetail, position, createdAt, hiringDate} = props
+  const {companyDetail, position, createdAt, hiringDate, enrolled} = props
   const _createdAt = dateFormatter(createdAt)
   const _hiringDate = dateFormatter(hiringDate)
   const avatarStyles = useDynamicAvatarStyles({
@@ -79,6 +80,7 @@ export const JobListItem = props => {
         <Info className={styles.info} useStyles={usePopularInfoStyles}>
           <InfoSubtitle>{companyDetail.name}</InfoSubtitle>
           <Typography className={styles.title}>{position}</Typography>
+          {enrolled && <Chip color="secondary" size="small" label={'Aplicaste a esta oferta'} icon={<CheckCircle />} /> }
         </Info>
         <div className={styles.details} >
           <div className={styles.section}>

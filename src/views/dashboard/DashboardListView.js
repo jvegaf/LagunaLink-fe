@@ -38,11 +38,13 @@ export const DashboardListView = () => {
   const jobOpenings = useSelector(state => state.shared.allJobOpenings)
   let jobs;
   if (companiesFetched && jobsOpenFetched){
-    jobs = jobOpenings.filter(job => moment(job.hiringDate) > moment()).map(job => {
+    jobs = jobOpenings.filter(job => moment(job.hiringDate) > moment())
+    .filter(job => job.isActive)
+    .map(job => {
       job.companyDetail = companies.find(comp => comp.id === job.company)
       job.companyDetail.avatar = avatars.find(av => av.id === job.company).url
       return job
-    })
+    }).reverse()
   }
 
   const handleClick = job => history.push({pathname:'/app/detail/job_opening', state: { job }})

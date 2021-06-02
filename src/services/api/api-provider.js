@@ -22,7 +22,6 @@ const post = (resource, model, accessToken) => {
 }
 
 const put = (resource, id, model, accessToken) => {
-  console.log({resource, id, model, accessToken})
   axios.defaults.headers.common.Authorization = accessToken
   return axios.put(`${BASE_URL}/${resource}/${id}`, model).then(handleResponse).catch(handleError)
 }

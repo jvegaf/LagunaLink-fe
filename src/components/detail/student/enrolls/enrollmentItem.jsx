@@ -14,7 +14,10 @@ const useStyles = makeStyles(theme => ({
   itemRow: {
     '&:hover': {
       backgroundColor: '#f5f5f5',
-    },
+    }
+  },
+  inactiveRow: {
+    backgroundColor: '#dadada'
   },
   actions: {
     paddingRight: '4em',
@@ -30,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 }))
 
 const EnrollmentItem = props => {
@@ -39,7 +42,7 @@ const EnrollmentItem = props => {
   const enrollDate = dateFormatter(enroll.enrollment_date)
   const classes = useStyles()
   const handleView = (event, enroll) => {
-    view({...enroll.jobDetail, id: enroll.jobDetail._id})
+    view({ ...enroll.jobDetail, id: enroll.jobDetail._id })
   }
   const handleRemove = (event, item) => {
     confirm({ description: '¿ Quieres retirar tu aplicación a esta oferta ?' }).then(() => {
@@ -47,13 +50,15 @@ const EnrollmentItem = props => {
     })
   }
 
+  const colorize = enroll.jobDetail.isActive ? classes.itemRow : classes.inactiveRow
+
   const idx = index + 1
   return (
     <>
       <NoSsr>
         <GoogleFontLoader fonts={[{ font: 'Poppins', weights: [400, 700] }]} />
       </NoSsr>
-      <Row className={classes.itemRow} gap={3}>
+      <Row className={colorize} gap={3}>
         <Item className={classes.itemAvatar}>
           <Avatar>{idx}</Avatar>
         </Item>
@@ -63,13 +68,15 @@ const EnrollmentItem = props => {
           <InfoCaption>{enrollDate}</InfoCaption>
         </Info>
         <div className={classes.actions}>
-          <IconButton
-            className={classes.actionButton}
-            onClick={event => handleView(event, enroll)}
-            aria-label="view job"
-          >
-            <Visibility />
-          </IconButton>
+          {enroll.jobDetail.isActive && (
+            <IconButton
+              className={classes.actionButton}
+              onClick={event => handleView(event, enroll)}
+              aria-label="view job"
+            >
+              <Visibility />
+            </IconButton>
+          )}
           <IconButton
             className={classes.actionButton}
             onClick={event => handleRemove(event, enroll)}

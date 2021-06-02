@@ -55,13 +55,13 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const JobItem = props => {
-  const { index, job, view, remove } = props
+  const { index, job, onView, onRemove } = props
   const confirm = useConfirm()
   const classes = useStyles()
-  const handleView = e => view(index)
-  const handleRemove = (event, jobId) => {
+  const handleView = e => onView(index)
+  const handleRemove = e => {
     confirm({ description: '¿ Quieres eliminar esta vacante ?' }).then(() => {
-      remove(jobId)
+      onRemove(job._id)
     })
   }
   const idx = index + 1
@@ -70,7 +70,7 @@ const JobItem = props => {
       <NoSsr>
         <GoogleFontLoader fonts={[{ font: 'Poppins', weights: [400, 700] }]} />
       </NoSsr>
-      <Row gap={1.5} onClick={e => handleView(e)} className={classes.itemRow}>
+      <Row gap={1.5} onClick={() => handleView()} className={classes.itemRow}>
         <Item className={classes.center} position={'left'}>
           <Avatar>{idx}</Avatar>
         </Item>
@@ -96,7 +96,7 @@ const JobItem = props => {
           </Box>
         </Item>
         <Item position={'right'} mr={-0.5} className={classes.center}>
-          <IconButton onClick={event => handleRemove(event, job.id)} aria-label="remove">
+          <IconButton onClick={() => handleRemove()} aria-label="remove">
             <Delete />
           </IconButton>
         </Item>

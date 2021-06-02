@@ -61,7 +61,6 @@ export const JobOpeningDetailView = props => {
   const styles = useStyles()
   const dispatch = useDispatch()
 
-  console.log(props);
 
   const enrollAction = () => {
     confirm({ description: '¿ Quieres aplicar a esta oferta ?' }).then(() => {

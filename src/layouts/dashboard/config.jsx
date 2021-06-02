@@ -16,9 +16,9 @@ export const config = {
     "md": true
   },
   "collapsedWidth": {
-    "xs": 64,
-    "sm": 64,
-    "md": 64
+    "xs": 70,
+    "sm": 70,
+    "md": 70
   },
   "clipped": {
     "xs": true,

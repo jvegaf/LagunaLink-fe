@@ -216,7 +216,6 @@ const signIn = data => dispatch => {
       }
     })
     .catch(e => {
-      console.log({ e })
       if (e.response.status === BAD_REQUEST) {
         dispatch({ type: SIGNIN_ERROR })
       }
@@ -230,6 +229,7 @@ const signOut = () => dispatch => {
   clearStorage()
   dispatch(studentActions.signOut())
   dispatch(companyActions.signOut())
+  dispatch(sharedActions.signOut())
   dispatch({ type: SIGN_OUT })
 }
 
@@ -342,13 +342,13 @@ const getCredentials = () => dispatch => {
   }
 }
 
-const getProfile = props => dispatch => {
+const getProfile = payload => dispatch => {
   dispatch({ type: GET_PROFILE })
-  const { accessToken } = props
+  const { accessToken } = payload
   apiProvider
     .getAll('user/profile', accessToken)
     .then(res => {
-      dispatch(actions.setUserProfile({ ...props, profile: res.data.profile }))
+      dispatch(actions.setUserProfile({ ...payload, profile: res.data.profile }))
       dispatch({ type: GET_PROFILE_COMPLETE, payload: res.data.profile })
     })
     .catch(e => {

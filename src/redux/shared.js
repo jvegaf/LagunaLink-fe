@@ -22,10 +22,15 @@ const FETCH_COMPANIES_AVATAR_COMPLETE = 'FETCH_COMPANIES_AVATAR_COMPLETE'
 const FETCH_COMPANIES_COMPLETE = 'FETCH_COMPANIES_COMPLETE'
 const COMPANIES_UPDATED = 'COMPANIES_UPDATED'
 const FETCH_ERROR = 'FETCH_ERROR'
+const SIGN_OUT_SHARED = 'SIGN_OUT_SHARED'
 
 // reducers
 const sharedReducer = (state = initialState, action) => {
   switch (action.type) {
+
+    case SIGN_OUT_SHARED:
+      return initialState
+
     case FETCH_JOB_OPENINGS:
       return {
         ...state,
@@ -151,11 +156,15 @@ const getCompanyAvatar = async (companyId, accessToken) => {
 const setJobsEnrollable = enrollments => (dispatch, getState) => {
   const { allJobOpenings } = getState().shared
   const jobs = allJobOpenings.map(job => {
-    job.enrollable = !(enrollments.some(e => e.job_opening === job.id))
+    job.enrolled = enrollments.some(e => e.job_opening === job.id)
+    job.enrollable = !job.enrolled
     return job
   })
   dispatch({type: UPDATE_JOB_OPENINGS_COMPLETE, payload: jobs})
 }
+
+const signOut = () => dispatch => dispatch({type: SIGN_OUT_SHARED})
+
 
 export const actions = {
   fetchAllJobOpen,
@@ -163,4 +172,5 @@ export const actions = {
   fetchAllCompanies,
   fetchAllAvatars,
   getCompanyAvatar,
+  signOut
 }

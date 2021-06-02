@@ -76,7 +76,7 @@ const companyReducer = (state = initialState, action) => {
         postalCode: action.payload.postalCode,
         region: action.payload.region,
         city: action.payload.city,
-        jobOpenings: action.payload.jobOpenings,
+        jobOpenings: action.payload.jobs,
       }
 
     case ADD_JOB_OPENING:
@@ -119,18 +119,24 @@ const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
 const setProfile = profile => dispatch => {
   const { jobOpenings, enrolls, students } = profile
-
   const enrlls = enrolls.map(en => {
-    en.studentDetail = students.find(s => s._id === en.student)
+    en.studentDetail = students.find(s => s.id === en.student)
     return en
   })
   const jobs = jobOpenings.map(j => {
-    j.enrolls  = enrlls.filter(en => en.job_opening === j._id)
+    const enr  = enrlls.filter(en => en.job_opening === j._id)
+    j.enrolls = enr
     return j
   })
 
-  const props = { ...profile, jobOpenings: jobs }
-
+  const jobsF = []
+  jobs.forEach(job => {
+    if(jobsF.findIndex(j => j._id === job._id)<0){
+      jobsF.push(job)
+    }
+  });
+  const props = { ...profile, jobs: jobsF.filter(j => j.isActive) }
+  
   dispatch({ type: SET_PROFILE, payload: props })
 }
 
