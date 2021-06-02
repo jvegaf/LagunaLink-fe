@@ -55,10 +55,11 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const JobItem = props => {
-  const { index, job, onView, onRemove } = props
+  const { index, job, onView, onRemove, onEnrolls } = props
   const confirm = useConfirm()
   const classes = useStyles()
   const handleView = e => onView(index)
+  const handleEnrolls = e => onEnrolls(job)
   const handleRemove = e => {
     confirm({ description: '¿ Quieres eliminar esta vacante ?' }).then(() => {
       onRemove(job._id)
@@ -90,7 +91,7 @@ const JobItem = props => {
             Adscritos
           </Typography>
           <Box className={classes.enrolls}>
-            <Button onClick={() => alert('clicked')} color="primary">
+            <Button onClick={() => handleEnrolls()} color="primary">
               {job.enrolls.length}
             </Button>
           </Box>

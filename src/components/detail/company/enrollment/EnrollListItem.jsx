@@ -1,18 +1,17 @@
-import React from 'react';
+import { makeStyles } from '@material-ui/core';
 import NoSsr from '@material-ui/core/NoSsr';
-import GoogleFontLoader from 'react-google-font-loader';
-import Avatar from '@material-ui/core/Avatar';
-import { Row, Item } from '@mui-treasury/components/flex';
+import { Item, Row } from '@mui-treasury/components/flex';
 import {
   Info,
-  InfoTitle,
-  InfoSubtitle,
-  InfoCaption,
+
+
+  InfoCaption, InfoSubtitle, InfoTitle
 } from '@mui-treasury/components/info';
-import { useDynamicAvatarStyles } from '@mui-treasury/styles/avatar/dynamic';
+// import { useDynamicAvatarStyles } from '@mui-treasury/styles/avatar/dynamic';
 import { usePopularInfoStyles } from '@mui-treasury/styles/info/popular';
-import { makeStyles } from '@material-ui/core';
-import { dateFormatter } from '../../services/date/dateFormatter'
+import React from 'react';
+import GoogleFontLoader from 'react-google-font-loader';
+import { dateFormatter } from '../../../../services/date/dateFormatter';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,13 +25,14 @@ const useStyles = makeStyles((theme) => ({
 
 export const EnrollListItem = props => {
   const styles = useStyles()
-  const {company, thumbnail, position, createdAt} = props
-  const _createdAt = dateFormatter(createdAt)
-  const avatarStyles = useDynamicAvatarStyles({
-    height: 56,
-    width: 64,
-    radius: 8,
-  });
+  // eslint-disable-next-line camelcase
+  const {enrollment_date, studentDetail } = props
+  const _createdAt = dateFormatter(enrollment_date)
+  // const avatarStyles = useDynamicAvatarStyles({
+  //   height: 56,
+  //   width: 64,
+  //   radius: 8,
+  // });
   return (
     <>
       <NoSsr>
@@ -40,15 +40,15 @@ export const EnrollListItem = props => {
       </NoSsr>
       <Row gap={3} className={styles.root}>
         <Item>
-          <Avatar
+          {/* <Avatar
             variant={'rounded'}
             classes={avatarStyles}
-            src={thumbnail}
-          />
+            src={}
+          /> */}
         </Item>
         <Info className={styles.info} useStyles={usePopularInfoStyles}>
-          <InfoSubtitle>{company}</InfoSubtitle>
-          <InfoTitle>{position}</InfoTitle>
+          <InfoSubtitle>{studentDetail.qualification.title}</InfoSubtitle>
+          <InfoTitle>{`${studentDetail.name} ${studentDetail.surname} ${studentDetail.lastname}`}</InfoTitle>
           <InfoCaption>{_createdAt}</InfoCaption>
         </Info>
       </Row>
