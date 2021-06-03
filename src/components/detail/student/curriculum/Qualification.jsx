@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core'
 import { QualificationForm } from '../../../form/student/qualification'
-import Card from '../../../shared/Card'
+import { LinkCard } from '../../../shared/Card'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -12,8 +12,8 @@ export const Qualification = props => {
   const classes = useStyles()
 
   return (
-    <Card className={classes.root} title="Titulacion">
+    <LinkCard className={classes.root} title="Titulacion">
       <QualificationForm {...props} />
-    </Card>
+    </LinkCard>
   )
 }

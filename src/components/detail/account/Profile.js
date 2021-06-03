@@ -3,11 +3,16 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { actions } from '../../../redux/user'
 import { StyledAvatar } from '../../avatar/StyledAvatar'
-import '../../shared/styles.css'
 
 const useStyles = makeStyles(theme => ({
   root: {
     minWidth: 300,
+  },
+  username: {
+    fontFamily: 'Poppins',
+    fontSize: '2rem',
+    fontWeight: 500,
+    color: theme.palette.primary.main,
   },
   avatar: {
     marginBottom: 10,
@@ -39,7 +44,7 @@ export const Profile = props => {
           <Box className={classes.avatar}>
             <StyledAvatar size={100} thickness={4} src={avatar} />
           </Box>
-          <Typography color="textPrimary" gutterBottom variant="h3">
+          <Typography color="textPrimary" gutterBottom className={classes.username}>
             {userName}
           </Typography>
           <Typography color="textSecondary" variant="body1">

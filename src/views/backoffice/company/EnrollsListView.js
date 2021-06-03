@@ -1,14 +1,12 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import { Divider, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
+import { Divider, Grid, List, ListItem } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React from 'react'
-import { JobListItem } from '../../../components/jobOpening/jobListItem'
-import { shallowEqual, useSelector } from 'react-redux'
-import { v4 as uuid } from 'uuid'
 import { useHistory } from 'react-router-dom'
-import moment from 'moment'
+import { v4 as uuid } from 'uuid'
 import { EnrollListItem } from '../../../components/detail/company/enrollment/EnrollListItem'
+import { LinkCard } from '../../../components/shared/Card'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,11 +37,8 @@ export const EnrollsListView = job => {
 
   return (
     <Grid container className={classes.root}>
-      <Grid item lg={6}>
-        <Paper>
-          <Typography variant="h3">
-            {job.position}
-          </Typography>
+      <Grid item lg={7}>
+        <LinkCard title={job.position}>
           <List>
             {enrolls &&
               enrolls.map(enroll => (
@@ -55,7 +50,7 @@ export const EnrollsListView = job => {
                 </div>
               ))}
           </List>
-        </Paper>
+        </LinkCard>
       </Grid>
     </Grid>
   )

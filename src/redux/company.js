@@ -10,6 +10,7 @@ const initialState = {
   region: '',
   city: '',
   jobOpenings: null,
+  studentsAvatar: null,
   isBusy: false,
   taskError: null,
 }
@@ -24,6 +25,8 @@ const COMPANY_UPDATE_COMPLETE = 'COMPANY_UPDATE_COMPLETE'
 const JOB_OPENING_UPDATE = 'JOB_OPENING_UPDATE'
 const JOB_OPENING_UPDATE_COMPLETE = 'JOB_OPENING_UPDATE_COMPLETE'
 const JOB_OPENING_DEACTIVATE = 'JOB_OPENING_DEACTIVATE'
+const FETCH_STUDENTS_AVATARS = 'FETCH_STUDENTS_AVATARS'
+const FETCH_STUDENTS_AVATARS_COMPLETE = 'FETCH_STUDENTS_AVATARS_COMPLETE'
 const JOB_OPENING_DEACTIVATE_COMPLETE = 'JOB_OPENING_DEACTIVATE_COMPLETE'
 const SET_ERROR = 'SET_ERROR'
 const SIGN_OUT = 'SIGN_OUT'
@@ -59,11 +62,25 @@ const companyReducer = (state = initialState, action) => {
         isBusy: true,
       }
 
+    case FETCH_STUDENTS_AVATARS:
+      return {
+        ...state,
+        taskError: null,
+        isBusy: true,
+      }
+
     case JOB_OPENING_UPDATE_COMPLETE:
       return {
         ...state,
         isBusy: false,
         jobOpenings: action.payload,
+      }
+
+    case FETCH_STUDENTS_AVATARS_COMPLETE:
+      return {
+        ...state,
+        isBusy: false,
+        studentsAvatar: action.payload,
       }
 
     case SET_PROFILE:
@@ -117,26 +134,30 @@ export default companyReducer
 
 const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 
-const setProfile = profile => dispatch => {
+const setProfile = profile => (dispatch, getState) => {
+  const { accessToken } = getState().user
   const { jobOpenings, enrolls, students } = profile
+  if (enrolls.lenght > 0) {
+    dispatch(actions.fetchAllAvatars(students, accessToken))
+  }
   const enrlls = enrolls.map(en => {
     en.studentDetail = students.find(s => s.id === en.student)
     return en
   })
   const jobs = jobOpenings.map(j => {
-    const enr  = enrlls.filter(en => en.job_opening === j._id)
+    const enr = enrlls.filter(en => en.job_opening === j._id)
     j.enrolls = enr
     return j
   })
 
   const jobsF = []
   jobs.forEach(job => {
-    if(jobsF.findIndex(j => j._id === job._id)<0){
+    if (jobsF.findIndex(j => j._id === job._id) < 0) {
       jobsF.push(job)
     }
-  });
+  })
   const props = { ...profile, jobs: jobsF.filter(j => j.isActive) }
-  
+
   dispatch({ type: SET_PROFILE, payload: props })
 }
 
@@ -185,6 +206,18 @@ const removeJobOpening = jobId => (dispatch, getState) => {
   })
 }
 
+const fetchAllAvatars = (students, accessToken) => async dispatch => {
+  dispatch({ type: FETCH_STUDENTS_AVATARS })
+  const avatarsFetched = []
+  for (const company of students) {
+    const avatar = {}
+    avatar.id = company.id
+    avatar.url = await getAvatar(company.id, accessToken)
+    avatarsFetched.push(avatar)
+  }
+  dispatch({ type: FETCH_STUDENTS_AVATARS_COMPLETE, payload: avatarsFetched })
+}
+
 export const actions = {
   signOut,
   setProfile,
@@ -192,4 +225,14 @@ export const actions = {
   addJobOpening,
   updateJobOpening,
   removeJobOpening,
+  fetchAllAvatars,
+}
+
+const getAvatar = async (userId, accessToken) => {
+  try {
+    const response = await apiProvider.getSingle('avatar', userId, accessToken)
+    return response.data.avatarURL
+  } catch (e) {
+    console.error(e.message)
+  }
 }

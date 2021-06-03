@@ -1,10 +1,11 @@
-import { Box, Button, Card, CardHeader, Divider, List, makeStyles } from '@material-ui/core'
+import { Box, Button, List, makeStyles } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import React from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useHistory } from 'react-router'
 import { v4 as uuid } from 'uuid'
 import JobItem from './jobItem'
+import { LinkCard } from '../../../shared/Card'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -42,9 +43,8 @@ export const JobOpeningsWidget = props => {
 
 
   return (
-    <Card className={classes.root}>
-      <CardHeader title="Ofertas Publicadas" />
-      <Divider />
+    
+    <LinkCard className={classes.root} title="OFERTAS PUBLICADAS">
       <PerfectScrollbar>
         <Box className={classes.box} minWidth={400}>
           <List>{jobOpenings && jobOpenings.map((job, index) => <JobItem key={uuid()} job={job} index={index} {...props} />)}</List>
@@ -55,6 +55,6 @@ export const JobOpeningsWidget = props => {
           Crear Nueva Oferta de Trabajo
         </Button>
       </Box>
-    </Card>
+    </LinkCard>
   )
 }

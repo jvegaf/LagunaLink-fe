@@ -10,13 +10,12 @@ import { actions } from '../../../redux/company'
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100%',
-    flexGrow: 1,
-    paddingTop: theme.spacing(3),
+    width: '100%',
     padding: theme.spacing(6),
     overflow: 'hidden'
   },
   gridItem: {
-    flexGrow: 1,
+    // flexGrow: 1,
   },
 }))
 
@@ -51,6 +50,7 @@ export const JobOpeningsView = () => {
   }
 
   const onEnrolls = job => {
+    if (job.enrolls.length < 1) { return }
     history.push('/app/job_opening/enrollments', job)
   }
 
@@ -58,10 +58,10 @@ export const JobOpeningsView = () => {
 
   return (
     <Grid container spacing={4} className={classes.root}>
-      <Grid item lg={5} md={6} sm={12}>
+      <Grid item lg={5} md={12}>
         <JobOpeningsWidget {...widgetProps} />
       </Grid>
-      <Grid item lg={7} md={6} sm={12}>
+      <Grid item lg={7} md={12}>
         <Grid item className={classes.gridItem}>
           <JobOpening {...jobOpen} />
         </Grid>

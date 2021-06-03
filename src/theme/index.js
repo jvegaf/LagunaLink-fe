@@ -1,8 +1,8 @@
-import { createMuiTheme } from '@material-ui/core';
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core';
 import shadows from './shadows';
 import typography from './typography';
 
-const theme = createMuiTheme({
+let theme = createMuiTheme({
   palette: {
     background: {
       dark: '#F4F6F8',
@@ -10,22 +10,24 @@ const theme = createMuiTheme({
       paper: '#fff'
     },
     primary: {
-      main: '#1565c0',
-      light: '#5e92f3',
-      dark: '#003c8f'
+      main: '#0078c0',
+      light: '#59a7f3',
+      dark: '#004d8f'
     },
     secondary: {
-      main: '#8d6e63',
-      light: '#be9c91',
-      dark: '#5f4339'
+      main: '#c04800',
+      light: '#f97735',
+      dark: '#891500'
     },
     text: {
-      primary: '#263238',
+      primary: '#323f4d',
       secondary: '#546E7A'
     }
   },
   shadows,
   typography
 });
+
+theme = responsiveFontSizes(theme)
 
 export default theme;

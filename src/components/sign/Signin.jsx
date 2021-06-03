@@ -15,16 +15,14 @@ import { Title } from '../shared/Title'
 const useStyles = makeStyles(theme => ({
   root: {
     padding: '2em',
-    width: '90%',
-  },
-  button: {
-    paddingLeft: '4em',
-    paddingRight: '4em',
+    width: '100%',
+    maxWidth: 400
   },
   wrapper: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(6),
     position: 'relative',
+    width: '80%',
     display: 'flex',
     alignContent: 'center',
   },
@@ -48,9 +46,10 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
   },
   rememberCnt: {
-    marginBottom: theme.spacing(5),
+    marginBottom: theme.spacing(6),
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'flex-end',
+    paddingRight: theme.spacing(3)
   },
   logo: {
     height: '80px',
@@ -117,7 +116,7 @@ export const SignInComponent = () => {
             </Grid>
             <Grid item className={classes.flexCnt}>
               <div className={classes.wrapper}>
-                <Button color="primary" className={classes.button} disabled={isBusy} variant="contained" type="submit">
+                <Button color="primary" size="large" disabled={isBusy} variant="contained" type="submit" fullWidth>
                   Entrar
                 </Button>
                 {isBusy && <CircularProgress size={24} className={classes.buttonProgress} />}

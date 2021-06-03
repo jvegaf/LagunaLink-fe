@@ -20,9 +20,10 @@ const schema = yup.object().shape({
   hiringDate: yup.date().min(today),
 })
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
+    padding : theme.spacing(4)
   },
   errorMessage: {
     color: 'red',
