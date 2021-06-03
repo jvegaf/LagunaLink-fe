@@ -13,6 +13,12 @@ const useStyles = makeStyles(() => ({
   avatar: {
     marginBottom: 10,
   },
+  name: {
+    fontFamily: 'Poppins',
+    fontSize: '1.7rem',
+    letterSpacing: -1,
+    fontWeight: 400,
+  }
 }))
 
 const NavBar = props => {
@@ -32,7 +38,7 @@ const NavBar = props => {
           <StyledAvatar size={64} thickness={2} src={user.avatar} />
         </Box>
         {!collapsed && (
-          <Typography className={classes.name} color="textPrimary" variant="h5">
+          <Typography className={classes.name}>
             {userName}
           </Typography>
         )}

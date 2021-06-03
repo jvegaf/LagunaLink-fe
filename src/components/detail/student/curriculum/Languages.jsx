@@ -1,8 +1,6 @@
 import {
   Box,
   Button,
-  Card,
-  CardHeader,
   Divider,
   IconButton,
   makeStyles,
@@ -21,13 +19,20 @@ import { v4 as uuid } from 'uuid'
 import { actions } from '../../../../redux/student'
 import { FormDialog } from '../../../dialog/FormDialog'
 import { LanguageForm } from '../../../form/student/language'
+import { LinkCard } from '../../../shared/Card'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    width: '100%'
+    width: '100%',
   },
   cell: {
-    padding: '4px',
+    padding: '0.5em 2em',
+    fontSize: '1.1rem',
+    textAlign: 'center'
+  },
+  infocell: {
+    padding: theme.spacing(0.5),
+    textAlign: 'center'
   },
   actions: {
     justifyContent: 'flex-end',
@@ -36,8 +41,7 @@ const useStyles = makeStyles(() => ({
     background: '#f5f5f5',
   },
   rate: {
-    padding: '4px',
-    lineHeight: '0.9rem'
+    paddingLeft: theme.spacing(6)
   },
   box: {
     paddingLeft: '20px'
@@ -72,19 +76,18 @@ const handleAdd = () => {
 }
 
   return (
-    <Card className={classes.root}>
+    <LinkCard title="Idiomas" className={classes.root}>
       <FormDialog {...addLangprops} />
-      <CardHeader title="Idiomas" />
       <Divider />
       <PerfectScrollbar>
         <Box className={classes.box} minWidth={550}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell className={classes.cell}>Idioma</TableCell>
-                <TableCell className={classes.cell}>Nivel Oral</TableCell>
-                <TableCell className={classes.cell}>Nivel Escrito</TableCell>
-                <TableCell className={classes.cell}></TableCell>
+                <TableCell className={classes.infocell}>Idioma</TableCell>
+                <TableCell className={classes.infocell}>Nivel Oral</TableCell>
+                <TableCell className={classes.infocell}>Nivel Escrito</TableCell>
+                <TableCell className={classes.infocell}></TableCell>
               </TableRow>
             </TableHead>
             <TableBody >
@@ -117,6 +120,6 @@ const handleAdd = () => {
           Agregar Idioma
         </Button>
       </Box>
-    </Card>
+    </LinkCard>
   )
 }

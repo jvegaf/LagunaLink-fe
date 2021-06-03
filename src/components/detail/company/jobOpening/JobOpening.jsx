@@ -1,9 +1,9 @@
 import { makeStyles } from '@material-ui/core'
 import React from 'react'
 import { JobOpeningForm } from '../../../form/company/jobOpeningForm'
-import Card from '../../../shared/Card.js'
+import { LinkCard } from '../../../shared/Card'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
     height: '100%'
@@ -14,8 +14,8 @@ export const JobOpening = props => {
   const classes = useStyles()
   const { position } = props
   return (
-    <Card className={classes.root} title={position}>
+    <LinkCard className={classes.root} title={position}>
       <JobOpeningForm {...props} />
-    </Card>
+    </LinkCard>
   )
 }

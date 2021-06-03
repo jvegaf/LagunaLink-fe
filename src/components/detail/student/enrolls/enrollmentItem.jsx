@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Avatar, IconButton, makeStyles, NoSsr } from '@material-ui/core'
+import { Avatar, Chip, IconButton, makeStyles, NoSsr } from '@material-ui/core'
 import { Delete, Visibility } from '@material-ui/icons'
 import { Item, Row } from '@mui-treasury/components/flex'
 import { Info, InfoCaption, InfoSubtitle, InfoTitle } from '@mui-treasury/components/info'
@@ -68,7 +68,7 @@ const EnrollmentItem = props => {
           <InfoCaption>{enrollDate}</InfoCaption>
         </Info>
         <div className={classes.actions}>
-          {enroll.jobDetail.isActive && (
+          {enroll.jobDetail.isActive ? (
             <IconButton
               className={classes.actionButton}
               onClick={event => handleView(event, enroll)}
@@ -76,7 +76,7 @@ const EnrollmentItem = props => {
             >
               <Visibility />
             </IconButton>
-          )}
+          ): (<Chip color="secondary" size="small" label={'esta oferta fue eliminada'} icon={<Delete />} />)}
           <IconButton
             className={classes.actionButton}
             onClick={event => handleRemove(event, enroll)}

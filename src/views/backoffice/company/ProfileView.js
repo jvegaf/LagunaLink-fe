@@ -8,16 +8,11 @@ import { CompanyAccount } from '../../../components/detail/company/CompanyAccoun
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100%',
+    width: '100%',
     display: 'flex',
-    justifyContent: 'center',
-    padding: theme.spacing(6),
-  },
-  gridContainer: {
-    paddingTop: theme.spacing(3),
-  },
-  gridItem: {
-    flexGrow: 1,
-  },
+    justifyContent: 'space-around',
+    padding: theme.spacing(4),
+  }
 }))
 
 export const CompanyProfileView = () => {
@@ -28,13 +23,11 @@ export const CompanyProfileView = () => {
 
   return (
     <Grid container className={classes.root} spacing={3}>
-      <Grid item xl={3} lg={4} md={4} sm={12} xs={12}>
+      <Grid item lg={3} md={12}>
         <Profile {...user} />
       </Grid>
-      <Grid item container direction="column" xl={6} lg={8} md={8} sm={12} xs={12}>
-        <Grid item className={classes.gridItem}>
-          <CompanyAccount {...props} />
-        </Grid>
+      <Grid item lg={7} md={12}>
+        <CompanyAccount {...props} />
       </Grid>
     </Grid>
   )

@@ -1,8 +1,8 @@
 import {
   Box,
   Button,
-  Card,
-  CardHeader,
+
+
   Divider,
   IconButton,
   makeStyles,
@@ -18,14 +18,21 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useDispatch } from 'react-redux'
 import { v4 as uuid } from 'uuid'
 import { actions } from '../../../../redux/student'
+import { LinkCard } from '../../../shared/Card'
 import { JobExpDialog } from './JobExpDialog'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%'
   },
   cell: {
-    padding: '4px',
+    textAlign: 'center',
+    fontSize: '1.1rem',
+    justifyContent: 'center'
+  },
+  infocell: {
+    padding: theme.spacing(0.5),
+    textAlign: 'center'
   },
   actions: {
     justifyContent: 'flex-end',
@@ -59,20 +66,19 @@ const handleAdd = () => {
 }
 
   return (
-    <Card className={classes.root}>
+    <LinkCard title="Experiencia Laboral" className={classes.root}>
       {dialog &&  <JobExpDialog closeIt={hideDialog} />}
-      <CardHeader title="Experiencia Laboral" />
       <Divider />
       <PerfectScrollbar>
         <Box className={classes.box} minWidth={550}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell className={classes.cell}>Empresa</TableCell>
-                <TableCell className={classes.cell}>Posicion</TableCell>
-                <TableCell className={classes.cell}>Comienzo</TableCell>
-                <TableCell className={classes.cell}>Finalizacion</TableCell>
-                <TableCell className={classes.cell}></TableCell>
+                <TableCell className={classes.infocell}>Empresa</TableCell>
+                <TableCell className={classes.infocell}>Posicion</TableCell>
+                <TableCell className={classes.infocell}>Comienzo</TableCell>
+                <TableCell className={classes.infocell}>Finalizacion</TableCell>
+                <TableCell className={classes.infocell}></TableCell>
               </TableRow>
             </TableHead>
             <TableBody >
@@ -102,7 +108,7 @@ const handleAdd = () => {
           Agregar experiencia laboral
         </Button>
       </Box>
-    </Card>
+    </LinkCard>
   )
 }
 

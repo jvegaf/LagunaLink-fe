@@ -138,15 +138,15 @@ const fetchAllAvatars = (companies, accessToken) => async dispatch => {
   for (const company of companies) {
     const avatar = {}
     avatar.id = company.id
-    avatar.url = await getCompanyAvatar(company.id, accessToken)
+    avatar.url = await getAvatar(company.id, accessToken)
     avatarsFetched.push(avatar)
   }
   dispatch({type: FETCH_COMPANIES_AVATAR_COMPLETE, payload: avatarsFetched})
 }
 
-const getCompanyAvatar = async (companyId, accessToken) => {
+const getAvatar = async (userId, accessToken) => {
   try {
-    const response = await apiProvider.getSingle('avatar', companyId, accessToken)
+    const response = await apiProvider.getSingle('avatar', userId, accessToken)
     return response.data.avatarURL
   } catch (e) {
     console.error(e.message)
@@ -171,6 +171,6 @@ export const actions = {
   setJobsEnrollable,
   fetchAllCompanies,
   fetchAllAvatars,
-  getCompanyAvatar,
+  getAvatar,
   signOut
 }

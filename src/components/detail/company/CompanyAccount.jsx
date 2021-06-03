@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core'
 import React from 'react'
 import { CompanyForm } from '../../form/company/register'
-import Card from '../../shared/Card'
+import { LinkCard } from '../../shared/Card'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -14,8 +14,8 @@ export const CompanyAccount = props => {
   props = {...props, newRegistry: false}
 
   return (
-    <Card className={classes.root} title="Perfil">
+    <LinkCard className={classes.root} title="PERFIL">
       <CompanyForm {...props} />
-    </Card>
+    </LinkCard>
   )
 }

@@ -10,6 +10,7 @@ import NavBar from '../../components/nav/index'
 import companyNavConf from '../../config/company/nav'
 import studentNavConf from '../../config/student/nav'
 import { CreateJobOpenView } from '../../views/backoffice/company/CreateJobOpenView'
+import { EnrollsListView } from '../../views/backoffice/company/EnrollsListView'
 import { JobOpeningsView } from '../../views/backoffice/company/jobOpeningsView'
 import { CompanyProfileView } from '../../views/backoffice/company/ProfileView'
 import { EnrollmentsView } from '../../views/backoffice/student/EnrollmentsView'
@@ -86,5 +87,7 @@ const checkRequest = props => {
       return <JobOpeningDetailView {...props.location.state} />
     case 'enrollments':
       return <EnrollmentsView />
+    case 'jobEnrollments':
+      return <EnrollsListView {...props.location.state} />
   }
 }

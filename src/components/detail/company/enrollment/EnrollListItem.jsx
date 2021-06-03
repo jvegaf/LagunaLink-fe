@@ -1,57 +1,93 @@
-import React from 'react';
-import NoSsr from '@material-ui/core/NoSsr';
-import GoogleFontLoader from 'react-google-font-loader';
-import Avatar from '@material-ui/core/Avatar';
-import { Row, Item } from '@mui-treasury/components/flex';
-import {
-  Info,
-  InfoTitle,
-  InfoSubtitle,
-  InfoCaption,
-} from '@mui-treasury/components/info';
-import { useDynamicAvatarStyles } from '@mui-treasury/styles/avatar/dynamic';
-import { usePopularInfoStyles } from '@mui-treasury/styles/info/popular';
-import { makeStyles } from '@material-ui/core';
-import { dateFormatter } from '../../services/date/dateFormatter'
+import { Avatar, makeStyles, Typography } from '@material-ui/core'
+import { Item, Row } from '@mui-treasury/components/flex'
+import { useDynamicAvatarStyles } from '@mui-treasury/styles/avatar/dynamic'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { dateFormatter } from '../../../../services/date/dateFormatter'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    display: 'flex'
+    display: 'flex',
   },
   info: {
-    flexGrow: 1
-  }
+    flexGrow: 2,
+    paddingLeft: theme.spacing(3)
+  },
+  details: {
+    flexGrow: 1,
+    marginRight: theme.spacing(6),
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+  },
+  section: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  subtitle: {
+    color: theme.palette.secondary.main,
+    textTransform: 'uppercase',
+    fontFamily: 'Poppins, san-serif',
+    fontSize: '0.9rem',
+  },
+  title: {
+    color: theme.palette.primary.main,
+    fontFamily: 'Poppins',
+    fontSize: '1.5rem',
+    fontWeight: 400,
+    letterSpacing: 0.4,
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+
+  caption: {
+    fontFamily: 'Poppins, san-serif',
+    color: '#95a0a1',
+    fontSize: '0.8rem',
+    marginRight: '0.8rem',
+  },
 }))
 
 export const EnrollListItem = props => {
   const styles = useStyles()
-  const {company, thumbnail, position, createdAt} = props
-  const _createdAt = dateFormatter(createdAt)
+  // eslint-disable-next-line camelcase
+  const { enrollment_date, studentDetail } = props
+  const _createdAt = dateFormatter(enrollment_date)
+  debugger
+  
+  const studentsAvatar = useSelector(state => state.company.studentsAvatar)
+  const [avatar, setAvatar] = useState('')
+
+  useEffect(() => {
+    if(studentsAvatar !== null){
+      const sAvatar = studentsAvatar.find(s => studentDetail._id === s.id)
+      setAvatar(sAvatar.url)
+    }
+  }, [studentsAvatar])
   const avatarStyles = useDynamicAvatarStyles({
     height: 56,
     width: 64,
     radius: 8,
-  });
+  })
+
+
   return (
-    <>
-      <NoSsr>
-        <GoogleFontLoader fonts={[{ font: 'Poppins', weights: [400, 700] }]} />
-      </NoSsr>
-      <Row gap={3} className={styles.root}>
-        <Item>
-          <Avatar
-            variant={'rounded'}
-            classes={avatarStyles}
-            src={thumbnail}
-          />
-        </Item>
-        <Info className={styles.info} useStyles={usePopularInfoStyles}>
-          <InfoSubtitle>{company}</InfoSubtitle>
-          <InfoTitle>{position}</InfoTitle>
-          <InfoCaption>{_createdAt}</InfoCaption>
-        </Info>
-      </Row>
-    </>
+    <Row gap={3} className={styles.root}>
+      <Item>
+        <Avatar variant={'rounded'} classes={avatarStyles} src={avatar} />
+      </Item>
+      <div className={styles.info}>
+        <Typography className={styles.subtitle}>{studentDetail.qualification.title}</Typography>
+        <Typography className={styles.title}>{`${studentDetail.name} ${studentDetail.surname} ${studentDetail.lastname}`}</Typography>
+      </div>
+      <div className={styles.details}>
+        <div className={styles.section}>
+          <Typography className={styles.caption}>Fecha de aplicacion:</Typography>
+          <Typography className={styles.subtitle}>{_createdAt}</Typography>
+        </div>
+      </div>
+    </Row>
   )
-};
+}
