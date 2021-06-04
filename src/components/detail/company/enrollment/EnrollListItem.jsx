@@ -55,17 +55,17 @@ export const EnrollListItem = props => {
   // eslint-disable-next-line camelcase
   const { enrollment_date, studentDetail } = props
   const _createdAt = dateFormatter(enrollment_date)
-  debugger
   
   const studentsAvatar = useSelector(state => state.company.studentsAvatar)
+  const avatarsFetched = useSelector(state => state.company.avatarsFetched)
   const [avatar, setAvatar] = useState('')
 
   useEffect(() => {
-    if(studentsAvatar !== null){
+    if(avatarsFetched){
       const sAvatar = studentsAvatar.find(s => studentDetail._id === s.id)
       setAvatar(sAvatar.url)
     }
-  }, [studentsAvatar])
+  }, [avatarsFetched])
   const avatarStyles = useDynamicAvatarStyles({
     height: 56,
     width: 64,

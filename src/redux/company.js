@@ -11,6 +11,7 @@ const initialState = {
   city: '',
   jobOpenings: null,
   studentsAvatar: null,
+  avatarsFetched: false,
   isBusy: false,
   taskError: null,
 }
@@ -81,6 +82,7 @@ const companyReducer = (state = initialState, action) => {
         ...state,
         isBusy: false,
         studentsAvatar: action.payload,
+        avatarsFetched: true
       }
 
     case SET_PROFILE:
@@ -137,9 +139,7 @@ const signOut = () => dispatch => dispatch({ type: SIGN_OUT })
 const setProfile = profile => (dispatch, getState) => {
   const { accessToken } = getState().user
   const { jobOpenings, enrolls, students } = profile
-  if (enrolls.lenght > 0) {
-    dispatch(actions.fetchAllAvatars(students, accessToken))
-  }
+  dispatch(actions.fetchAllAvatars(students, accessToken))
   const enrlls = enrolls.map(en => {
     en.studentDetail = students.find(s => s.id === en.student)
     return en
@@ -209,10 +209,10 @@ const removeJobOpening = jobId => (dispatch, getState) => {
 const fetchAllAvatars = (students, accessToken) => async dispatch => {
   dispatch({ type: FETCH_STUDENTS_AVATARS })
   const avatarsFetched = []
-  for (const company of students) {
+  for (const student of students) {
     const avatar = {}
-    avatar.id = company.id
-    avatar.url = await getAvatar(company.id, accessToken)
+    avatar.id = student.id
+    avatar.url = await getAvatar(student.id, accessToken)
     avatarsFetched.push(avatar)
   }
   dispatch({ type: FETCH_STUDENTS_AVATARS_COMPLETE, payload: avatarsFetched })

@@ -357,13 +357,14 @@ const getProfile = payload => dispatch => {
 }
 
 const setUserProfile = payload => dispatch => {
-  switch (payload.userRole) {
+  const { userRole, profile } = payload
+  switch (userRole) {
     case ROLE_COMPANY:
-      dispatch(companyActions.setProfile(payload.profile))
+      dispatch(companyActions.setProfile(profile))
       break
 
     case ROLE_STUDENT:
-      dispatch(studentActions.setProfile(payload.profile))
+      dispatch(studentActions.setProfile(profile))
       break
   }
 }
