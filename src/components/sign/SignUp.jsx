@@ -1,5 +1,6 @@
 import { Box, Button, CircularProgress, Grid, Link, makeStyles, Paper, Typography } from '@material-ui/core'
 import { green } from '@material-ui/core/colors'
+import { useSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
@@ -57,8 +58,17 @@ const useStyles = makeStyles(theme => ({
 }
 ))
 
-export const SignUp = () => {
-  const history = useHistory();
+export const SignUp = props => {
+  const { backendStatus } = props
+  const { enqueueSnackbar } = useSnackbar()
+  const [disabled, setDisabled] = useState(false)
+  useEffect(() => {
+    if(backendStatus === 500) {
+      enqueueSnackbar('Backend Offline', { variant: 'error' })
+      setDisabled(true)
+    } 
+  }, [backendStatus])
+  const history = useHistory()
   const dispatch = useDispatch()
   const [modal, setModal] = useState({
     open: false,
@@ -121,7 +131,7 @@ export const SignUp = () => {
             </Grid>
             <Grid item className={classes.flexCnt}>
               <div className={classes.wrapper}>
-                <Button color={'primary'} className={classes.button} variant={'contained'} type={'submit'}>Crear Cuenta</Button>
+                <Button color={'primary'} className={classes.button} disabled={disabled} variant={'contained'} type={'submit'}>Crear Cuenta</Button>
                 {isBusy && <CircularProgress size={24} className={classes.buttonProgress} />}
               </div>
             </Grid>

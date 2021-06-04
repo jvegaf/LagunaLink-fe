@@ -1,6 +1,7 @@
 import { apiProvider } from '../services/api/api-provider'
 
 const initialState = {
+  backendStatus: undefined,
   allJobOpenings: [],
   allCompanies: [],
   avatars: [],
@@ -12,6 +13,9 @@ const initialState = {
 
 // const types
 
+const GET_STATUS = 'GET_STATUS'
+const GET_STATUS_SUCCESS = 'GET_STATUS_SUCCESS'
+const GET_STATUS_ERROR = 'GET_STATUS_ERROR'
 const FETCH_JOB_OPENINGS = 'FETCH_JOB_OPENINGS'
 const UPDATE_JOB_OPENINGS = 'UPDATE_JOB_OPENINGS'
 const UPDATE_JOB_OPENINGS_COMPLETE = 'UPDATE_JOB_OPENINGS_COMPLETE'
@@ -30,6 +34,28 @@ const sharedReducer = (state = initialState, action) => {
 
     case SIGN_OUT_SHARED:
       return initialState
+
+    case GET_STATUS:
+      return {
+        ...state,
+        isBusy: true,
+        taskError: false,
+      }
+
+    case GET_STATUS_SUCCESS:
+      return {
+        ...state,
+        isBusy: false,
+        backendStatus: 200,
+      }
+
+    case GET_STATUS_ERROR:
+      return {
+        ...state,
+        isBusy: false,
+        backendStatus: 500,
+        taskError: true,
+      }
 
     case FETCH_JOB_OPENINGS:
       return {
@@ -112,6 +138,14 @@ export default sharedReducer
 
 // actions
 
+const getStatus = () => dispatch => {
+  dispatch({type: GET_STATUS})
+  apiProvider
+    .getAll('status')
+    .then(res => dispatch({type: GET_STATUS_SUCCESS}))
+    .catch(e => dispatch({type: GET_STATUS_ERROR}))
+}
+
 const fetchAllJobOpen = accessToken => dispatch => {
   dispatch({ type: FETCH_JOB_OPENINGS })
   apiProvider
@@ -167,6 +201,7 @@ const signOut = () => dispatch => dispatch({type: SIGN_OUT_SHARED})
 
 
 export const actions = {
+  getStatus,
   fetchAllJobOpen,
   setJobsEnrollable,
   fetchAllCompanies,

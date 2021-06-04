@@ -60,7 +60,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const SignInComponent = () => {
+export const SignInComponent = props => {
+  const { backendStatus } = props
   const history = useHistory()
   const { enqueueSnackbar } = useSnackbar()
   const isSignedIn = useSelector(state => state.user.isSignedIn)
@@ -74,6 +75,10 @@ export const SignInComponent = () => {
   const onSubmit = data => {
     dispatch(actions.signIn(data))
   }
+
+  useEffect(() => {
+    if(backendStatus === 500) enqueueSnackbar('Backend Offline', { variant: 'error' }) 
+  }, [backendStatus])
 
   useEffect(() => {
     dispatch(actions.getCredentials())
