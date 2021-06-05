@@ -1,9 +1,6 @@
-/* eslint-disable no-unused-vars */
 import { Avatar, Chip, IconButton, makeStyles, NoSsr } from '@material-ui/core'
 import { Delete, Visibility } from '@material-ui/icons'
 import { Item, Row } from '@mui-treasury/components/flex'
-import { Info, InfoCaption, InfoSubtitle, InfoTitle } from '@mui-treasury/components/info'
-import { usePopularInfoStyles } from '@mui-treasury/styles/info/popular'
 import { useConfirm } from 'material-ui-confirm'
 import React from 'react'
 import GoogleFontLoader from 'react-google-font-loader'
@@ -33,6 +30,30 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: theme.spacing(2)
+  },
+  subtitle: {
+    color: theme.palette.primary.dark,
+    textTransform: 'uppercase',
+    fontFamily: 'Poppins',
+    fontWeight: 400,
+    fontSize: '0.9rem',
+  },
+  title: {
+    color: theme.palette.secondary.dark,
+    fontFamily: 'Poppins',
+    fontSize: '1.1rem',
+    fontWeight: 400,
+    letterSpacing: 0.4,
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+
+  caption: {
+    fontFamily: 'Poppins',
+    color: '#95a0a1',
+    fontSize: '0.9rem',
+    marginRight: '0.8rem',
   },
 }))
 
@@ -62,11 +83,11 @@ const EnrollmentItem = props => {
         <Item className={classes.itemAvatar}>
           <Avatar>{idx}</Avatar>
         </Item>
-        <Info useStyles={usePopularInfoStyles}>
-          <InfoSubtitle>{enroll.jobDetail.companyDetail.name}</InfoSubtitle>
-          <InfoTitle>{enroll.jobDetail.position}</InfoTitle>
-          <InfoCaption>{enrollDate}</InfoCaption>
-        </Info>
+        <div className={classes.item}>
+          <div className={classes.subtitle}>{enroll.jobDetail.companyDetail.name}</div>
+          <div className={classes.title}>{enroll.jobDetail.position}</div>
+          <div className={classes.caption}>{enrollDate}</div>
+        </div>
         <div className={classes.actions}>
           {enroll.jobDetail.isActive ? (
             <IconButton
@@ -76,7 +97,7 @@ const EnrollmentItem = props => {
             >
               <Visibility />
             </IconButton>
-          ): (<Chip color="secondary" size="small" label={'esta oferta fue eliminada'} icon={<Delete />} />)}
+          ): (<Chip color="secondary" variant="outlined" size="small" label={'esta oferta fue eliminada'} icon={<Delete />} />)}
           <IconButton
             className={classes.actionButton}
             onClick={event => handleRemove(event, enroll)}

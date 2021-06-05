@@ -1,7 +1,8 @@
-import { Box, Card, CardHeader, Divider, List, makeStyles } from '@material-ui/core'
+import { Box, Divider, List, makeStyles } from '@material-ui/core'
 import React from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { v4 as uuid } from 'uuid'
+import { LinkCard } from '../../../shared/Card'
 import EnrollmentItem from './enrollmentItem'
 
 const useStyles = makeStyles(() => ({
@@ -27,18 +28,17 @@ export const EnrollmentsWidget = props => {
   const { enrolls, remove, view } = props
 
   return (
-    <Card className={classes.root}>
-      <CardHeader title="Ofertas Aplicadas" />
+    <LinkCard title="Ofertas Aplicadas" className={classes.root}>
       <Divider />
       <PerfectScrollbar>
         <Box className={classes.box} minWidth={500}>
           <List>
-            {enrolls && enrolls.map((enroll, index) => (
+            {enrolls.map((enroll, index) => (
                 <EnrollmentItem key={uuid()} enroll={enroll} index={index} view={view} remove={remove} />
               ))}
           </List>
         </Box>
       </PerfectScrollbar>
-    </Card>
+    </LinkCard>
   )
 }

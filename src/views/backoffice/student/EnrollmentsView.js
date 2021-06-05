@@ -29,17 +29,14 @@ export const EnrollmentsView = () => {
   const user = useSelector(state => state.user)
   const enrolls = useSelector(state => state.student.enrolls, shallowEqual)
 
-  
-  
   const actionRemove = itemId => {
     dispatch(actions.unenrollThisJob(itemId))
   }
-  
+
   const actionView = job => {
     job.companyDetail.avatar = avatars.find(av => av.id === job.companyDetail._id).url
-    history.push( {pathname:`/app/detail/job_opening`, state: { job } })
+    history.push({ pathname: `/app/detail/job_opening`, state: { job } })
   }
-
 
   const props = { enrolls, remove: actionRemove, view: actionView }
 
@@ -49,9 +46,9 @@ export const EnrollmentsView = () => {
         <Grid item lg={4} md={6} xs={12}>
           <Profile {...user} />
         </Grid>
-        <Grid item container direction="column" spacing={3} xl={6} lg={8} md={6} xs={12}>
+        <Grid item container direction="column" spacing={3} lg={8} md={6} xs={12}>
           <Grid item className={classes.gridItem}>
-            {enrolls &&  <EnrollmentsWidget {...props} /> }
+            <EnrollmentsWidget {...props} />
           </Grid>
         </Grid>
       </Grid>

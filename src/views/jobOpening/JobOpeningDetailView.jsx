@@ -31,11 +31,17 @@ const useStyles = makeStyles(theme => ({
   gridSection: {
     padding: theme.spacing(2),
   },
+  hiring: {
+    fontFamily: 'Roboto',
+    fontWeight: 300,
+    fontSize: '1.8rem',
+    color: theme.palette.secondary.dark
+  },
   preTag: {
     whiteSpace: 'pre-wrap',
     fontFamily: 'Roboto',
     fontSize: '1.2rem',
-    color: theme.palette.secondary.dark,
+    fontWeight: 300,
     paddingLeft: theme.spacing(2),
   },
   subBody: {
@@ -55,27 +61,27 @@ const useStyles = makeStyles(theme => ({
     fontSize: '1.4rem',
   },
   jobPosition: {
-    color: theme.palette.primary.main,
+    color: theme.palette.primary.dark,
     fontSize: '2.8rem',
     fontWeight: 500,
     letterSpacing: 1.8,
   },
   section: {
     color: theme.palette.primary.main,
-    fontFamily: 'Roboto',
-    fontSize: '2rem',
-    fontWeight: 500,
+    fontFamily: 'Poppins',
+    fontSize: '1.4rem',
+    fontWeight: 300,
   },
   underSection: {
     color: theme.palette.primary.main,
-    fontFamily: 'Roboto',
+    fontFamily: 'Poppins',
     fontSize: '1.2rem',
-    fontWeight: 500,
+    fontWeight: 300,
     paddingLeft: theme.spacing(2),
   },
   subSection: {
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 }))
 
 export const JobOpeningDetailView = props => {
@@ -108,10 +114,10 @@ export const JobOpeningDetailView = props => {
             </Grid>
             <Grid item container className={styles.actionsSection}>
               <Grid item>
-                <Typography align={'center'} variant="body1" color="primary">
+                <Typography align={'center'} className={styles.underSection}>
                   fecha de contratacion:{' '}
                 </Typography>
-                <Typography align={'center'} variant="h4" color="secondary">
+                <Typography align={'center'} className={styles.hiring}>
                   {dateFormatter(job.hiringDate)}
                 </Typography>
               </Grid>

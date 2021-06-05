@@ -20,7 +20,7 @@ let theme = createMuiTheme({
       dark: '#891500'
     },
     text: {
-      primary: '#323f4d',
+      primary: '#202124',
       secondary: '#546E7A'
     }
   },

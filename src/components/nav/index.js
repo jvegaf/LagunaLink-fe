@@ -14,10 +14,12 @@ const useStyles = makeStyles(() => ({
     marginBottom: 10,
   },
   name: {
+    display: 'block',
+    textOverflow: 'ellipsis',
     fontFamily: 'Poppins',
     fontSize: '1.7rem',
     letterSpacing: -1,
-    fontWeight: 400,
+    fontWeight: 300,
   }
 }))
 

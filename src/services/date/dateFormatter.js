@@ -9,6 +9,14 @@ export const dateFormatter = date => {
   return `${day}/${month}/${year}`
 }
 
+export const yearMonthFormatter = date => {
+  // yyyy-mm
+  const year = date.substr(0, 4)
+  const month = date.substr(5, 2)
+
+  return `${month}-${year}`
+}
+
 export function dateToISOString(date) {
   let d = new Date(date),
     month = '' + (d.getMonth() + 1),

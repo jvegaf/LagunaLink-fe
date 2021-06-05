@@ -1,8 +1,7 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 import { Divider, Grid, List, ListItem } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { v4 as uuid } from 'uuid'
 import { EnrollListItem } from '../../../components/detail/company/enrollment/EnrollListItem'
@@ -32,19 +31,33 @@ export const EnrollsListView = job => {
   const { enrolls } = job
   const history = useHistory()
   const classes = useStyles()
+  const studentsAvatar = useSelector(state => state.company.studentsAvatar)
+  const avatarsFetched = useSelector(state => state.company.avatarsFetched)
+  const [enrollments, setEnrollments] = useState(null)
 
-  // const handleClick = job => history.push(`/app/detail/job_opening/${job.id}`)
+  useEffect(() => {
+    if(avatarsFetched){
+      const enrls = enrolls.map(en => {
+        const av = studentsAvatar.find(s => en.studentDetail._id === s.id)
+        en.studentDetail.avatar = av.url
+        return en
+      })
+      setEnrollments(enrls)
+    }
+  }, [avatarsFetched])
+
+  const handleClick = enroll => history.push(`/app/detail/student`, enroll)
 
   return (
     <Grid container className={classes.root}>
       <Grid item lg={7}>
         <LinkCard title={job.position}>
           <List>
-            {enrolls &&
-              enrolls.map(enroll => (
+            {enrollments &&
+              enrollments.map(enroll => (
                 <div key={uuid()}>
                   <ListItem button onClick={() => handleClick(enroll)}>
-                    <EnrollListItem {...enroll} />
+                    <EnrollListItem {...enroll}/>
                   </ListItem>
                   <Divider />
                 </div>

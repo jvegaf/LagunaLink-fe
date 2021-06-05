@@ -8,6 +8,7 @@ const useStyles = makeStyles(theme => ({
   },
   header: {
     minHeight: '3em',
+    width: '100%',
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(0.5)
@@ -21,6 +22,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(2)
   },
   content: {
+    width: '100%',
     backgroundColor: '#fff',
   },
 }))

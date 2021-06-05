@@ -10,11 +10,10 @@ import { LinkCard } from '../../../shared/Card'
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    height: 'auto',
-    overflowY: 'auto'
   },
   cell: {
     padding: '4px',
+    width: '100%'
   },
   actions: {
     justifyContent: 'flex-end',
@@ -46,7 +45,7 @@ export const JobOpeningsWidget = props => {
     
     <LinkCard className={classes.root} title="OFERTAS PUBLICADAS">
       <PerfectScrollbar>
-        <Box className={classes.box} minWidth={400}>
+        <Box className={classes.box}>
           <List>{jobOpenings && jobOpenings.map((job, index) => <JobItem key={uuid()} job={job} index={index} {...props} />)}</List>
         </Box>
       </PerfectScrollbar>

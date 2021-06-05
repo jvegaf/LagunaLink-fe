@@ -27,13 +27,13 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
   },
   subtitle: {
-    color: theme.palette.secondary.main,
+    color: theme.palette.secondary.dark,
     textTransform: 'uppercase',
     fontFamily: 'Poppins, san-serif',
     fontSize: '0.9rem',
   },
   title: {
-    color: theme.palette.primary.main,
+    color: theme.palette.primary.dark,
     fontFamily: 'Poppins',
     fontSize: '1.5rem',
     fontWeight: 400,
@@ -67,7 +67,7 @@ export const JobListItem = props => {
       <div className={styles.info}>
         <Typography className={styles.subtitle}>{companyDetail.name}</Typography>
         <Typography className={styles.title}>{position}</Typography>
-        {enrolled && <Chip color="secondary" size="small" label={'Aplicaste a esta oferta'} icon={<CheckCircle />} />}
+        {enrolled && <Chip color="secondary" variant="outlined" size="small" label={'Aplicaste a esta oferta'} icon={<CheckCircle />} />}
       </div>
       <div className={styles.details}>
         <div className={styles.section}>

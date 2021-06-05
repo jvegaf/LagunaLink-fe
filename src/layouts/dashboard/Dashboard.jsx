@@ -13,6 +13,7 @@ import { CreateJobOpenView } from '../../views/backoffice/company/CreateJobOpenV
 import { EnrollsListView } from '../../views/backoffice/company/EnrollsListView'
 import { JobOpeningsView } from '../../views/backoffice/company/jobOpeningsView'
 import { CompanyProfileView } from '../../views/backoffice/company/ProfileView'
+import { StudentDetailView } from '../../views/backoffice/company/StudentDetailView'
 import { EnrollmentsView } from '../../views/backoffice/student/EnrollmentsView'
 import { StudentProfileView } from '../../views/backoffice/student/ProfileView'
 import { DashboardListView } from '../../views/dashboard/DashboardListView'
@@ -85,6 +86,8 @@ const checkRequest = props => {
       return <CreateJobOpenView />
     case 'jobOpeningDetail':
       return <JobOpeningDetailView {...props.location.state} />
+    case 'studentDetail':
+      return <StudentDetailView {...props.location.state} />
     case 'enrollments':
       return <EnrollmentsView />
     case 'jobEnrollments':

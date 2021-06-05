@@ -1,8 +1,7 @@
 import { Avatar, makeStyles, Typography } from '@material-ui/core'
 import { Item, Row } from '@mui-treasury/components/flex'
 import { useDynamicAvatarStyles } from '@mui-treasury/styles/avatar/dynamic'
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react'
 import { dateFormatter } from '../../../../services/date/dateFormatter'
 
 const useStyles = makeStyles(theme => ({
@@ -27,9 +26,10 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
   },
   subtitle: {
-    color: theme.palette.secondary.main,
+    color: theme.palette.secondary.dark,
     textTransform: 'uppercase',
-    fontFamily: 'Poppins, san-serif',
+    fontFamily: 'Poppins',
+    fontWeight: 400,
     fontSize: '0.9rem',
   },
   title: {
@@ -43,9 +43,9 @@ const useStyles = makeStyles(theme => ({
   },
 
   caption: {
-    fontFamily: 'Poppins, san-serif',
+    fontFamily: 'Poppins',
     color: '#95a0a1',
-    fontSize: '0.8rem',
+    fontSize: '0.9rem',
     marginRight: '0.8rem',
   },
 }))
@@ -56,19 +56,9 @@ export const EnrollListItem = props => {
   const { enrollment_date, studentDetail } = props
   const _createdAt = dateFormatter(enrollment_date)
   
-  const studentsAvatar = useSelector(state => state.company.studentsAvatar)
-  const avatarsFetched = useSelector(state => state.company.avatarsFetched)
-  const [avatar, setAvatar] = useState('')
-
-  useEffect(() => {
-    if(avatarsFetched){
-      const sAvatar = studentsAvatar.find(s => studentDetail._id === s.id)
-      setAvatar(sAvatar.url)
-    }
-  }, [avatarsFetched])
   const avatarStyles = useDynamicAvatarStyles({
-    height: 56,
-    width: 64,
+    height: 70,
+    width: 70,
     radius: 8,
   })
 
@@ -76,7 +66,7 @@ export const EnrollListItem = props => {
   return (
     <Row gap={3} className={styles.root}>
       <Item>
-        <Avatar variant={'rounded'} classes={avatarStyles} src={avatar} />
+        <Avatar variant={'rounded'} classes={avatarStyles} src={studentDetail.avatar} />
       </Item>
       <div className={styles.info}>
         <Typography className={styles.subtitle}>{studentDetail.qualification.title}</Typography>

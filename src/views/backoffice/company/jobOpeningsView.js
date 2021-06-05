@@ -12,10 +12,9 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     width: '100%',
     padding: theme.spacing(6),
-    overflow: 'hidden'
   },
   gridItem: {
-    // flexGrow: 1,
+    width: '100%'
   },
 }))
 
@@ -58,7 +57,7 @@ export const JobOpeningsView = () => {
 
   return (
     <Grid container spacing={4} className={classes.root}>
-      <Grid item lg={5} md={12}>
+      <Grid item lg={5} md={12} sm={12} xs={12}>
         <JobOpeningsWidget {...widgetProps} />
       </Grid>
       <Grid item lg={7} md={12}>
