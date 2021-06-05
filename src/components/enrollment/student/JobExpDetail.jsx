@@ -44,11 +44,10 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.primary.dark,
   },
   preTag: {
-    fontFamily: 'Poppins',
+    fontFamily: 'Roboto',
     whiteSpace: 'pre-wrap',
     fontWeight: 300,
     fontSize: '1.3rem',
-    color: theme.palette.secondary.dark,
   },
 }))
 
