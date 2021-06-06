@@ -59,15 +59,15 @@ const useStyles = makeStyles(theme => ({
 
 const EnrollmentItem = props => {
   const confirm = useConfirm()
-  const { index, enroll, view, remove } = props
+  const { index, enroll, onView, onRemove } = props
   const enrollDate = dateFormatter(enroll.enrollment_date)
   const classes = useStyles()
-  const handleView = (event, enroll) => {
-    view({ ...enroll.jobDetail, id: enroll.jobDetail._id })
+  const handleView = enroll => {
+    onView({ ...enroll.jobDetail, id: enroll.jobDetail._id })
   }
-  const handleRemove = (event, item) => {
+  const handleRemove = enrollId => {
     confirm({ description: '¿ Quieres retirar tu aplicación a esta oferta ?' }).then(() => {
-      remove(item.id)
+      onRemove(enrollId)
     })
   }
 
@@ -92,7 +92,7 @@ const EnrollmentItem = props => {
           {enroll.jobDetail.isActive ? (
             <IconButton
               className={classes.actionButton}
-              onClick={event => handleView(event, enroll)}
+              onClick={e => handleView(enroll)}
               aria-label="view job"
             >
               <Visibility />
@@ -100,7 +100,7 @@ const EnrollmentItem = props => {
           ): (<Chip color="secondary" variant="outlined" size="small" label={'esta oferta fue eliminada'} icon={<Delete />} />)}
           <IconButton
             className={classes.actionButton}
-            onClick={event => handleRemove(event, enroll)}
+            onClick={e => handleRemove(enroll._id)}
             aria-label="remove"
           >
             <Delete />

@@ -29,16 +29,16 @@ export const EnrollmentsView = () => {
   const user = useSelector(state => state.user)
   const enrolls = useSelector(state => state.student.enrolls, shallowEqual)
 
-  const actionRemove = itemId => {
-    dispatch(actions.unenrollThisJob(itemId))
+  const onRemove = enrollId => {
+    dispatch(actions.unenrollThisJob(enrollId))
   }
 
-  const actionView = job => {
+  const onView = job => {
     job.companyDetail.avatar = avatars.find(av => av.id === job.companyDetail._id).url
     history.push({ pathname: `/app/detail/job_opening`, state: { job } })
   }
 
-  const props = { enrolls, remove: actionRemove, view: actionView }
+  const props = { enrolls, onView, onRemove }
 
   return (
     <Container maxWidth="lg">
